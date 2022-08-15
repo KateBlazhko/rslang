@@ -8,5 +8,6 @@
     "sourceMap": true,
     "strict": true
   },
+  "include": ["src"],
   "files": ["src/index.ts", "./module.d.ts"]
 }
