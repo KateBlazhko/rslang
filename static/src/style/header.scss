@@ -1,0 +1,75 @@
+header {
+  height: 60px;
+  width: 100%;
+  box-shadow: 0 2px 5px gainsboro;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 20px;
+  
+    a {
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 700;
+      color: dimgrey;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 3px rgb(170, 169, 169);
+      border-radius: 4px;
+      padding: 5px 10px;
+      border-bottom: 3px solid rgb(170, 169, 169);
+  
+      &:hover {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+
+    .profile {
+      background-color: gray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: white;
+      width: 50px;
+      height: 50px;
+      font-size: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    button {
+      padding: 5px 10px;
+      width: 85px;
+      font-weight: 700;
+      font-size: 18px;
+      border-radius: 5px;
+      border: none;
+      color: white;
+      cursor: pointer;
+    
+      &:hover {
+        border-bottom: none;
+      }
+    }
+
+    .log-in {
+      background-color: rgb(2, 166, 2);
+      border-bottom: 3px solid rgb(1, 92, 1);
+    }
+  }
+}
