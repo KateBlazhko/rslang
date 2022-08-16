@@ -25,9 +25,17 @@ header {
       border-radius: 4px;
       padding: 5px 10px;
       border-bottom: 3px solid rgb(170, 169, 169);
+      transition: background-color .4s;
   
       &:hover {
+        background-color: rgb(112, 112, 198);
+        color: white;
+        border-bottom: 3px solid rgb(66, 66, 120);
+      }
+
+      &.active {
         border-bottom: none;
+        transform: translate(0, 1px);
       }
     }
   }

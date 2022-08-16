@@ -6,6 +6,7 @@ class Header {
   constructor() {
     this.header = document.createElement('header');
     this.createHeader();
+    this.toggleActive();
   }
 
   createHeader() {
@@ -22,6 +23,16 @@ class Header {
       <a href='#statistics' class='profile'>U</a>
     </div>
     `;
+  }
+
+  toggleActive() {
+    const arrEl = this.header.querySelectorAll('nav a');
+    arrEl.forEach((item) => {
+      item.addEventListener('click', () => {
+        arrEl.forEach((el) => el.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
   }
 
   render() {
