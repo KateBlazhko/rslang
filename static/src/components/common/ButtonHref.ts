@@ -18,11 +18,11 @@ class ButtonHref extends Control<HTMLAnchorElement> {
     el.href = href;
   }
 
-  active() {
+  addActiveState() {
     this.node.classList.add('active');
   }
 
-  noActive() {
+  removeActiveState() {
     this.node.classList.remove('active');
   }
 }

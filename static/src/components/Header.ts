@@ -57,21 +57,21 @@ class Header {
   addEventListen() {
     this.arrHref.forEach((item) => {
       item.node.addEventListener('click', () => {
-        this.arrHref.forEach((el) => el.noActive());
-        item.active();
+        this.arrHref.forEach((el) => el.removeActiveState());
+        item.addActiveState();
       });
     });
   }
 
   addThisActive() {
     const activeElement = this.arrHref.find((item) => item.href === this.location.hash);
-    if (activeElement) activeElement.active();
-    else this.arrHref[0].active();
+    if (activeElement) activeElement.addActiveState();
+    else this.arrHref[0].addActiveState();
   }
 
   forwardHistory() {
     window.addEventListener('popstate', () => {
-      this.arrHref.forEach((item) => item.noActive());
+      this.arrHref.forEach((item) => item.removeActiveState());
       this.addThisActive();
     });
   }
