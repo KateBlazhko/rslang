@@ -1,38 +1,61 @@
 import '../style/header.scss';
+import ButtonHref from './common/ButtonHref';
+import Control from './common/control';
+import Signal from './common/signal';
 
+interface IHeaderEl {
+  home: ButtonHref,
+  about: ButtonHref,
+  book: ButtonHref,
+  sprint: ButtonHref,
+  audio: ButtonHref
+}
 class Header {
-  header: HTMLElement;
+  private header: HTMLElement;
+
+  public obgHeader: Partial<IHeaderEl>;
+
+  arrHref: Array<ButtonHref>;
+
+  private location: Location;
 
   constructor() {
     this.header = document.createElement('header');
+    this.location = window.location;
+    this.obgHeader = {};
+    this.arrHref = [];
     this.createHeader();
-    this.toggleActive();
+    this.addThisActive();
+    this.addEventListen();
   }
 
   createHeader() {
-    this.header.innerHTML = `
-    <nav>
-      <a href='#home'>Home</a>
-      <a href='#about'>About Us</a>
-      <a href='#book'>Book</a>
-      <a href='#audio'>Audio</a>
-      <a href='#sprint'>Sprint</a>
-    </nav>
-    <div class='user'>
-      <button class='log-in' id='login'>Log in</button>
-      <a href='#statistics' class='profile'>U</a>
-    </div>
-    `;
+    const nav = new Control(this.header, 'nav', 'navbar', '');
+    const home = new ButtonHref<HTMLAnchorElement>(nav.node, '#home', 'Home');
+    const about = new ButtonHref<HTMLAnchorElement>(nav.node, '#about', 'About Us');
+    const book = new ButtonHref<HTMLAnchorElement>(nav.node, '#book', 'Book');
+    const sprint = new ButtonHref<HTMLAnchorElement>(nav.node, '#sprint', 'Sprint');
+    const audio = new ButtonHref<HTMLAnchorElement>(nav.node, '#audio', 'Audio');
+
+    this.obgHeader = {
+      home, about, book, sprint, audio,
+    };
+
+    this.arrHref = [home, about, book, sprint, audio];
   }
 
-  toggleActive() {
-    const arrEl = this.header.querySelectorAll('nav a');
-    arrEl.forEach((item) => {
-      item.addEventListener('click', () => {
-        arrEl.forEach((el) => el.classList.remove('active'));
-        item.classList.add('active');
+  addEventListen() {
+    this.arrHref.forEach((item) => {
+      item.node.addEventListener('click', () => {
+        this.arrHref.forEach((el) => el.noActive());
+        item.active();
       });
     });
+  }
+
+  addThisActive() {
+    const activeElement = this.arrHref.find((item) => item.href === this.location.hash);
+    if (activeElement) activeElement.active();
   }
 
   render() {
