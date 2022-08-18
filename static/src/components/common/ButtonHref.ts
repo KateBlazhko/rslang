@@ -1,16 +1,14 @@
 import Control from './control';
 
-class ButtonHref <NodeType extends HTMLElement = HTMLElement> extends Control {
+class ButtonHref extends Control<HTMLAnchorElement> {
   public href: string;
 
   constructor(
     parentNode: HTMLElement | null,
-    href = '',
-    content = '',
-    className = '',
-    tagName = 'a',
+    href: string,
+    content?: string,
   ) {
-    super(parentNode, tagName, className, content);
+    super(parentNode, 'a', '', content);
     this.href = href;
     this.addHref(href);
   }

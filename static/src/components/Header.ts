@@ -1,7 +1,6 @@
 import '../style/header.scss';
 import ButtonHref from './common/ButtonHref';
 import Control from './common/control';
-import Signal from './common/signal';
 
 interface IHeaderEl {
   home: ButtonHref,
@@ -10,6 +9,15 @@ interface IHeaderEl {
   sprint: ButtonHref,
   audio: ButtonHref
 }
+
+const enum ButtonHrefContent {
+  home = 'Home',
+  about = 'About Us',
+  book = 'Book',
+  sprint = 'Sprint',
+  audio = 'Audio'
+}
+
 class Header {
   private header: HTMLElement;
 
@@ -30,12 +38,13 @@ class Header {
   }
 
   createHeader() {
-    const nav = new Control(this.header, 'nav', 'navbar', '');
-    const home = new ButtonHref<HTMLAnchorElement>(nav.node, '#home', 'Home');
-    const about = new ButtonHref<HTMLAnchorElement>(nav.node, '#about', 'About Us');
-    const book = new ButtonHref<HTMLAnchorElement>(nav.node, '#book', 'Book');
-    const sprint = new ButtonHref<HTMLAnchorElement>(nav.node, '#sprint', 'Sprint');
-    const audio = new ButtonHref<HTMLAnchorElement>(nav.node, '#audio', 'Audio');
+    const nav = new Control(this.header, 'nav', 'navbar');
+
+    const home = new ButtonHref(nav.node, '#home', ButtonHrefContent.home);
+    const about = new ButtonHref(nav.node, '#about', ButtonHrefContent.about);
+    const book = new ButtonHref(nav.node, '#book', ButtonHrefContent.book);
+    const sprint = new ButtonHref(nav.node, '#sprint', ButtonHrefContent.sprint);
+    const audio = new ButtonHref(nav.node, '#audio', ButtonHrefContent.audio);
 
     this.obgHeader = {
       home, about, book, sprint, audio,
