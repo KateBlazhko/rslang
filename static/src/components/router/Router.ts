@@ -1,9 +1,10 @@
+import Sprint from '../sprint/sprint'
 import Signal from '../common/signal'
 import Control from '../common/control';
 
 class Router {
   private location: Location;
-  private currentPage: Control | null = null
+  private currentPage: Control | Sprint | null = null
   private container: Control;
 
   constructor() {
@@ -42,7 +43,7 @@ class Router {
         break;
       case 'sprint':
         container.innerHTML = '';
-        // this.currentPage = new Sprint(container, this.onGoPage)  
+        this.currentPage = new Sprint(container, this.onGoPage)  
         break;
       case 'audio':
         container.innerHTML = '<h1>Audio</h1>';

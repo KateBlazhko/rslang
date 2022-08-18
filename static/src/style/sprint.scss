@@ -1,0 +1,161 @@
+
+
+$color-points: #966AAD;
+$color-word: #000000;
+$filter-color: #808080;
+$color-button-true: #1f9465;
+$color-button-true-hover: #79bc90;
+$color-button-false: #e0677d;
+$color-button-false-hover: #F69EB0;
+$color-bg: #ffffff;
+
+// $color-border-svg: #AF2137;
+// // $color-main-svg: #EF4B6D;
+// $color-average: #e0677d;
+// // $color-average: #EF4055;
+// $color-average: #F69EB0;
+
+// $color-border-svg: #63387C;
+// // $color-main-svg: #B08DC1;
+// $color-average: #C5A3CD;
+// $color-average: #966AAD;
+// // $color-average: #8857A4;
+
+// $color-border-svg: #017347;
+// // $color-main-svg: #98D2AE;
+// // $color-average: #5DBF89;
+// $color-average: #1f9465;
+// $color-average: #79bc90;
+// // $color-average: #80C999;
+// // $color-average: #27B67C;
+// // $color-border-svg: #007E4E;
+
+.sprint {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  padding: 2rem;
+
+  &__animation-wrap {
+    position: absolute;
+    overflow: hidden;
+    z-index: -1;
+    background: #50c5ff80;
+    width: 100%;
+    bottom: 0;
+    animation: wipe 60s linear forwards;
+  }
+
+  &__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    padding: 2rem 0;
+    border-radius: 2rem;
+
+    background-color: $color-bg;
+  }
+
+  &__indicator-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    padding-top: 2rem;
+  }
+  
+  &__indicator {
+    width: 5rem;
+    height: 5rem;
+
+    filter: none;
+    -webkit-filter: grayscale(0);
+
+    &.default {
+      filter: $filter-color;
+      -webkit-filter: grayscale(1);
+      transition: all 0.5s ease-in-out; 
+    }
+  }
+
+  &__indicator:first-child {
+    width: 2.5rem;
+  }
+
+  &__points-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__points {
+    font-size: 4rem;
+    color: $color-points
+  }
+
+  &__word-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    min-height: 30rem;
+  }
+
+  &__word {
+    font-size: 3rem;
+    color: $color-word
+  }
+
+  &__button-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  &__button {
+    width: 20rem;
+    height: 5rem;
+
+    text-align: center;
+
+    &_true {
+      background-color: $color-button-true;
+
+      &:hover {
+        background-color: $color-button-true-hover;
+      }
+    }
+
+    &_false {
+      background-color: $color-button-false;
+
+      &:hover {
+        background-color: $color-button-false-hover;
+      }
+    }
+  }
+
+}
+
+@keyframes wipe {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 100%;
+  }
+}

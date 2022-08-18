@@ -1,9 +1,19 @@
 @import '~normalize.css';
-
+@import './style/sprint.scss';
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-// @import './assets/styles/';
+
+html {
+  font-size: 10px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+}
