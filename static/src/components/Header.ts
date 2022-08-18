@@ -35,6 +35,7 @@ class Header {
     this.createHeader();
     this.addThisActive();
     this.addEventListen();
+    this.forwardHistory();
   }
 
   createHeader() {
@@ -66,6 +67,13 @@ class Header {
     const activeElement = this.arrHref.find((item) => item.href === this.location.hash);
     if (activeElement) activeElement.active();
     else this.arrHref[0].active();
+  }
+
+  forwardHistory() {
+    window.addEventListener('popstate', () => {
+      this.arrHref.forEach((item) => item.noActive());
+      this.addThisActive();
+    });
   }
 
   render() {
