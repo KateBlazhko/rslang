@@ -56,6 +56,7 @@ class Header {
   addThisActive() {
     const activeElement = this.arrHref.find((item) => item.href === this.location.hash);
     if (activeElement) activeElement.active();
+    else this.obgHeader.home?.active();
   }
 
   render() {
