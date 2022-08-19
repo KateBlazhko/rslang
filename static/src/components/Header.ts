@@ -22,7 +22,7 @@ const enum ButtonHrefContent {
 class Header {
   private header: HTMLElement;
 
-  public obgHeader: Partial<IHeaderEl>;
+  public getAllElementsHeader: Partial<IHeaderEl>;
 
   arrHref: Array<ButtonHref>;
 
@@ -34,7 +34,7 @@ class Header {
     this.header = document.createElement('header');
     this.location = window.location;
     this.logging = new Logging();
-    this.obgHeader = {};
+    this.getAllElementsHeader = {};
     this.arrHref = [];
     this.createHeader();
     this.addThisActive();
@@ -51,7 +51,7 @@ class Header {
     const sprint = new ButtonHref(nav.node, '#sprint', ButtonHrefContent.sprint);
     const audio = new ButtonHref(nav.node, '#audio', ButtonHrefContent.audio);
 
-    this.obgHeader = {
+    this.getAllElementsHeader = {
       home, about, book, sprint, audio,
     };
 
