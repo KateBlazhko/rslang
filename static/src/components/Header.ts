@@ -1,6 +1,7 @@
 import '../style/header.scss';
 import ButtonHref from './common/ButtonHref';
 import Control from './common/control';
+import Logging from './Logging';
 
 interface IHeaderEl {
   home: ButtonHref,
@@ -27,9 +28,12 @@ class Header {
 
   private location: Location;
 
+  private logging: Logging;
+
   constructor() {
     this.header = document.createElement('header');
     this.location = window.location;
+    this.logging = new Logging();
     this.obgHeader = {};
     this.arrHref = [];
     this.createHeader();
@@ -66,7 +70,7 @@ class Header {
   addThisActive() {
     const activeElement = this.arrHref.find((item) => item.href === this.location.hash);
     if (activeElement) activeElement.addActiveState();
-    else this.arrHref[0].addActiveState();
+    // else this.arrHref[0].addActiveState();
   }
 
   forwardHistory() {
@@ -77,6 +81,7 @@ class Header {
   }
 
   render() {
+    this.header.append(this.logging.node);
     return this.header;
   }
 }
