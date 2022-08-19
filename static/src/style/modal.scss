@@ -13,13 +13,37 @@
     justify-content: center;
     width: 320px;
     padding: 0px 0px 20px;
-    row-gap: 20px;
+    row-gap: 10px;
     flex-wrap: wrap;
     background-color: white;
     border-radius: 7px;
+    box-shadow: 0 0 3px darkgray;
 
     button {
       width: 50%;
+      padding: 0px;
+      height: 40px;
+      font-weight: 700;
+      font-size: 18px;
+      border: none;
+      background-color: white;
+      cursor: pointer;
+      box-shadow: 0 0 3px darkgray;
+      z-index: 3;
+    }
+
+    button.active {
+      height: 40px;
+      border-bottom: 5px solid crimson;
+      z-index: 1;
+    }
+
+    button:nth-child(1) {
+      border-top-left-radius: 7px;
+    }
+
+    button:nth-child(2) {
+      border-top-right-radius: 7px;
     }
 
     label {
@@ -43,6 +67,20 @@
       padding: 0px 6px;
       font-weight: 600;
       outline: none;
+    }
+
+    .button__submit {
+      border-radius: 7px;
+      box-shadow: 0 0 4px green;
+      color: green;
+      margin-top: 20px;
+      transition: .3s;
+   
+      &:hover {
+        background-color: green;
+        color: white;
+        box-shadow: 0 0 2px green;;
+      }
     }
   }
 }
