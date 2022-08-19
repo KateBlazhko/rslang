@@ -3,13 +3,13 @@ import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
-import createUser from './api/dbLoging';
+import { createUser, loginUser } from './api/dbLoging';
 import { getWords } from './api/dbWords';
 
 class Logging {
   container: Control<HTMLElement>;
 
-  loggingBtn: ButtonLogging;
+  loginBtn: ButtonLogging;
 
   profile: ButtonHref;
 
@@ -19,40 +19,59 @@ class Logging {
 
   constructor() {
     this.container = new Control<HTMLDivElement>(null, 'div', 'logging__container');
-    this.stateLog = { state: true };
-    this.loggingBtn = new ButtonLogging<HTMLButtonElement>(this.container.node, false);
-    this.profile = new ButtonHref(this.container.node, '#statistics', 'U', 'profile');
+    this.stateLog = { state: false };
+    this.loginBtn = new ButtonLogging<HTMLButtonElement>(this.container.node, this.stateLog.state);
+    this.profile = new ButtonHref(this.container.node, '#statistics', '', 'profile');
     this.accessStatistics();
     this.modal = new ModalLog();
     this.addCallModal();
-    this.listenBtn();
+    this.listenSubmit();
   }
 
-  listenBtn() {
+  listenSubmit() {
+    this.modal.formElements.form.node.addEventListener('click', (e) => e.preventDefault());
     this.modal.formElements.submit.node.addEventListener('click', () => {
-      this.registrationMethod();
+      if (!this.stateLog.state) this.registrationMethod();
     });
   }
 
   async registrationMethod() {
-    await createUser({
-      name: this.modal.formElements.name.node.value,
-      email: this.modal.formElements.email.node.value,
-      password: this.modal.formElements.password.node.value,
-    });
+    if (this.modal.formElements.state === 'registration') {
+      await createUser({
+        name: this.modal.formElements.name.node.value,
+        email: this.modal.formElements.email.node.value,
+        password: this.modal.formElements.password.node.value,
+      });
+    } else {
+      await loginUser({
+        email: this.modal.formElements.email.node.value,
+        password: this.modal.formElements.password.node.value,
+      });
+    }
+    this.modal.clearInput();
+    this.modal.formElements.background.destroy();
+    this.stateLog.state = true;
+    this.loginBtn.checkStateLog(this.stateLog.state);
+    this.accessStatistics();
   }
 
   accessStatistics() {
     this.profile.node.addEventListener('click', (event) => {
       if (!this.stateLog.state) event.preventDefault();
-      this.profile.node.textContent = 'U';
     });
-    this.profile.node.textContent = 'A';
+    if (!this.stateLog.state) this.profile.node.textContent = 'U';
+    else this.profile.node.textContent = 'A';
   }
 
   addCallModal() {
-    this.loggingBtn.node.addEventListener('click', () => {
-      this.modal.callModal();
+    this.loginBtn.node.addEventListener('click', () => {
+      if (!this.stateLog.state) {
+        this.modal.callModal();
+      } else {
+        this.stateLog.state = false;
+        this.loginBtn.checkStateLog(this.stateLog.state);
+        this.accessStatistics();
+      }
     });
   }
 

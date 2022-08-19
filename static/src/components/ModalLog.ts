@@ -24,8 +24,11 @@ class ModalLog {
 
   private inputName: Control<HTMLInputElement>;
 
+  private state: 'login' | 'registration';
+
   constructor() {
     this.background = new Control(null, 'div', 'background__container');
+    this.state = 'login';
     this.form = new Control<HTMLFormElement>(this.background.node, 'form', 'form__container');
     this.login = new Control<HTMLButtonElement>(this.form.node, 'button', 'active', 'Login');
     this.registration = new Control<HTMLButtonElement>(this.form.node, 'button', '', 'Registration');
@@ -38,14 +41,28 @@ class ModalLog {
     this.submit = new Control<HTMLButtonElement>(this.form.node, 'button', 'button__submit', 'Login');
     this.remoteLogReg();
     this.closeModal();
+    this.addTypesOfElement();
+  }
+
+  addTypesOfElement() {
+    this.inputEmail.node.type = 'email';
+    this.inputPassword.node.type = 'password';
   }
 
   closeModal() {
-    this.form.node.addEventListener('submit', (event) => event.preventDefault());
     this.background.node.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
-      if (target.className.includes('background__container')) this.background.destroy();
+      if (target.className.includes('background__container')) {
+        this.clearInput();
+        this.background.destroy();
+      }
     });
+  }
+
+  clearInput() {
+    this.inputName.node.value = '';
+    this.inputEmail.node.value = '';
+    this.inputPassword.node.value = '';
   }
 
   remoteLogReg() {
@@ -55,22 +72,27 @@ class ModalLog {
       this.registration.node.classList.remove('active');
       this.submit.node.textContent = 'LOGIN';
       this.labelName.node.style.display = 'none';
+      this.state = 'login';
     });
+
     this.registration.node.addEventListener('click', () => {
       this.registration.node.classList.add('active');
       this.login.node.classList.remove('active');
       this.submit.node.textContent = 'REGISTRATION';
       this.labelName.node.style.display = 'flex';
+      this.state = 'registration';
     });
   }
 
   get formElements() {
     return {
+      background: this.background,
       name: this.inputName,
       form: this.form,
       email: this.inputEmail,
       password: this.inputPassword,
       submit: this.submit,
+      state: this.state,
     };
   }
 
