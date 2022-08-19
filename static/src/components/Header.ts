@@ -1,37 +1,78 @@
 import '../style/header.scss';
+import ButtonHref from './common/ButtonHref';
+import Control from './common/control';
+
+interface IHeaderEl {
+  home: ButtonHref,
+  about: ButtonHref,
+  book: ButtonHref,
+  sprint: ButtonHref,
+  audio: ButtonHref
+}
+
+const enum ButtonHrefContent {
+  home = 'Home',
+  about = 'About Us',
+  book = 'Book',
+  sprint = 'Sprint',
+  audio = 'Audio'
+}
 
 class Header {
-  header: HTMLElement;
+  private header: HTMLElement;
+
+  public getAllElementsHeader: Partial<IHeaderEl>;
+
+  arrHref: Array<ButtonHref>;
+
+  private location: Location;
 
   constructor() {
     this.header = document.createElement('header');
+    this.location = window.location;
+    this.getAllElementsHeader = {};
+    this.arrHref = [];
     this.createHeader();
-    this.toggleActive();
+    this.addThisActive();
+    this.addEventListen();
+    this.forwardHistory();
   }
 
   createHeader() {
-    this.header.innerHTML = `
-    <nav>
-      <a href='#home'>Home</a>
-      <a href='#about'>About Us</a>
-      <a href='#book'>Book</a>
-      <a href='#audio'>Audio</a>
-      <a href='#sprint'>Sprint</a>
-    </nav>
-    <div class='user'>
-      <button class='log-in' id='login'>Log in</button>
-      <a href='#statistics' class='profile'>U</a>
-    </div>
-    `;
+    const nav = new Control(this.header, 'nav', 'navbar');
+
+    const home = new ButtonHref(nav.node, '#home', ButtonHrefContent.home);
+    const about = new ButtonHref(nav.node, '#about', ButtonHrefContent.about);
+    const book = new ButtonHref(nav.node, '#book', ButtonHrefContent.book);
+    const sprint = new ButtonHref(nav.node, '#sprint', ButtonHrefContent.sprint);
+    const audio = new ButtonHref(nav.node, '#audio', ButtonHrefContent.audio);
+
+    this.getAllElementsHeader = {
+      home, about, book, sprint, audio,
+    };
+
+    this.arrHref = [home, about, book, sprint, audio];
   }
 
-  toggleActive() {
-    const arrEl = this.header.querySelectorAll('nav a');
-    arrEl.forEach((item) => {
-      item.addEventListener('click', () => {
-        arrEl.forEach((el) => el.classList.remove('active'));
-        item.classList.add('active');
+  addEventListen() {
+    this.arrHref.forEach((item) => {
+      item.node.addEventListener('click', () => {
+        this.arrHref.forEach((el) => el.removeActiveState());
+        item.addActiveState();
       });
+    });
+  }
+
+  addThisActive() {
+    const activeElement = this.arrHref.find((item) => item.href === this.location.hash);
+    if (activeElement) activeElement.addActiveState();
+    else this.arrHref[0].addActiveState();
+  }
+
+  forwardHistory() {
+    window.addEventListener('popstate', () => {
+      this.arrHref.forEach((item) => item.removeActiveState());
+      this.addThisActive();
     });
   }
 
