@@ -3,6 +3,8 @@ import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
+import createUser from './api/dbLoging';
+import { getWords } from './api/dbWords';
 
 class Logging {
   container: Control<HTMLElement>;
@@ -23,6 +25,21 @@ class Logging {
     this.accessStatistics();
     this.modal = new ModalLog();
     this.addCallModal();
+    this.listenBtn();
+  }
+
+  listenBtn() {
+    this.modal.formElements.submit.node.addEventListener('click', () => {
+      this.registrationMethod();
+    });
+  }
+
+  async registrationMethod() {
+    await createUser({
+      name: this.modal.formElements.name.node.value,
+      email: this.modal.formElements.email.node.value,
+      password: this.modal.formElements.password.node.value,
+    });
   }
 
   accessStatistics() {

@@ -2,29 +2,35 @@ import Control from './common/control';
 import '../style/modal.scss';
 
 class ModalLog {
-  background: Control<HTMLElement>;
+  private background: Control<HTMLElement>;
 
-  form: Control<HTMLElement>;
+  private form: Control<HTMLElement>;
 
-  labelEmail: Control<HTMLLabelElement>;
+  private labelEmail: Control<HTMLLabelElement>;
 
-  inputEmail: Control<HTMLInputElement>;
+  private inputEmail: Control<HTMLInputElement>;
 
-  labelPassword: Control<HTMLLabelElement>;
+  private labelPassword: Control<HTMLLabelElement>;
 
-  inputPassword: Control<HTMLInputElement>;
+  private inputPassword: Control<HTMLInputElement>;
 
-  login: Control<HTMLElement>;
+  private login: Control<HTMLElement>;
 
-  registration: Control<HTMLButtonElement>;
+  private registration: Control<HTMLButtonElement>;
 
-  submit: Control<HTMLButtonElement>;
+  private submit: Control<HTMLButtonElement>;
+
+  private labelName: Control<HTMLLabelElement>;
+
+  private inputName: Control<HTMLInputElement>;
 
   constructor() {
     this.background = new Control(null, 'div', 'background__container');
     this.form = new Control<HTMLFormElement>(this.background.node, 'form', 'form__container');
     this.login = new Control<HTMLButtonElement>(this.form.node, 'button', 'active', 'Login');
     this.registration = new Control<HTMLButtonElement>(this.form.node, 'button', '', 'Registration');
+    this.labelName = new Control<HTMLLabelElement>(this.form.node, 'label', '', 'Your Name: ');
+    this.inputName = new Control<HTMLInputElement>(this.labelName.node, 'input', '');
     this.labelEmail = new Control<HTMLLabelElement>(this.form.node, 'label', '', 'Email: ');
     this.inputEmail = new Control<HTMLInputElement>(this.labelEmail.node, 'input', '');
     this.labelPassword = new Control<HTMLLabelElement>(this.form.node, 'label', '', 'Password: ');
@@ -43,20 +49,24 @@ class ModalLog {
   }
 
   remoteLogReg() {
+    this.labelName.node.style.display = 'none';
     this.login.node.addEventListener('click', () => {
       this.login.node.classList.add('active');
       this.registration.node.classList.remove('active');
       this.submit.node.textContent = 'LOGIN';
+      this.labelName.node.style.display = 'none';
     });
     this.registration.node.addEventListener('click', () => {
       this.registration.node.classList.add('active');
       this.login.node.classList.remove('active');
       this.submit.node.textContent = 'REGISTRATION';
+      this.labelName.node.style.display = 'flex';
     });
   }
 
   get formElements() {
     return {
+      name: this.inputName,
       form: this.form,
       email: this.inputEmail,
       password: this.inputPassword,
