@@ -19,9 +19,8 @@ class Router {
 
   private hashChange() {
     window.addEventListener('hashchange', () => {
-      if (this.currentPage) this.currentPage.destroy()
-      const hash = this.location.hash.slice(1)
-      this.setPage(hash)
+      if (this.currentPage) this.currentPage.destroy();
+      this.setPage(this.location.hash.slice(1));
     });
     
   }

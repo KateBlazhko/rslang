@@ -1,13 +1,16 @@
-
-
 $color-points: #966AAD;
 $color-word: #000000;
 $filter-color: #808080;
-$color-button-true: #1f9465;
-$color-button-true-hover: #79bc90;
-$color-button-false: #e0677d;
-$color-button-false-hover: #F69EB0;
+$color-button-true-hover: #1f9465;
+$color-button-true: #79bc90;
+$color-button-false-hover: #e0677d;
+$color-button-false: #F69EB0;
 $color-bg: #ffffff;
+$brown: #cc9165;
+
+$color-shadow: rgb(170, 169, 169);
+$color-water: #8ae4ff80;
+
 
 // $color-border-svg: #AF2137;
 // // $color-main-svg: #EF4B6D;
@@ -32,41 +35,69 @@ $color-bg: #ffffff;
 
 .sprint {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-grow: 1;
+  @include flexCenter();
   flex-wrap: wrap;
   gap: 10px;
 
-  padding: 2rem;
+  width: 100%;
 
-  &__animation-wrap {
-    position: absolute;
-    overflow: hidden;
-    z-index: -1;
-    background: #50c5ff80;
-    width: 100%;
-    bottom: 0;
-    animation: wipe 60s linear forwards;
-  }
+  padding: 2rem 0;
+
+  background-image: url('./assets/img/sprint-bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
 
   &__inner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
+    z-index: 2;
+    @include flexCenter();
     flex-wrap: wrap;
     gap: 10px;
 
+    width: 50%;
     padding: 2rem 0;
     border-radius: 2rem;
 
     background-color: $color-bg;
+
+    @media (max-width: 1024px) {
+      width: 65%;
+    }
+
+    @media (max-width: 768px) {
+      width: 90%;
+    }
+  }
+
+  &__soundOn-wrap {
+    position: absolute;
+    top: 4%;
+    left: 4%;
+  }
+
+  &__timer-wrap {
+    @include flexCenter();
+    width: 5rem;
+    height: 5rem;
+    border: 1px solid transparent;
+
+    border-radius: 50%;
+
+    &.finishing {
+      border: 1px solid $color-button-false-hover;
+    }
+
+    span {
+      text-align: center; 
+      font-size: 3rem;
+      color: $color-button-false-hover;
+      line-height: 5rem;
+    }
   }
 
   &__indicator-wrap{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flexCenter();
     gap: 10px;
 
     width: 100%;
@@ -85,16 +116,28 @@ $color-bg: #ffffff;
       -webkit-filter: grayscale(1);
       transition: all 0.5s ease-in-out; 
     }
+
   }
 
   &__indicator:first-child {
     width: 2.5rem;
   }
 
+  &__rate-wrap {
+    @include flexCenter();
+    gap: 1rem;
+    width: 100%;
+    min-height: 6rem;
+  }
+
+  &__rate {
+    width: 6rem;
+    height: 6rem;
+    animation: appearance 0.5s linear forwards;
+  }
+
   &__points-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flexCenter();
     width: 100%;
   }
 
@@ -103,25 +146,27 @@ $color-bg: #ffffff;
     color: $color-points
   }
 
-  &__word-wrap {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+  &__question-wrap {
+    @include flexCenter();
     width: 100%;
-    min-height: 30rem;
+    min-height: 20rem;
   }
 
-  &__word {
-    font-size: 3rem;
-    color: $color-word
+  .question {
+    @include flexCenter();
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+
+ 
+    &__word {
+      font-size: 3rem;
+      color: $color-word
+    }
   }
 
   &__button-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flexCenter();
     gap: 2rem;
     width: 100%;
   }
@@ -130,9 +175,21 @@ $color-bg: #ffffff;
     width: 20rem;
     height: 5rem;
 
+    box-shadow: 0 0 3px $color-shadow;
+    border-radius: 4px;
+
     text-align: center;
+    color: $color-bg;
+    font-size: 2.5rem;
+    line-height: 5rem;
+
+    cursor: pointer;
+
+    transition: all 0.4s;
 
     &_true {
+      border-bottom: 3px solid $color-button-true-hover;
+
       background-color: $color-button-true;
 
       &:hover {
@@ -141,14 +198,129 @@ $color-bg: #ffffff;
     }
 
     &_false {
+      border-bottom: 3px solid $color-button-false-hover;
+
       background-color: $color-button-false;
 
       &:hover {
         background-color: $color-button-false-hover;
       }
     }
+
+    &_return {
+      position: absolute;
+      top: 4%;
+      right: 4%;
+
+      width: 5rem;
+      height: 5rem;
+
+      box-shadow: none;
+
+      background-image: url('./assets/icons/arrow.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   }
 
+  .result {
+    position: relative;
+
+    @include flexCenter();
+    flex-wrap: wrap;
+    gap: 2rem;
+  
+    width: 50%;
+    padding: 2rem;
+    border-radius: 2rem;
+  
+    background-color: $color-bg-start;
+  
+    @media (max-width: 1024px) {
+      width: 65%;
+    }
+  
+    @media (max-width: 768px) {
+      width: 90%;
+    }
+  
+    &__title {
+      width: 100%;
+  
+      text-align: center;
+      font-size: 3rem
+    }  
+
+    &__table {
+      overflow: scroll;
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: 5rem;
+      justify-content: center;  
+      gap: 0.3rem;
+
+      width: 100%;
+      padding: 0.3rem;
+      max-height: 40rem;
+
+      background-color: $brown;
+    }
+
+    &__row {
+      @include flexCenter();
+      justify-content: start;
+      gap: 2rem;
+
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+
+      background-color: $color-bg;
+
+      span {
+        font-size: 2rem;
+      }
+
+      svg {
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+
+    &__true {
+      stroke: $color-button-true;
+      fill: $color-bg
+    }
+
+    &__false {
+      fill: $color-button-false;
+    }
+  }
+
+  &__animation-wrap {
+    position: absolute;
+    overflow: hidden;
+    z-index: 1;
+    background: $color-water;
+    width: 100%;
+    bottom: 0;
+    animation: wipe 60s linear forwards;
+  }
+
+}
+
+.sound {
+  width: 2.5rem;
+  height: 2.5rem;
+
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 @keyframes wipe {
@@ -157,5 +329,14 @@ $color-bg: #ffffff;
   }
   100% {
     height: 100%;
+  }
+}
+
+@keyframes appearance {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
   }
 }

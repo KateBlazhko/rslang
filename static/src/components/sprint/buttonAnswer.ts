@@ -6,7 +6,7 @@ class ButtonAnswer extends Control {
     private parentNode: HTMLElement | null,
     private className: string,
     private content: string,
-    public value: boolean
+    public value?: boolean
   ) {
     super(parentNode, 'div', className, content)
 

@@ -1,22 +1,29 @@
 import Control from '../common/control'
+import SVG from '../common/svgElement'
+import icons from '../../assets/icons/sprite.svg'
+import { BASELINK } from '../api/dbWords'
 
 class Question extends Control{
   constructor(parentNode: HTMLElement | null, public word: string[]) {
-    super(parentNode, 'div', 'sprint__question')
+    super(parentNode, 'div', 'sprint__question question')
     this.renderWord()
   }
 
 
   private renderWord() {
-    const [ wordEngText, , wordRusText ] = this.word
+    const [ wordAudio, wordEngText, , wordRusText ] = this.word
+    const wordSound = new SVG(this.node, 'sound', `${icons}#volume`)
+    wordSound.svg.onclick = () => {
+      const audio = new Audio(`${BASELINK}/${wordAudio}`);
+      audio.play();
+    }
 
-    const wordWrap = new Control(this.node, 'div', 'sprint__word-wrap')
-    const wordEng = new Control(wordWrap.node, 'span', 'sprint__word', wordEngText)
-    const points = new Control(wordWrap.node, 'span', 'sprint__word', wordRusText)
+    const wordEng = new Control(this.node, 'span', 'question__word', wordEngText)
+    const points = new Control(this.node, 'span', 'question__word', wordRusText)
   }
 
   onAnswer (answer: boolean) {
-    const [ , rightWordRusText, wordRusText ] = this.word
+    const [ , , rightWordRusText, wordRusText ] = this.word
 
     return (rightWordRusText === wordRusText) === answer
   }

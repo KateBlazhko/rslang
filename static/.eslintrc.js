@@ -23,6 +23,6 @@ module.exports = {
     "no-underscore-dangle":  'off',
     "no-console": 'off',
     "no-param-reassign": ["error", { "props": false }],
-    "no-shadow": ["error", { "allow": [TextInner] }]
+    "no-shadow": ["error", { "allow": ["TextInner", "ButtonHrefContent"] }]
   },
 }

@@ -1,9 +1,6 @@
 class SprintState {
-  private initiator: string
-
-  constructor() {
-    this.initiator = 'header'
-  }
+  private initiator: string = 'header'
+  private soundPlay: boolean = true
 
   public setInitiator(page: string) {
     this.initiator = page === 'book' ? 'book': 'header'
@@ -11,6 +8,14 @@ class SprintState {
 
   public getInitiator() {
     return this.initiator
+  }
+
+  public setSoundPlay(value: boolean) {
+    this.soundPlay = value
+  }
+
+  public getSoundPlay() {
+    return this.soundPlay
   }
 }
 

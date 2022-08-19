@@ -29,6 +29,10 @@ class SVG {
   delClass(className: string) {
     this.svg.classList.remove(className)
   }
+
+  destroy() {
+    this.svg.remove()
+  }
 }
 
 export default SVG

@@ -1,17 +1,16 @@
 import Control from "../common/control";
-import Signal from "../common/signal";
 
 class Timer extends Control{
   private timer: number = 0;
-  private initialTime: number = 0
   public onTimeOut = () => {}
+  public onTimeFinishing = () => true
+  private isFinishing: boolean = false
 
   constructor(parentNode:HTMLElement, className: string){
-    super(parentNode, 'div', className);
+    super(parentNode, 'span', className);
   }
 
   start(time:number) {
-    this.initialTime = time;
 
     // if (this.timer) {
     //   this.stop();
@@ -25,6 +24,11 @@ class Timer extends Control{
       currentTime--;
       this.render(currentTime);
 
+      if (currentTime <= 10){
+        if (!this.isFinishing)
+          this.isFinishing = this.onTimeFinishing()
+      }
+
       if (currentTime <= 0){
         this.onTimeOut()
       }
@@ -33,7 +37,7 @@ class Timer extends Control{
   }
 
   render(currentTime:number) {
-    this.node.textContent = `${this.initialTime} / ${currentTime}`;
+    this.node.textContent = `${currentTime}`;
   }
 
   stop(){
