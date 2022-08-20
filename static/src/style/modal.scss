@@ -8,6 +8,50 @@
   background-color: rgba(212, 209, 209, 0.407);
   z-index: 1;
 
+  .out__modal {
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 30px;
+    column-gap: 20px;
+    border-radius: 7px;
+    box-shadow: 0 0 3px dimgray;
+
+    button {
+      width: 40%;
+      border: none;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 3px;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .button__out_no {
+      box-shadow: 0 0 4px green;
+      color: green;
+
+      &:hover {
+        background: green;
+        color: white;
+      }
+    }
+
+    .button__out_yes {
+      box-shadow: 0 0 4px crimson;
+      color: crimson;
+
+      &:hover {
+        background: crimson;
+        color: white;
+      }
+    }
+
+  }
+
   form {
     display: flex;
     justify-content: center;

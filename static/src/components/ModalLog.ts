@@ -60,7 +60,7 @@ class ModalLog {
     this.warningName = new Control(null, 'div', 'warning__div', 'Вы не указали ваше имя');
     this.warningEmail = new Control(null, 'div', 'warning__div', 'Ваш Email не коректный, проверьте');
     this.warningPassword = new Control(null, 'div', 'warning__div', 'Ваш пароль не коректен, пароль дожен быть миниму 8 символов и содержать буквы и цифры');
-    this.outModal = new Control(null, 'div', 'out__logon', 'Вы точно хотите выйти их аккаунта ?');
+    this.outModal = new Control(null, 'div', 'out__modal', 'Вы точно хотите выйти их аккаунта ?');
     this.noBtn = new Control<HTMLButtonElement>(this.outModal.node, 'button', 'button__out_no', 'NO');
     this.yesBtn = new Control<HTMLButtonElement>(this.outModal.node, 'button', 'button__out_yes', 'YES');
     this.remoteLogReg();
