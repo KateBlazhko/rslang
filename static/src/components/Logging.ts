@@ -25,6 +25,7 @@ class Logging {
     this.accessStatistics();
     this.modal = new ModalLog();
     this.addCallModal();
+    this.outModalBtnListen();
     this.listenSubmit();
   }
 
@@ -113,16 +114,20 @@ class Logging {
     } else this.profile.node.textContent = 'A';
   }
 
+  outModalBtnListen() {
+    this.modal.yesBtn.node.addEventListener('click', () => {
+      this.stateLog.state = false;
+      this.loginBtn.checkStateLog(this.stateLog.state);
+      this.accessStatistics();
+      localStorage.removeItem('user');
+      this.modal.formElements.background.destroy();
+    });
+    this.modal.noBtn.node.addEventListener('click', () => this.modal.formElements.background.destroy());
+  }
+
   addCallModal() {
     this.loginBtn.node.addEventListener('click', () => {
-      if (!this.stateLog.state) {
-        this.modal.callModal();
-      } else {
-        this.stateLog.state = false;
-        this.loginBtn.checkStateLog(this.stateLog.state);
-        this.accessStatistics();
-        localStorage.removeItem('user');
-      }
+      this.modal.callModal(this.stateLog.state);
     });
   }
 
