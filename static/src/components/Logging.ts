@@ -3,7 +3,9 @@ import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
-import { createUser, ILoginUser, loginUser } from './api/dbLoging';
+import {
+  createUser, getUser, IAuth, loginUser,
+} from './api/dbLoging';
 
 class Logging {
   container: Control<HTMLElement>;
@@ -54,8 +56,8 @@ class Logging {
         password: this.modal.formElements.password.node.value,
       });
       if (res.status === 200) {
-        console.log(await res.json());
-        this.setLocalStorageLogin();
+        localStorage.setItem('user', JSON.stringify(await res.json()));
+        // this.setLocalStorageLogin();
         this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
@@ -72,7 +74,8 @@ class Logging {
       });
 
       if (res.status === 200) {
-        this.setLocalStorageLogin();
+        localStorage.setItem('user', JSON.stringify(await res.json()));
+        // this.setLocalStorageLogin();
         this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
@@ -88,18 +91,11 @@ class Logging {
     this.accessStatistics();
   }
 
-  setLocalStorageLogin() {
-    localStorage.setItem('user', JSON.stringify({
-      email: this.modal.formElements.email.node.value,
-      password: this.modal.formElements.password.node.value,
-    }));
-  }
-
   async checkStorageLogin() {
     const response = localStorage.getItem('user');
     if (response) {
-      const user = JSON.parse(response) as ILoginUser;
-      await loginUser({ email: user.email, password: user.password });
+      const user = JSON.parse(response) as IAuth;
+      await getUser(user.userId, user.token);
       this.successLog();
     }
   }

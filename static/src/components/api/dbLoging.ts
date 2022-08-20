@@ -12,6 +12,14 @@ interface ILoginUser {
   password: string
 }
 
+interface IAuth {
+  message: string
+  token: string
+  refreshToken: string
+  userId: string
+  name: string
+  }
+
 const createUser = async (user: ICreateUser) => {
   const rawResponse = await fetch(`${localLink}/users`, {
     method: 'POST',
@@ -47,6 +55,21 @@ const loginUser = async (user: ILoginUser) => {
   }
 };
 
+const getUser = async (userId: string, token: string) => {
+  const rawResponse = await fetch(`${localLink}/users/${userId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  try {
+    return rawResponse;
+  } catch (e) {
+    return rawResponse;
+  }
+};
+
 export {
-  createUser, loginUser, ICreateUser, ILoginUser,
+  createUser, loginUser, ICreateUser, ILoginUser, getUser, IAuth,
 };
