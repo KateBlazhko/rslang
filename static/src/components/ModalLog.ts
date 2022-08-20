@@ -30,6 +30,12 @@ class ModalLog {
 
   arrInputs: Control<HTMLInputElement>[];
 
+  warningName: Control<HTMLElement>;
+
+  warningEmail: Control<HTMLElement>;
+
+  warningPassword: Control<HTMLElement>;
+
   constructor() {
     this.background = new Control(null, 'div', 'background__container');
     this.state = 'login';
@@ -45,9 +51,13 @@ class ModalLog {
     this.submit = new Control<HTMLButtonElement>(this.form.node, 'button', 'button__submit', 'Login');
     this.errorWindow = new Control<HTMLButtonElement>(null, 'div', 'error__window');
     this.arrInputs = [this.inputName, this.inputPassword, this.inputEmail];
+    this.warningName = new Control(null, 'div', 'warning__div', 'Вы не указали ваше имя');
+    this.warningEmail = new Control(null, 'div', 'warning__div', 'Ваш Email не коректный, проверьте');
+    this.warningPassword = new Control(null, 'div', 'warning__div', 'Ваш пароль не коректен, пароль дожен быть миниму 8 символов и содержать буквы и цифры');
     this.remoteLogReg();
     this.closeModal();
     this.addTypesOfElement();
+    this.checkAllInputsValidate();
   }
 
   addTypesOfElement() {
@@ -71,9 +81,9 @@ class ModalLog {
       item.node.value = '';
       item.node.classList.remove('no_valid');
     });
-    this.inputName.node.value = '';
-    this.inputEmail.node.value = '';
-    this.inputPassword.node.value = '';
+    this.warningName.destroy();
+    this.warningEmail.destroy();
+    this.warningPassword.destroy();
   }
 
   checkValidatePassword() {
@@ -82,8 +92,10 @@ class ModalLog {
     const pattern = /[0-9a-zA-Z!@#$%^&*]{8,}/;
     if (!pattern.test(password)) {
       this.inputPassword.node.className = 'no_valid';
+      this.labelPassword.node.append(this.warningPassword.node);
     } else {
       this.inputPassword.node.classList.remove('no_valid');
+      this.warningPassword.destroy();
       state = true;
     }
     return state;
@@ -95,8 +107,10 @@ class ModalLog {
     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!pattern.test(email)) {
       this.inputEmail.node.className = 'no_valid';
+      this.labelEmail.node.append(this.warningEmail.node);
     } else {
       this.inputEmail.node.classList.remove('no_valid');
+      this.warningEmail.destroy();
       state = true;
     }
     return state;
@@ -104,9 +118,20 @@ class ModalLog {
 
   checkValidateName() {
     const name = this.inputName.node.value;
-    if (!(name.length > 0)) this.inputName.node.className = 'no_valid';
-    else this.inputEmail.node.classList.remove('no_valid');
+    if (!(name.length > 0)) {
+      this.inputName.node.className = 'no_valid';
+      this.labelName.node.append(this.warningName.node);
+    } else {
+      this.inputName.node.classList.remove('no_valid');
+      this.warningName.destroy();
+    }
     return name.length > 0;
+  }
+
+  checkAllInputsValidate() {
+    this.inputName.node.addEventListener('change', () => this.checkValidateName());
+    this.inputEmail.node.addEventListener('change', () => this.checkValidateEmail());
+    this.inputPassword.node.addEventListener('change', () => this.checkValidatePassword());
   }
 
   callErrorWindow(statusCode: number) {
@@ -127,7 +152,7 @@ class ModalLog {
     this.login.node.addEventListener('click', () => {
       this.login.node.classList.add('active');
       this.registration.node.classList.remove('active');
-      this.submit.node.textContent = 'LOGIN';
+      this.submit.node.textContent = 'Login';
       this.labelName.node.style.display = 'none';
       this.state = 'login';
     });
@@ -135,7 +160,7 @@ class ModalLog {
     this.registration.node.addEventListener('click', () => {
       this.registration.node.classList.add('active');
       this.login.node.classList.remove('active');
-      this.submit.node.textContent = 'REGISTRATION';
+      this.submit.node.textContent = 'Registration';
       this.labelName.node.style.display = 'flex';
       this.state = 'registration';
     });

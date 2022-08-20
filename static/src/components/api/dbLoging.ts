@@ -23,8 +23,7 @@ const createUser = async (user: ICreateUser) => {
   });
 
   try {
-    const content = await rawResponse.json();
-    console.log(content);
+    // const content = await rawResponse.json();
     return rawResponse;
   } catch (e) {
     return rawResponse;
@@ -41,14 +40,13 @@ const loginUser = async (user: ILoginUser) => {
     body: JSON.stringify(user),
   });
   try {
-    const content = await rawResponse.json();
-    console.log(rawResponse);
-    console.log(content);
+    // const content = await rawResponse.json();
     return rawResponse;
   } catch (e) {
-    console.log(rawResponse.status);
     return rawResponse;
   }
 };
 
-export { createUser, loginUser, ICreateUser };
+export {
+  createUser, loginUser, ICreateUser, ILoginUser,
+};

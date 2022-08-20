@@ -3,8 +3,7 @@ import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
-import { createUser, ICreateUser, loginUser } from './api/dbLoging';
-import { getWords } from './api/dbWords';
+import { createUser, ICreateUser, ILoginUser, loginUser } from './api/dbLoging';
 
 class Logging {
   container: Control<HTMLElement>;
@@ -36,22 +35,25 @@ class Logging {
 
     this.modal.formElements.submit.node.addEventListener('click', () => {
       if (!this.stateLog.state) {
-        if (this.modal.formElements.state === 'registration') this.registrationMethod();
-        else this.loggingMethod();
+        const name = this.modal.checkValidateName();
+        const email = this.modal.checkValidateEmail();
+        const password = this.modal.checkValidatePassword();
+
+        if (this.modal.formElements.state === 'registration') this.registrationMethod(email, password, name);
+        else this.loggingMethod(email, password);
       }
     });
   }
 
-  async loggingMethod() {
-    const email = this.modal.checkValidateEmail();
-    const password = this.modal.checkValidatePassword();
-
+  async loggingMethod(email: boolean, password: boolean) {
     if (email && password) {
       const res = await loginUser({
         email: this.modal.formElements.email.node.value,
         password: this.modal.formElements.password.node.value,
       });
       if (res.status === 200) {
+        console.log(await res.json());
+        this.setLocalStorageLogin();
         this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
@@ -59,11 +61,7 @@ class Logging {
     }
   }
 
-  async registrationMethod() {
-    const email = this.modal.checkValidateEmail();
-    const password = this.modal.checkValidatePassword();
-    const name = this.modal.checkValidateName();
-
+  async registrationMethod(email: boolean, password: boolean, name: boolean) {
     if (email && password && name) {
       const res = await createUser({
         name: this.modal.formElements.name.node.value,
@@ -72,6 +70,7 @@ class Logging {
       });
 
       if (res.status === 200) {
+        this.setLocalStorageLogin();
         this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
@@ -87,9 +86,20 @@ class Logging {
     this.accessStatistics();
   }
 
-  // logCheckLocalStorage() {
-
+  // async checkStorageAndLogin() {
+  //   const user = localStorage.getItem('user');
+  //   if (user) {
+  //     await loginUser()
+  //     console.log(JSON.parse(user));
+  //   }
   // }
+
+  setLocalStorageLogin() {
+    localStorage.setItem('user', JSON.stringify({
+      email: this.modal.formElements.email.node.value,
+      password: this.modal.formElements.password.node.value,
+    }));
+  }
 
   accessStatistics() {
     this.profile.node.addEventListener('click', (event) => {
