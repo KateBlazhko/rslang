@@ -52,7 +52,7 @@ class Logging {
         password: this.modal.formElements.password.node.value,
       });
       if (res.status === 200) {
-        this.successLog(await res.json());
+        this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -72,14 +72,14 @@ class Logging {
       });
 
       if (res.status === 200) {
-        this.successLog(await res.json());
+        this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
       }
     }
   }
 
-  successLog(user: ICreateUser) {
+  successLog() {
     this.modal.clearInput();
     this.modal.formElements.background.destroy();
     this.stateLog.state = true;
