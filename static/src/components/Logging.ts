@@ -3,7 +3,7 @@ import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
-import { createUser, ICreateUser, ILoginUser, loginUser } from './api/dbLoging';
+import { createUser, ILoginUser, loginUser } from './api/dbLoging';
 
 class Logging {
   container: Control<HTMLElement>;
@@ -19,6 +19,7 @@ class Logging {
   constructor() {
     this.container = new Control<HTMLDivElement>(null, 'div', 'logging__container');
     this.stateLog = { state: false };
+    this.checkStorageLogin();
     this.loginBtn = new ButtonLogging<HTMLButtonElement>(this.container.node, this.stateLog.state);
     this.profile = new ButtonHref(this.container.node, '#statistics', '', 'profile');
     this.accessStatistics();
@@ -86,19 +87,20 @@ class Logging {
     this.accessStatistics();
   }
 
-  // async checkStorageAndLogin() {
-  //   const user = localStorage.getItem('user');
-  //   if (user) {
-  //     await loginUser()
-  //     console.log(JSON.parse(user));
-  //   }
-  // }
-
   setLocalStorageLogin() {
     localStorage.setItem('user', JSON.stringify({
       email: this.modal.formElements.email.node.value,
       password: this.modal.formElements.password.node.value,
     }));
+  }
+
+  async checkStorageLogin() {
+    const response = localStorage.getItem('user');
+    if (response) {
+      const user = JSON.parse(response) as ILoginUser;
+      await loginUser({ email: user.email, password: user.password });
+      this.successLog();
+    }
   }
 
   accessStatistics() {
@@ -119,6 +121,7 @@ class Logging {
         this.stateLog.state = false;
         this.loginBtn.checkStateLog(this.stateLog.state);
         this.accessStatistics();
+        localStorage.removeItem('user');
       }
     });
   }
