@@ -28,6 +28,8 @@ class ModalLog {
 
   private errorWindow: Control<HTMLButtonElement>;
 
+  arrInputs: Control<HTMLInputElement>[];
+
   constructor() {
     this.background = new Control(null, 'div', 'background__container');
     this.state = 'login';
@@ -42,6 +44,7 @@ class ModalLog {
     this.inputPassword = new Control<HTMLInputElement>(this.labelPassword.node, 'input', '');
     this.submit = new Control<HTMLButtonElement>(this.form.node, 'button', 'button__submit', 'Login');
     this.errorWindow = new Control<HTMLButtonElement>(null, 'div', 'error__window');
+    this.arrInputs = [this.inputName, this.inputPassword, this.inputEmail];
     this.remoteLogReg();
     this.closeModal();
     this.addTypesOfElement();
@@ -58,11 +61,16 @@ class ModalLog {
       if (target.className.includes('background__container')) {
         this.clearInput();
         this.background.destroy();
+        this.errorWindow.destroy();
       }
     });
   }
 
   clearInput() {
+    this.arrInputs.forEach((item) => {
+      item.node.value = '';
+      item.node.classList.remove('no_valid');
+    });
     this.inputName.node.value = '';
     this.inputEmail.node.value = '';
     this.inputPassword.node.value = '';

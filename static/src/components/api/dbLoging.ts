@@ -51,4 +51,4 @@ const loginUser = async (user: ILoginUser) => {
   }
 };
 
-export { createUser, loginUser };
+export { createUser, loginUser, ICreateUser };

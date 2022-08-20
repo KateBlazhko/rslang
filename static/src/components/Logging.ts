@@ -3,7 +3,7 @@ import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
-import { createUser, loginUser } from './api/dbLoging';
+import { createUser, ICreateUser, loginUser } from './api/dbLoging';
 import { getWords } from './api/dbWords';
 
 class Logging {
@@ -52,11 +52,7 @@ class Logging {
         password: this.modal.formElements.password.node.value,
       });
       if (res.status === 200) {
-        this.modal.clearInput();
-        this.modal.formElements.background.destroy();
-        this.stateLog.state = true;
-        this.loginBtn.checkStateLog(this.stateLog.state);
-        this.accessStatistics();
+        this.successLog(await res.json());
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -76,22 +72,24 @@ class Logging {
       });
 
       if (res.status === 200) {
-        this.modal.clearInput();
-        this.modal.formElements.background.destroy();
-        this.stateLog.state = true;
-        this.loginBtn.checkStateLog(this.stateLog.state);
-        this.accessStatistics();
+        this.successLog(await res.json());
       } else {
         this.modal.callErrorWindow(res.status);
       }
     }
-
-    // this.modal.clearInput();
-    // this.modal.formElements.background.destroy();
-    // this.stateLog.state = true;
-    // this.loginBtn.checkStateLog(this.stateLog.state);
-    // this.accessStatistics();
   }
+
+  successLog(user: ICreateUser) {
+    this.modal.clearInput();
+    this.modal.formElements.background.destroy();
+    this.stateLog.state = true;
+    this.loginBtn.checkStateLog(this.stateLog.state);
+    this.accessStatistics();
+  }
+
+  // logCheckLocalStorage() {
+
+  // }
 
   accessStatistics() {
     this.profile.node.addEventListener('click', (event) => {
