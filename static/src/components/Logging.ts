@@ -59,8 +59,10 @@ class Logging {
     this.profile.node.addEventListener('click', (event) => {
       if (!this.stateLog.state) event.preventDefault();
     });
-    if (!this.stateLog.state) this.profile.node.textContent = 'U';
-    else this.profile.node.textContent = 'A';
+    if (!this.stateLog.state) {
+      this.profile.node.textContent = 'U';
+      window.location.hash = '#home';
+    } else this.profile.node.textContent = 'A';
   }
 
   addCallModal() {

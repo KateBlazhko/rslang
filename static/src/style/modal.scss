@@ -67,6 +67,10 @@
       padding: 0px 6px;
       font-weight: 600;
       outline: none;
+
+      &.no_valid {
+        background-color: crimson;
+      }
     }
 
     .button__submit {

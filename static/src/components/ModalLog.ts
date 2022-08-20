@@ -65,6 +65,11 @@ class ModalLog {
     this.inputPassword.node.value = '';
   }
 
+  // checkValidatePassword() {
+  //   const password = this.inputPassword.node.value;
+  //   if (password.length >= 8, password) {}
+  // }
+
   remoteLogReg() {
     this.labelName.node.style.display = 'none';
     this.login.node.addEventListener('click', () => {
