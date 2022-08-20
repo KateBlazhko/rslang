@@ -29,30 +29,68 @@ class Logging {
   }
 
   listenSubmit() {
-    this.modal.formElements.form.node.addEventListener('click', (e) => e.preventDefault());
+    this.modal.formElements.form.node.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.modal.formElements.errorWindow.destroy();
+    });
+
     this.modal.formElements.submit.node.addEventListener('click', () => {
-      if (!this.stateLog.state) this.registrationMethod();
+      if (!this.stateLog.state) {
+        if (this.modal.formElements.state === 'registration') this.registrationMethod();
+        else this.loggingMethod();
+      }
     });
   }
 
+  async loggingMethod() {
+    const email = this.modal.checkValidateEmail();
+    const password = this.modal.checkValidatePassword();
+
+    if (email && password) {
+      const res = await loginUser({
+        email: this.modal.formElements.email.node.value,
+        password: this.modal.formElements.password.node.value,
+      });
+      if (res.status === 200) {
+        this.modal.clearInput();
+        this.modal.formElements.background.destroy();
+        this.stateLog.state = true;
+        this.loginBtn.checkStateLog(this.stateLog.state);
+        this.accessStatistics();
+      } else {
+        this.modal.callErrorWindow(res.status);
+      }
+    }
+  }
+
   async registrationMethod() {
-    if (this.modal.formElements.state === 'registration') {
-      await createUser({
+    const email = this.modal.checkValidateEmail();
+    const password = this.modal.checkValidatePassword();
+    const name = this.modal.checkValidateName();
+
+    if (email && password && name) {
+      const res = await createUser({
         name: this.modal.formElements.name.node.value,
         email: this.modal.formElements.email.node.value,
         password: this.modal.formElements.password.node.value,
       });
-    } else {
-      await loginUser({
-        email: this.modal.formElements.email.node.value,
-        password: this.modal.formElements.password.node.value,
-      });
+
+      if (res.status === 200) {
+        this.modal.clearInput();
+        this.modal.formElements.background.destroy();
+        this.stateLog.state = true;
+        this.loginBtn.checkStateLog(this.stateLog.state);
+        this.accessStatistics();
+      } else {
+        this.modal.callErrorWindow(res.status);
+      }
     }
-    this.modal.clearInput();
-    this.modal.formElements.background.destroy();
-    this.stateLog.state = true;
-    this.loginBtn.checkStateLog(this.stateLog.state);
-    this.accessStatistics();
+
+    // this.modal.clearInput();
+    // this.modal.formElements.background.destroy();
+    // this.stateLog.state = true;
+    // this.loginBtn.checkStateLog(this.stateLog.state);
+    // this.accessStatistics();
   }
 
   accessStatistics() {

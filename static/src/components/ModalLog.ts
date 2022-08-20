@@ -26,6 +26,8 @@ class ModalLog {
 
   private state: 'login' | 'registration';
 
+  private errorWindow: Control<HTMLButtonElement>;
+
   constructor() {
     this.background = new Control(null, 'div', 'background__container');
     this.state = 'login';
@@ -39,6 +41,7 @@ class ModalLog {
     this.labelPassword = new Control<HTMLLabelElement>(this.form.node, 'label', '', 'Password: ');
     this.inputPassword = new Control<HTMLInputElement>(this.labelPassword.node, 'input', '');
     this.submit = new Control<HTMLButtonElement>(this.form.node, 'button', 'button__submit', 'Login');
+    this.errorWindow = new Control<HTMLButtonElement>(null, 'div', 'error__window');
     this.remoteLogReg();
     this.closeModal();
     this.addTypesOfElement();
@@ -65,10 +68,51 @@ class ModalLog {
     this.inputPassword.node.value = '';
   }
 
-  // checkValidatePassword() {
-  //   const password = this.inputPassword.node.value;
-  //   if (password.length >= 8, password) {}
-  // }
+  checkValidatePassword() {
+    let state = false;
+    const password = this.inputPassword.node.value;
+    const pattern = /[0-9a-zA-Z!@#$%^&*]{8,}/;
+    if (!pattern.test(password)) {
+      this.inputPassword.node.className = 'no_valid';
+    } else {
+      this.inputPassword.node.classList.remove('no_valid');
+      state = true;
+    }
+    return state;
+  }
+
+  checkValidateEmail() {
+    let state = false;
+    const email = this.inputEmail.node.value;
+    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!pattern.test(email)) {
+      this.inputEmail.node.className = 'no_valid';
+    } else {
+      this.inputEmail.node.classList.remove('no_valid');
+      state = true;
+    }
+    return state;
+  }
+
+  checkValidateName() {
+    const name = this.inputName.node.value;
+    if (!(name.length > 0)) this.inputName.node.className = 'no_valid';
+    else this.inputEmail.node.classList.remove('no_valid');
+    return name.length > 0;
+  }
+
+  callErrorWindow(statusCode: number) {
+    if (statusCode === 404) {
+      this.errorWindow.node.innerHTML = 'пользователя с данным Email не существует';
+    }
+    if (statusCode === 403) {
+      this.errorWindow.node.innerHTML = 'вы указали неверный пароль';
+    }
+    if (statusCode === 417) {
+      this.errorWindow.node.innerHTML = 'пользователя с таким Email уже существует';
+    }
+    this.form.node.append(this.errorWindow.node);
+  }
 
   remoteLogReg() {
     this.labelName.node.style.display = 'none';
@@ -98,6 +142,7 @@ class ModalLog {
       password: this.inputPassword,
       submit: this.submit,
       state: this.state,
+      errorWindow: this.errorWindow,
     };
   }
 

@@ -69,8 +69,21 @@
       outline: none;
 
       &.no_valid {
-        background-color: crimson;
+        background-color: rgba(255, 0, 0, 0.297);
+        border: 2px solid crimson; 
+        color: crimson;
       }
+    }
+
+    .error__window {
+      background-color: rgba(255, 0, 0, 0.297);
+      border: 2px solid crimson; 
+      color: crimson;
+      margin: 10px 15px 0;
+      padding: 10px;
+      display: flex;
+      text-align: center;
+      border-radius: 15px;
     }
 
     .button__submit {
