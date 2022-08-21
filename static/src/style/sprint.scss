@@ -37,12 +37,11 @@ $color-water: #8ae4ff80;
   position: relative;
   flex-grow: 1;
   @include flexCenter();
+  align-items: start;
   flex-wrap: wrap;
-  gap: 10px;
-
+  
   width: 100%;
-
-  padding: 2rem 0;
+  padding: 2rem;
 
   background-image: url('./assets/img/sprint-bg.jpg');
   background-size: cover;
@@ -68,12 +67,6 @@ $color-water: #8ae4ff80;
     @media (max-width: 768px) {
       width: 90%;
     }
-  }
-
-  &__soundOn-wrap {
-    position: absolute;
-    top: 4%;
-    left: 4%;
   }
 
   &__timer-wrap {
@@ -209,8 +202,8 @@ $color-water: #8ae4ff80;
 
     &_return {
       position: absolute;
-      top: 4%;
-      right: 4%;
+      top: 3%;
+      right: 3%;
 
       width: 5rem;
       height: 5rem;
@@ -261,11 +254,11 @@ $color-water: #8ae4ff80;
       grid-template-columns: 100%;
       grid-template-rows: 5rem;
       justify-content: center;  
-      gap: 0.3rem;
+      gap: 0.1rem;
 
       width: 100%;
       padding: 0.3rem;
-      max-height: 40rem;
+      max-height: 75vh;
 
       background-color: $brown;
     }
@@ -287,6 +280,8 @@ $color-water: #8ae4ff80;
       svg {
         width: 2rem;
         height: 2rem;
+
+        cursor: pointer;
       }
     }
 
@@ -320,6 +315,12 @@ $color-water: #8ae4ff80;
 
   &:hover {
     transform: scale(1.1);
+  }
+
+  &__wrap {
+    position: absolute;
+    top: 5%;
+    left: 3%;
   }
 }
 

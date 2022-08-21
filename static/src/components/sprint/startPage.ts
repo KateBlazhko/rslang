@@ -4,7 +4,7 @@ import GameField from './gamePage'
 import SprintState from './sprintState'
 
 enum TextInner {
-  titleStart = 'Вперед за сокровищами!',
+  titleStart = 'Капитан! Мы нашли пещеру, полную сокровищ!!!',
   descriptionFirst = 
   `Успей собрать сокровища до начала прилива!!
   У тебя ровно 1 минута`,

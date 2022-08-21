@@ -26,7 +26,7 @@ class SoundManager {
   }
 
   public restartPlayTimer() {
-    if (this.audioTimer) this.audioTimer.play()
+    if (this.audioTimer?.paused) this.audioTimer.play()
   }
 }
 

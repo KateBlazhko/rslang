@@ -1,6 +1,10 @@
+import Signal from "../common/signal";
+
 class SprintState {
   private initiator: string = 'header'
   private soundPlay: boolean = true
+
+  public onSoundOn = new Signal<boolean>();
 
   public setInitiator(page: string) {
     this.initiator = page === 'book' ? 'book': 'header'
@@ -12,6 +16,7 @@ class SprintState {
 
   public setSoundPlay(value: boolean) {
     this.soundPlay = value
+    this.onSoundOn.emit(value)
   }
 
   public getSoundPlay() {

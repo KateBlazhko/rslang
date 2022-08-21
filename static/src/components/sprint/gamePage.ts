@@ -17,10 +17,12 @@ enum TextInner {
   buttonFalse = 'False'
 }
 
-const TIME = 12
+const TIME = 60
 
 class GamePage extends Control{
   private correctAnswerSeries: number = 0
+  private settingsSoundWrap: Control
+  private soundSettings: SVG | null = null
   private animationWrap: Control | null = null
   private pointsView: Control
   private questionWrap: Control
@@ -40,12 +42,15 @@ class GamePage extends Control{
 
   constructor(public parentNode: HTMLElement | null, private state: SprintState, level: number, page?: number) {
     super(parentNode, 'div', 'sprint__game')
+    this.state.onSoundOn.add(this.renderSoundSettings.bind(this))
 
     this.buttonReturn = new ButtonReturn(this.node, 'sprint__button sprint__button_return')
     this.buttonReturn.node.onclick = () => {
       new StartPage(parentNode, state)
       this.destroy()
     }
+
+    this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap')
 
     this.timerWrap = new Control(this.node, 'div', 'sprint__timer-wrap')
     this.timer = new Timer(this.timerWrap.node, 'sprint__timer')
@@ -80,7 +85,7 @@ class GamePage extends Control{
   private async init(level: number, page?: number) {
     const questions = await this.getQuestions(level, page)
 
-    this.renderSoundSettings()
+    this.renderSoundSettings(this.state.getSoundPlay())
 
     this.indicatorList = this.renderIndicator()
     this.indicatorList.forEach(indicator => {indicator.addClass('default')})
@@ -117,22 +122,21 @@ class GamePage extends Control{
     this.questionCycle(questions, 0);
   }
 
-  private renderSoundSettings() {
-    const soundOnWrap = new Control(this.node, 'div', 'sprint__soundOn-wrap')
-    const soundOn = new SVG(soundOnWrap.node, 'sound', `${icons}#volume`);
-    const soundOff = new SVG(null, 'sound', `${icons}#mute`);
+  private renderSoundSettings(isSoundOn: boolean) {
+    if (this.soundSettings) this.soundSettings.destroy()
 
-    soundOnWrap.node.onclick = () => {
+    if (isSoundOn) {
+      this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
+    } else {
+      this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#mute`);
+    }
+
+    this.soundSettings.svg.onclick = () => {
       this.state.setSoundPlay(!this.state.getSoundPlay())
       const curentState = this.state.getSoundPlay()
-
       if (curentState) {
-        if (soundOff) soundOff.destroy()
-        soundOnWrap.node.append(soundOn.svg)
         soundManager.restartPlayTimer()
       } else {
-        if (soundOn) soundOn.destroy()
-        soundOnWrap.node.append(soundOff.svg)
         soundManager.stopPlayTimer()
       }
     }
@@ -198,7 +202,7 @@ class GamePage extends Control{
       return;
     }
 
-    const question = new Question(this.questionWrap.node, questions[indexQuestion]);
+    const question = new Question(this.questionWrap.node, questions[indexQuestion], this.state);
 
     this.onGetAnswer = (value: boolean) => {
       const result = question.onAnswer(value)
@@ -249,13 +253,13 @@ class GamePage extends Control{
   }
 
   public destroy(){
+    if (this.animationWrap) this.animationWrap.destroy()
     this.timer.stop();
     soundManager.stopPlayTimer()
     super.destroy();
   }
 
   private finish() {
-    if (this.animationWrap) this.animationWrap.destroy()
     this.destroy()
     new ResultPage(this.parentNode, this.state, this.words, this.results)
   }
