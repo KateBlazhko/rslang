@@ -13,7 +13,7 @@ import ResultPage from './resultPage';
 
 enum TextInner {
   points = '0',
-  buttonTrue = 'True →',
+  buttonTrue = '→ True',
   buttonFalse = 'False ←'
 }
 
@@ -121,9 +121,9 @@ class GamePage extends Control {
     });
 
     document.onkeydown = (e) => {
-      if (e.code === "ArrowLeft") this.onGetAnswer(false);
-      if (e.code === "ArrowRight") this.onGetAnswer(true);
-    }
+      if (e.code === 'ArrowLeft') this.onGetAnswer(false);
+      if (e.code === 'ArrowRight') this.onGetAnswer(true);
+    };
 
     this.animationWrap = new Control(this.parentNode, 'div', 'sprint__animation-wrap');
 

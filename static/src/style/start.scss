@@ -1,46 +1,104 @@
 $color-bg-start: #ffffff;
-$color-button-start: #fcdd2e;
-$color-button-start-hover: #f5a51c;
-$color-border: #f5a51c;
-// $color-button-start: #8ae4ff;
-// $color-button-start-hover: #33cbf9;
-$gold: #fcdd2e;
-$dark-gold: #fdba12;
-$gold-one: #f5a51c;
+$color-button-start: #ffffff;
+
+$color-text-start: #696969;
+$color-border: #00c3ff;
+$color-shadow: #aaa9a9;
+
+$color1: #ffffcb;
+$color2: #a67d49;
+$color3: #f5a51c;
+$color4: #fcdd2e;
 
 .start {
   @include flexCenter();
+  flex-direction: column;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 1rem;
 
   width: 100%;
-  padding: 2rem;
-
-  border-radius: 2rem;
-
-  background-color: $color-bg-start;
+  height: 100%;
 
   &__title {
     width: 100%;
 
-    text-align: center;
-    font-size: 3rem
+    align-self: start;
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text-start;
+  }
+
+  &__desription {
+    position: relative;
+    @include flexCenter();
+    justify-content: start;
+
+    gap: 2rem;
+    flex-wrap: wrap;
+
+    width: 45%;
+    padding: 2rem;
+
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text-start;
+
+    box-shadow: 0 0 3px $color-shadow;
+    background-color: $color-bg-start;
+
+    &_odd {
+      align-self: start;
+
+      border-radius:  0 2rem 2rem 2rem;
+    }
+    
+
+    &_even {
+      align-self: end;
+
+      border-radius:  2rem 0 2rem 2rem;
+    }
+
+    span {
+      text-align: start;
+    }
+
+    @media (max-width: 1024px) {
+      width: 65%;
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 
   &__button-wrap {
     @include flexCenter();
     gap: 1rem;
+
+    width: 100%;
+
+    &_pseudo {
+      width: auto;
+    }
   }
+  
 
   &__button {
+    @include flexCenter();
+
     width: 4rem;
     height: 4rem;
     border-radius: 4px;
-    border-bottom: 3px solid $color-button-start-hover;
+    border-bottom: 3px solid $color-shadow;
+    box-shadow: 0 0 3px $color-shadow;
 
     text-align: center;
     font-size: 2rem;
+    font-weight: bold;
     line-height: 4rem;
+    color: $color-text-start;
 
     background-color: $color-button-start;
 
@@ -49,7 +107,13 @@ $gold-one: #f5a51c;
     transition: background-color .4s;
     
     &:hover {
-      background-color: $color-button-start-hover;
+      color: $color-button-start;
+
+      background-color: $color-shadow;
+    }
+
+    &_pseudo {
+      cursor: default;
     }
   }
 }
