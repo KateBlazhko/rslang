@@ -1,6 +1,12 @@
 $color-bg-start: #ffffff;
-$color-button-start: #8ae4ff;
-$color-button-start-hover: #33cbf9;
+$color-button-start: #fcdd2e;
+$color-button-start-hover: #f5a51c;
+$color-border: #f5a51c;
+// $color-button-start: #8ae4ff;
+// $color-button-start-hover: #33cbf9;
+$gold: #fcdd2e;
+$dark-gold: #fdba12;
+$gold-one: #f5a51c;
 
 .start {
   @include flexCenter();
@@ -9,17 +15,10 @@ $color-button-start-hover: #33cbf9;
 
   width: 100%;
   padding: 2rem;
+
   border-radius: 2rem;
 
   background-color: $color-bg-start;
-
-  @media (max-width: 1024px) {
-    width: 65%;
-  }
-
-  @media (max-width: 768px) {
-    width: 90%;
-  }
 
   &__title {
     width: 100%;

@@ -13,8 +13,8 @@ import ResultPage from './resultPage';
 
 enum TextInner {
   points = '0',
-  buttonTrue = 'True',
-  buttonFalse = 'False'
+  buttonTrue = 'True →',
+  buttonFalse = 'False ←'
 }
 
 const TIME = 60;
@@ -119,6 +119,11 @@ class GamePage extends Control {
         if (button.value !== undefined) this.onGetAnswer(button.value);
       };
     });
+
+    document.onkeydown = (e) => {
+      if (e.code === "ArrowLeft") this.onGetAnswer(false);
+      if (e.code === "ArrowRight") this.onGetAnswer(true);
+    }
 
     this.animationWrap = new Control(this.parentNode, 'div', 'sprint__animation-wrap');
 

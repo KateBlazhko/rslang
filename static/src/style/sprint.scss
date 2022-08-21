@@ -7,6 +7,8 @@ $color-button-false-hover: #e0677d;
 $color-button-false: #F69EB0;
 $color-bg: #ffffff;
 $brown: #cc9165;
+$gold: #fcdd2e;
+$dark-gold: #fdba12;
 
 $color-shadow: rgb(170, 169, 169);
 $color-water: #8ae4ff80;
@@ -37,7 +39,6 @@ $color-water: #8ae4ff80;
   position: relative;
   flex-grow: 1;
   @include flexCenter();
-  align-items: start;
   flex-wrap: wrap;
   
   width: 100%;
