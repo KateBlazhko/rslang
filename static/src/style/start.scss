@@ -2,7 +2,7 @@ $color-bg-start: #ffffff;
 $color-button-start: #8ae4ff;
 $color-button-start-hover: #33cbf9;
 
-.start-game {
+.start {
   @include flexCenter();
   flex-wrap: wrap;
   gap: 10px;

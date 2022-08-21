@@ -48,7 +48,7 @@ $color-water: #8ae4ff80;
   background-size: cover;
   background-repeat: no-repeat;
 
-  &__inner {
+  &__game {
     position: relative;
     z-index: 2;
     @include flexCenter();
