@@ -74,7 +74,7 @@ class GamePage extends Control{
       endpoint: '/words',
       gueryParams: {
         group: level,
-        page: page? page : Math.random() * 6
+        page: page? page : Math.floor(Math.random() * 30)
       }
     })
 

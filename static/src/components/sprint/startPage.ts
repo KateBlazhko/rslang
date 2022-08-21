@@ -31,7 +31,7 @@ class StartPage extends Control{
     const buttonList = [...Array(COUNTLEVELS).keys()].map(item => {
       const button = new ButtonAnswer(buttonWrap.node, 'start__button', (item + 1).toString())
       button.node.onclick = () => {
-        new GameField(this.parentNode, this.state, item + 1)
+        new GameField(this.parentNode, this.state, item)
         this.destroy()
       }
 
