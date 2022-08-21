@@ -1,38 +1,35 @@
-import Control from "../common/control";
+import Control from '../common/control';
 
-class Timer extends Control{
+class Timer extends Control {
   private timer: number = 0;
-  public onTimeOut = () => {}
-  public onTimeFinishing = () => true
-  private isFinishing: boolean = false
 
-  constructor(parentNode:HTMLElement, className: string){
+  public onTimeOut: () => void;
+
+  public onTimeFinishing: () => boolean;
+
+  private isFinishing: boolean = false;
+
+  constructor(parentNode:HTMLElement, className: string) {
     super(parentNode, 'span', className);
+    this.onTimeOut = () => {};
+    this.onTimeFinishing = () => true;
   }
 
   start(time:number) {
-
-    // if (this.timer) {
-    //   this.stop();
-    // }
-
     this.render(time);
     let currentTime = time;
 
-    this.timer = window.setInterval(()=>{
-
-      currentTime--;
+    this.timer = window.setInterval(() => {
+      currentTime -= 1;
       this.render(currentTime);
 
-      if (currentTime <= 10){
-        if (!this.isFinishing)
-          this.isFinishing = this.onTimeFinishing()
+      if (currentTime <= 10) {
+        if (!this.isFinishing) this.isFinishing = this.onTimeFinishing();
       }
 
-      if (currentTime <= 0){
-        this.onTimeOut()
+      if (currentTime <= 0) {
+        this.onTimeOut();
       }
-
     }, 1000);
   }
 
@@ -40,9 +37,9 @@ class Timer extends Control{
     this.node.textContent = `${currentTime}`;
   }
 
-  stop(){
+  stop() {
     window.clearInterval(this.timer);
   }
 }
 
-export default Timer
+export default Timer;

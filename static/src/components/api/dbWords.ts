@@ -1,5 +1,5 @@
 // const BASELINK = 'https://rs-lang-machine.herokuapp.com'
-export const BASELINK = 'http://localhost:3000'
+export const BASELINK = 'http://localhost:3000';
 
 export type Word = Record<string, string>
 

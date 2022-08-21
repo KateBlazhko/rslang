@@ -1,33 +1,33 @@
 class SoundManager {
-  private baseURL = `./assets/sound/`;
-  private audioTimer: HTMLAudioElement | null = null
+  private baseURL = './assets/sound/';
 
-  public playOk(){
-    this.playSound('ok');  
+  private audioTimer: HTMLAudioElement | null = null;
+
+  public playOk() {
+    this.playSound('ok');
   }
 
-  public playFail(){
-    this.playSound('fail');  
+  public playFail() {
+    this.playSound('fail');
   }
 
-  public playTimer(){
-    this.audioTimer = this.playSound('timer')
-
+  public playTimer() {
+    this.audioTimer = this.playSound('timer');
   }
 
   private playSound(name:string) {
     const audio = new Audio(`${this.baseURL}${name}.mp3`);
     audio.play();
-    return audio
+    return audio;
   }
 
   public stopPlayTimer() {
-    if (this.audioTimer) this.audioTimer.pause()
+    if (this.audioTimer) this.audioTimer.pause();
   }
 
   public restartPlayTimer() {
-    if (this.audioTimer?.paused) this.audioTimer.play()
+    if (this.audioTimer?.paused) this.audioTimer.play();
   }
 }
-
-export const soundManager = new SoundManager();
+const soundManager = new SoundManager();
+export default soundManager;

@@ -1,13 +1,11 @@
-import Control from "../common/control";
+import Control from '../common/control';
 
 class ButtonReturn extends Control {
-
   constructor(
     private parentNode: HTMLElement | null,
     private className: string,
   ) {
-    super(parentNode, 'div', className)
-
+    super(parentNode, 'div', className);
   }
 
   destroy(): void {

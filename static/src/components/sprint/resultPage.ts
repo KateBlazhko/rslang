@@ -1,96 +1,96 @@
-import Control from '../common/control'
-import { BASELINK, Word } from '../api/dbWords'
-import SprintState from './sprintState'
-import SVG from '../common/svgElement'
+import Control from '../common/control';
+import { BASELINK, Word } from '../api/dbWords';
+import SprintState from './sprintState';
+import SVG from '../common/svgElement';
 import icons from '../../assets/icons/sprite.svg';
-import StartPage from './startPage'
-import { soundManager } from '../common/soundManager'
+import StartPage from './startPage';
 
 enum TextInner {
   titleResult = 'Йо-хо-хо! Вот это результат!',
 }
 
-class ResultPage extends Control{
-  private settingsSoundWrap: Control
-  private buttonReturn: Control
-  private tableWrap: Control
-  private settingsSound: SVG | null = null
-  private wordSoundList: SVG[] = []
-  private audiotList
+class ResultPage extends Control {
+  private settingsSoundWrap: Control;
+
+  private buttonReturn: Control;
+
+  private tableWrap: Control;
+
+  private settingsSound: SVG | null = null;
+
+  private wordSoundList: SVG[] = [];
+
+  private audiotList;
 
   constructor(
-    parentNode: HTMLElement | null, 
-    private state: SprintState, 
+    parentNode: HTMLElement | null,
+    private state: SprintState,
     private words: Word[],
-    private results: Boolean[]
+    private results: Boolean[],
   ) {
-    super(parentNode, 'div', 'sprint__result result')
-    this.state.onSoundOn.add(this.renderSoundSettings.bind(this))
-    this.state.onSoundOn.add(this.renderSoundIcons.bind(this))
+    super(parentNode, 'div', 'sprint__result result');
+    this.state.onSoundOn.add(this.renderSoundSettings.bind(this));
+    this.state.onSoundOn.add(this.renderSoundIcons.bind(this));
 
-    this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap')
-    this.renderSoundSettings(this.state.getSoundPlay())
+    this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap');
+    this.renderSoundSettings(this.state.getSoundPlay());
 
-    this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return')
+    this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
-      new StartPage(parentNode, state)
-      this.destroy()
-    }
+      const page = new StartPage(parentNode, state);
+      this.destroy();
+    };
 
-    const title = new Control(this.node, 'h2', 'result__title', TextInner.titleResult)
+    const title = new Control(this.node, 'h2', 'result__title', TextInner.titleResult);
 
-    this.tableWrap = new Control(this.node, 'div', 'result__table')
-    this.audiotList = this.renderResult()
+    this.tableWrap = new Control(this.node, 'div', 'result__table');
+    this.audiotList = this.renderResult();
 
-    this.renderSoundIcons(this.state.getSoundPlay())
+    this.renderSoundIcons(this.state.getSoundPlay());
   }
 
   private renderResult() {
     return this.words.map((word, index) => {
-      const resultRow = new Control(this.tableWrap.node, 'div', 'result__row')
-      if (this.results[index])
-        new SVG(resultRow.node, 'result__true', `${icons}#true`)
-      else         
-        new SVG(resultRow.node, 'result__false', `${icons}#false`)
-      
-      const wordAudioWrap = new Control(resultRow.node, 'div', 'result__sound-wrap')
+      const resultRow = new Control(this.tableWrap.node, 'div', 'result__row');
+      const icon = this.results[index]
+        ? new SVG(resultRow.node, 'result__true', `${icons}#true`)
+        : new SVG(resultRow.node, 'result__false', `${icons}#false`);
+
+      const wordAudioWrap = new Control(resultRow.node, 'div', 'result__sound-wrap');
 
       const wordData = new Control(
-        resultRow.node, 
+        resultRow.node,
         'span',
-        'result__text', 
-        `${word.word}  ${word.transcription}  ${word.wordTranslate}`
-      )
+        'result__text',
+        `${word.word}  ${word.transcription}  ${word.wordTranslate}`,
+      );
 
       return {
         audio: word.audio,
-        container: wordAudioWrap.node
-      }
-    })
+        container: wordAudioWrap.node,
+      };
+    });
   }
 
   renderSoundIcons(isSoundOn: boolean) {
-    this.wordSoundList.forEach(sound => sound.destroy())
+    this.wordSoundList.forEach((sound) => sound.destroy());
 
     this.wordSoundList = this.audiotList.map((item) => {
-      
       if (item.audio && isSoundOn) {
-        const wordSound = new SVG(item.container, 'sound', `${icons}#volume`)
+        const wordSound = new SVG(item.container, 'sound', `${icons}#volume`);
 
         wordSound.svg.onclick = () => {
           const audio = new Audio(`${BASELINK}/${item.audio}`);
           if (isSoundOn) audio.play();
-        }
-        return wordSound
-
-      } else {
-        return new SVG(item.container, 'sound', `${icons}#mute`)
+        };
+        return wordSound;
       }
-    }) 
+      return new SVG(item.container, 'sound', `${icons}#mute`);
+    });
   }
 
   private renderSoundSettings(isSoundOn: boolean) {
-    if (this.settingsSound) this.settingsSound.destroy()
+    if (this.settingsSound) this.settingsSound.destroy();
 
     if (isSoundOn) {
       this.settingsSound = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
@@ -99,9 +99,9 @@ class ResultPage extends Control{
     }
 
     this.settingsSound.svg.onclick = () => {
-      this.state.setSoundPlay(!this.state.getSoundPlay())
-    }
+      this.state.setSoundPlay(!this.state.getSoundPlay());
+    };
   }
 }
 
-export default ResultPage
+export default ResultPage;
