@@ -4,15 +4,20 @@ import Signal from '../common/signal';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
+import { randomSort } from '../utils/functions'
 
 enum TextInner {
   preloader = `We're getting closer, get ready...`,
+  error = `Something is wrong? try again...`
 }
+
+const COUNTPAGE = 30
 
 class Sprint extends Control {
   private preloader: Control;
   private words: Word[] = [];
   private state: SprintState
+  private startPage: StartPage
 
   constructor(parentNode: HTMLElement | null, onGoBook: Signal<string>) {
     super(parentNode, 'div', 'sprint');
@@ -22,29 +27,57 @@ class Sprint extends Control {
 
     this.preloader = new Control(null, 'span', 'sprint__preloader',TextInner.preloader)
 
-    const startPage = new StartPage(this.node, this.state);
+    this.startPage = new StartPage(this.node, this.state);
   }
 
   private async renderPreloader(level: number) {
 
     this.node.append(this.preloader.node)
     const questions = await this.getQuestions(level)
-    console.log(questions)
-    this.preloader.destroy()
-    const gamePage = new GamePage(this.node, this.state, questions);
-
+    
+    if (questions) {
+      this.preloader.destroy()
+      const gamePage = new GamePage(this.node, this.state, questions);  
+    }
+  
   }
 
   private async getQuestions(level: number, page?: number) {
-    this.words = await getWords({
-      endpoint: '/words',
-      gueryParams: {
-        group: level,
-        page: page || Math.floor(Math.random() * 30),
-      },
-    });
+    try {
+      if (page) {
+        const words = await getWords({
+          endpoint: '/words',
+          gueryParams: {
+            group: level,
+            page: page,
+          },
+        });
+        this.words = randomSort(words)
+        
+      } else {
+        const wordsAll = await Promise.all([...Array(COUNTPAGE).keys()].map((page) => {
+          return getWords({
+            endpoint: '/words',
+            gueryParams: {
+              group: level,
+              page: page,
+            },
+          })
+        }))
 
-    return this.createQuestions();
+        this.words = randomSort(wordsAll.flat())
+      }
+  
+      return this.createQuestions();
+    } catch {
+      this.preloader.node.textContent = TextInner.error
+      setTimeout(() => {
+        this.preloader.destroy()
+        this.startPage = new StartPage(this.node, this.state);
+      })
+    }
+
+    
   }
 
   private createQuestions(): string[][] {
