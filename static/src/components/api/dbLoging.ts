@@ -31,7 +31,6 @@ const createUser = async (user: ICreateUser) => {
   });
 
   try {
-    // const content = await rawResponse.json();
     return rawResponse;
   } catch (e) {
     return rawResponse;
@@ -48,7 +47,6 @@ const loginUser = async (user: ILoginUser) => {
     body: JSON.stringify(user),
   });
   try {
-    // const content = await rawResponse.json();
     return rawResponse;
   } catch (e) {
     return rawResponse;
@@ -78,7 +76,11 @@ const getToken = async (id: string, token: string) => {
       Accept: 'application/json',
     },
   });
-  return rawResponse;
+  try {
+    return rawResponse;
+  } catch (e) {
+    return rawResponse;
+  }
 };
 
 export {

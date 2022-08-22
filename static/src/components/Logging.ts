@@ -4,19 +4,19 @@ import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
 import {
-  createUser, getToken, getUser, IAuth, loginUser,
+  createUser, getUser, IAuth, loginUser,
 } from './api/dbLoging';
 
 class Logging {
-  container: Control<HTMLElement>;
+  private container: Control<HTMLElement>;
 
-  loginBtn: ButtonLogging;
+  private loginBtn: ButtonLogging;
 
-  profile: ButtonHref;
+  private profile: ButtonHref;
 
-  stateLog: { state: boolean; };
+  private stateLog: { state: boolean; };
 
-  modal: ModalLog;
+  private modal: ModalLog;
 
   constructor() {
     this.container = new Control<HTMLDivElement>(null, 'div', 'logging__container');
@@ -57,7 +57,6 @@ class Logging {
       });
       if (res.status === 200) {
         localStorage.setItem('user', JSON.stringify(await res.json()));
-        // this.setLocalStorageLogin();
         this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
@@ -75,7 +74,6 @@ class Logging {
 
       if (res.status === 200) {
         localStorage.setItem('user', JSON.stringify(await res.json()));
-        // this.setLocalStorageLogin();
         this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);

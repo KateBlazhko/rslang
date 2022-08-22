@@ -28,19 +28,19 @@ class ModalLog {
 
   private errorWindow: Control<HTMLButtonElement>;
 
-  arrInputs: Control<HTMLInputElement>[];
+  private arrInputs: Control<HTMLInputElement>[];
 
-  warningName: Control<HTMLElement>;
+  private warningName: Control<HTMLElement>;
 
-  warningEmail: Control<HTMLElement>;
+  private warningEmail: Control<HTMLElement>;
 
-  warningPassword: Control<HTMLElement>;
+  private warningPassword: Control<HTMLElement>;
 
-  outModal: Control<HTMLElement>;
+  private outModal: Control<HTMLElement>;
 
-  noBtn: Control<HTMLButtonElement>;
+  public noBtn: Control<HTMLButtonElement>;
 
-  yesBtn: Control<HTMLButtonElement>;
+  public yesBtn: Control<HTMLButtonElement>;
 
   constructor() {
     this.background = new Control(null, 'div', 'background__container');
