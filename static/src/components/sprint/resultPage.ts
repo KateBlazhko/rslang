@@ -5,8 +5,12 @@ import SVG from '../common/svgElement';
 import icons from '../../assets/icons/sprite.svg';
 import StartPage from './startPage';
 
+// enum TextInner {
+//   titleResult = 'Йо-хо-хо! Вот это результат!',
+// }
+
 enum TextInner {
-  titleResult = 'Йо-хо-хо! Вот это результат!',
+  titleResult = 'Yoo-hoo-hoo! What a result!',
 }
 
 class ResultPage extends Control {

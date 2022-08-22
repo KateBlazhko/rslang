@@ -55,7 +55,7 @@ class StartPage extends Control {
     const buttonList = [...Array(COUNTLEVELS).keys()].map((item) => {
       const button = new ButtonAnswer(buttonWrap.node, 'start__button', (item + 1).toString());
       button.node.onclick = () => {
-        const gamePage = new GamePage(this.parentNode, this.state, item);
+        this.state.onPreload.emit(item)
         this.destroy();
       };
 

@@ -1,5 +1,5 @@
 import Control from '../common/control';
-import { getWords, Word } from '../api/dbWords';
+import { Word } from '../api/dbWords';
 import SprintState from './sprintState';
 import Timer from './timer';
 import SVG from '../common/svgElement';
@@ -61,8 +61,7 @@ class GamePage extends Control {
   constructor(
     public parentNode: HTMLElement | null,
     private state: SprintState,
-    level: number,
-    page?: number,
+    private questions: string[][]
   ) {
     super(parentNode, 'div', 'sprint__game');
     this.onGetAnswer = () => {};
@@ -89,24 +88,10 @@ class GamePage extends Control {
 
     this.buttonList = this.renderButtons();
 
-    this.init(level, page);
+    this.init();
   }
 
-  private async getQuestions(level: number, page?: number) {
-    this.words = await getWords({
-      endpoint: '/words',
-      gueryParams: {
-        group: level,
-        page: page || Math.floor(Math.random() * 30),
-      },
-    });
-
-    return this.createQuestions();
-  }
-
-  private async init(level: number, page?: number) {
-    const questions = await this.getQuestions(level, page);
-
+  private async init() {
     this.renderSoundSettings(this.state.getSoundPlay());
 
     this.indicatorList = this.renderIndicator();
@@ -145,7 +130,7 @@ class GamePage extends Control {
       }, 1000);
     };
 
-    this.questionCycle(questions, 0);
+    this.questionCycle(0);
   }
 
   private renderSoundSettings(isSoundOn: boolean) {
@@ -204,29 +189,14 @@ class GamePage extends Control {
     ];
   }
 
-  private createQuestions(): string[][] {
-    const wordsList = this.words.map((word) => [word.audio, word.word, word.wordTranslate]);
-
-    const mixList = wordsList.map((word) => {
-      if (Math.round(Math.random())) {
-        return [...word, word[2]];
-      }
-      const randomIndex = Math.floor(Math.random() * wordsList.length);
-      const randomWord = wordsList[randomIndex];
-      return [...word, randomWord[2]];
-    });
-
-    return mixList;
-  }
-
-  private questionCycle(questions: string[][], indexQuestion: number) {
-    if (indexQuestion >= questions.length) {
+  private questionCycle(indexQuestion: number) {
+    if (indexQuestion >= this.questions.length) {
       this.timer.stop();
       this.finish();
       return;
     }
 
-    const question = new Question(this.questionWrap.node, questions[indexQuestion], this.state);
+    const question = new Question(this.questionWrap.node, this.questions[indexQuestion], this.state);
 
     this.onGetAnswer = (value: boolean) => {
       const result = question.onAnswer(value);
@@ -247,7 +217,7 @@ class GamePage extends Control {
 
       this.results.push(result);
       question.destroy();
-      this.questionCycle(questions, indexQuestion + 1);
+      this.questionCycle(indexQuestion + 1);
     };
   }
 

@@ -46,6 +46,11 @@ $color-water: #8ae4ff80;
   background-size: cover;
   background-repeat: no-repeat;
 
+  &__preloader {
+    color: $color-bg;
+    font-size: 3rem;
+  }
+
   &__game {
     position: relative;
     z-index: 2;
