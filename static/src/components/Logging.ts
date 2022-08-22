@@ -4,7 +4,7 @@ import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
 import {
-  createUser, getUser, IAuth, loginUser,
+  createUser, getToken, getUser, IAuth, loginUser,
 } from './api/dbLoging';
 
 class Logging {
@@ -95,8 +95,10 @@ class Logging {
     const response = localStorage.getItem('user');
     if (response) {
       const user = JSON.parse(response) as IAuth;
-      await getUser(user.userId, user.token);
-      this.successLog();
+      const req = await getUser(user.userId, user.token);
+      if (req.status === 200) {
+        this.successLog();
+      }
     }
   }
 

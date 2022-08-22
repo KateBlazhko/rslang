@@ -70,6 +70,17 @@ const getUser = async (userId: string, token: string) => {
   }
 };
 
+const getToken = async (id: string, token: string) => {
+  const rawResponse = await fetch(`${localLink}/users/${id}/tokens`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  return rawResponse;
+};
+
 export {
-  createUser, loginUser, ICreateUser, ILoginUser, getUser, IAuth,
+  createUser, loginUser, ICreateUser, ILoginUser, getUser, IAuth, getToken,
 };
