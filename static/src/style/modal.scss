@@ -1,3 +1,10 @@
+$modal-color-green: green;
+$modal-color-red: crimson;
+$background-container: rgba(212, 209, 209, 0.407);
+$warning-background: rgba(255, 0, 0, 0.297);
+$shadow-background: dimgray;
+$color-text: dimgray;
+
 .background__container {
   position: fixed;
   display: flex;
@@ -5,7 +12,7 @@
   height: 100%;
   align-items: center;
   justify-content: center;
-  background-color: rgba(212, 209, 209, 0.407);
+  background-color: $background-container;
   z-index: 1;
 
   .out__modal {
@@ -17,7 +24,7 @@
     row-gap: 30px;
     column-gap: 20px;
     border-radius: 7px;
-    box-shadow: 0 0 3px dimgray;
+    box-shadow: 0 0 3px $shadow-background;
 
     button {
       width: 40%;
@@ -31,21 +38,21 @@
     }
 
     .button__out_no {
-      box-shadow: 0 0 4px green;
-      color: green;
+      box-shadow: 0 0 4px $modal-color-green;
+      color: $modal-color-green;
 
       &:hover {
-        background: green;
+        background: $modal-color-green;
         color: white;
       }
     }
 
     .button__out_yes {
-      box-shadow: 0 0 4px crimson;
-      color: crimson;
+      box-shadow: 0 0 4px $modal-color-red;
+      color: $modal-color-red;
 
       &:hover {
-        background: crimson;
+        background: $modal-color-red;
         color: white;
       }
     }
@@ -61,7 +68,7 @@
     flex-wrap: wrap;
     background-color: white;
     border-radius: 7px;
-    box-shadow: 0 0 3px darkgray;
+    box-shadow: 0 0 3px $shadow-background;
 
     button {
       width: 50%;
@@ -72,13 +79,13 @@
       border: none;
       background-color: white;
       cursor: pointer;
-      box-shadow: 0 0 3px darkgray;
+      box-shadow: 0 0 3px $shadow-background;
       z-index: 3;
     }
 
     button.active {
       height: 40px;
-      border-bottom: 5px solid crimson;
+      border-bottom: 5px solid $modal-color-red;
       z-index: 1;
     }
 
@@ -98,7 +105,7 @@
       font-size: 20px;
       margin: 0 20px;
       font-weight: 700;
-      color: dimgray;
+      color: $color-text;
 
       .warning__div {
         font-size: 9px;
@@ -106,9 +113,9 @@
         width: 100%;
         padding: 5px;
         border-radius: 5px;
-        background-color: rgba(255, 0, 0, 0.297);
-        border: 1px solid crimson; 
-        color: crimson;
+        background-color: $warning-background;
+        border: 1px solid $modal-color-red; 
+        color: $modal-color-red;
       }
     }
 
@@ -116,7 +123,7 @@
       width: 100%;
       border: none;
       border-radius: 4px;
-      box-shadow: 0 0 3px dimgray;
+      box-shadow: 0 0 3px $shadow-background;
       font-size: 20px;
       height: 30px;
       padding: 0px 6px;
@@ -124,16 +131,16 @@
       outline: none;
 
       &.no_valid {
-        background-color: rgba(255, 0, 0, 0.297);
-        border: 2px solid crimson; 
-        color: crimson;
+        background-color: $warning-background;
+        border: 2px solid $modal-color-red; 
+        color: $modal-color-red;
       }
     }
 
     .error__window {
-      background-color: rgba(255, 0, 0, 0.297);
-      border: 2px solid crimson; 
-      color: crimson;
+      background-color: $warning-background;
+      border: 2px solid $modal-color-red; 
+      color: $modal-color-red;
       margin: 10px 15px 0;
       padding: 10px;
       display: flex;
@@ -143,15 +150,15 @@
 
     .button__submit {
       border-radius: 7px;
-      box-shadow: 0 0 4px green;
-      color: green;
+      box-shadow: 0 0 4px $modal-color-green;
+      color: $modal-color-green;
       margin-top: 20px;
       transition: .3s;
    
       &:hover {
-        background-color: green;
+        background-color: $modal-color-green;
         color: white;
-        box-shadow: 0 0 2px green;;
+        box-shadow: 0 0 2px $modal-color-green;;
       }
     }
   }

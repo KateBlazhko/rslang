@@ -14,11 +14,9 @@ class ModalLog {
 
   private submit: Control<HTMLButtonElement>;
 
-  private state: 'login' | 'registration';
+  private action: 'login' | 'registration';
 
   private errorWindow: Control<HTMLButtonElement>;
-
-  private arrInputs: HTMLInputElement[];
 
   private outModal: Control<HTMLElement>;
 
@@ -34,7 +32,7 @@ class ModalLog {
 
   constructor() {
     this.background = new Control(null, 'div', 'background__container');
-    this.state = 'login';
+    this.action = 'login';
     this.form = new Control<HTMLFormElement>(null, 'form', 'form__container');
     this.login = new Control<HTMLButtonElement>(this.form.node, 'button', 'active', 'Login');
     this.registration = new Control<HTMLButtonElement>(this.form.node, 'button', '', 'Registration');
@@ -43,7 +41,6 @@ class ModalLog {
     this.password = new Input(this.form.node, 'password', 'Password: ');
     this.submit = new Control<HTMLButtonElement>(this.form.node, 'button', 'button__submit', 'Login');
     this.errorWindow = new Control<HTMLButtonElement>(null, 'div', 'error__window');
-    this.arrInputs = [this.name.input, this.password.input, this.email.input];
     this.outModal = new Control(null, 'div', 'out__modal', 'Вы точно хотите выйти их аккаунта ?');
     this.noBtn = new Control<HTMLButtonElement>(this.outModal.node, 'button', 'button__out_no', 'NO');
     this.yesBtn = new Control<HTMLButtonElement>(this.outModal.node, 'button', 'button__out_yes', 'YES');
@@ -89,7 +86,7 @@ class ModalLog {
       this.registration.node.classList.remove('active');
       this.submit.node.textContent = 'Login';
       this.name.label.style.display = 'none';
-      this.state = 'login';
+      this.action = 'login';
     });
 
     this.registration.node.addEventListener('click', () => {
@@ -97,7 +94,7 @@ class ModalLog {
       this.login.node.classList.remove('active');
       this.submit.node.textContent = 'Registration';
       this.name.label.style.display = 'flex';
-      this.state = 'registration';
+      this.action = 'registration';
     });
   }
 
@@ -109,9 +106,7 @@ class ModalLog {
       email: this.email.input,
       password: this.password.input,
       submit: this.submit,
-      state: this.state,
-      noBtn: this.noBtn,
-      yesBtn: this.yesBtn,
+      state: this.action,
       errorWindow: this.errorWindow,
     };
   }

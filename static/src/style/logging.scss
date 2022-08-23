@@ -1,3 +1,8 @@
+$button-log-in-color: rgb(3, 161, 3);
+$button-log-in-border: rgb(2, 101, 2);
+$button-log-out-color: crimson;
+$button-log-out-border: rgb(141, 13, 38);
+
 .logging__container {
   width: 160px;
   height: 100%;
@@ -31,12 +36,12 @@
   }
 
   .button__log_in {
-    background-color: rgb(3, 161, 3);
-    border-bottom: 3px solid rgb(2, 101, 2);
+    background-color: $button-log-in-color;
+    border-bottom: 3px solid $button-log-in-border;
   }
 
   .button__log_out {
-    background-color: crimson;
-    border-bottom: 3px solid rgb(141, 13, 38);
+    background-color: $button-log-out-color;
+    border-bottom: 3px solid $button-log-out-border;
   }
 }
