@@ -54,10 +54,11 @@ class Logging {
   }
 
   async logUser(email: boolean, password: boolean) {
+    const form = this.modal.formElements;
     if (email && password) {
       const res = await loginUser({
-        email: this.modal.formElements.email.value,
-        password: this.modal.formElements.password.value,
+        email: form.email.value,
+        password: form.password.value,
       });
       if (res.status === 200) {
         localStorage.setItem('user', JSON.stringify(await res.json()));
@@ -69,11 +70,12 @@ class Logging {
   }
 
   async registerUser(email: boolean, password: boolean, name: boolean) {
+    const form = this.modal.formElements;
     if (email && password && name) {
       const res = await createUser({
-        name: this.modal.formElements.name.value,
-        email: this.modal.formElements.email.value,
-        password: this.modal.formElements.password.value,
+        name: form.name.value,
+        email: form.email.value,
+        password: form.password.value,
       });
 
       if (res.status === 200) {
