@@ -6,6 +6,7 @@ import ModalLog from './ModalLog';
 import {
   createUser, getUser, IAuth, loginUser,
 } from './api/dbLoging';
+import Validator from './common/Validator';
 
 class Logging {
   private container: Control<HTMLElement>;
@@ -39,21 +40,24 @@ class Logging {
 
     this.modal.formElements.submit.node.addEventListener('click', () => {
       if (!this.stateLog.state) {
-        const name = this.modal.checkValidateName();
-        const email = this.modal.checkValidateEmail();
-        const password = this.modal.checkValidatePassword();
+        const email = Validator.validate('email', this.modal.email);
+        const password = Validator.validate('password', this.modal.password);
 
-        if (this.modal.formElements.state === 'registration') this.registrationMethod(email, password, name);
-        else this.loggingMethod(email, password);
+        if (this.modal.formElements.state === 'registration') {
+          const name = Validator.validate('name', this.modal.name);
+          this.registerUser(email, password, name);
+        } else {
+          this.logUser(email, password);
+        }
       }
     });
   }
 
-  async loggingMethod(email: boolean, password: boolean) {
+  async logUser(email: boolean, password: boolean) {
     if (email && password) {
       const res = await loginUser({
-        email: this.modal.formElements.email.node.value,
-        password: this.modal.formElements.password.node.value,
+        email: this.modal.formElements.email.value,
+        password: this.modal.formElements.password.value,
       });
       if (res.status === 200) {
         localStorage.setItem('user', JSON.stringify(await res.json()));
@@ -64,12 +68,12 @@ class Logging {
     }
   }
 
-  async registrationMethod(email: boolean, password: boolean, name: boolean) {
+  async registerUser(email: boolean, password: boolean, name: boolean) {
     if (email && password && name) {
       const res = await createUser({
-        name: this.modal.formElements.name.node.value,
-        email: this.modal.formElements.email.node.value,
-        password: this.modal.formElements.password.node.value,
+        name: this.modal.formElements.name.value,
+        email: this.modal.formElements.email.value,
+        password: this.modal.formElements.password.value,
       });
 
       if (res.status === 200) {
@@ -82,10 +86,10 @@ class Logging {
   }
 
   successLog() {
-    this.modal.clearInput();
+    Validator.removeAllWarning(this.modal.name, this.modal.email, this.modal.password);
     this.modal.formElements.background.destroy();
     this.stateLog.state = true;
-    this.loginBtn.checkStateLog(this.stateLog.state);
+    this.loginBtn.updateLogStatus(this.stateLog.state);
     this.accessStatistics();
   }
 
@@ -113,7 +117,7 @@ class Logging {
   outModalBtnListen() {
     this.modal.yesBtn.node.addEventListener('click', () => {
       this.stateLog.state = false;
-      this.loginBtn.checkStateLog(this.stateLog.state);
+      this.loginBtn.updateLogStatus(this.stateLog.state);
       this.accessStatistics();
       localStorage.removeItem('user');
       this.modal.formElements.background.destroy();

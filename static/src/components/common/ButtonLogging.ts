@@ -9,11 +9,11 @@ class ButtonLogging<NodeType extends HTMLElement = HTMLElement> extends Control 
   ) {
     super(parentNode, 'button');
     this.stateBtn = state;
-    this.checkStateLog(state);
+    this.updateLogStatus(state);
   }
 
-  checkStateLog(state: boolean) {
-    if (!state) {
+  updateLogStatus(isLogged: boolean) {
+    if (!isLogged) {
       this.node.className = 'button__log_in';
       this.node.textContent = 'Log In';
     } else {
