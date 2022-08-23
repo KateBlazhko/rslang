@@ -2,6 +2,7 @@ import Control from './common/control';
 import '../style/modal.scss';
 import Input from './common/Input';
 import Validator from './common/Validator';
+import ErrorUser from './common/ErrorUser';
 
 class ModalLog {
   private background: Control<HTMLElement>;
@@ -24,11 +25,11 @@ class ModalLog {
 
   public yesBtn: Control<HTMLButtonElement>;
 
-  email: Input<HTMLElement>;
+  public email: Input<HTMLElement>;
 
-  password: Input<HTMLElement>;
+  public password: Input<HTMLElement>;
 
-  name: Input<HTMLElement>;
+  public name: Input<HTMLElement>;
 
   constructor() {
     this.background = new Control(null, 'div', 'background__container');
@@ -67,15 +68,7 @@ class ModalLog {
   }
 
   callErrorWindow(statusCode: number) {
-    if (statusCode === 404) {
-      this.errorWindow.node.innerHTML = 'пользователя с данным Email не существует';
-    }
-    if (statusCode === 403) {
-      this.errorWindow.node.innerHTML = 'вы указали неверный пароль';
-    }
-    if (statusCode === 417) {
-      this.errorWindow.node.innerHTML = 'пользователя с таким Email уже существует';
-    }
+    ErrorUser.getErrorMessage(statusCode, this.errorWindow.node);
     this.form.node.append(this.errorWindow.node);
   }
 

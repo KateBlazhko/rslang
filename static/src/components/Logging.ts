@@ -7,6 +7,7 @@ import {
   createUser, getUser, IAuth, loginUser,
 } from './api/dbLoging';
 import Validator from './common/Validator';
+import UserApi from './api/UserApi';
 
 class Logging {
   private container: Control<HTMLElement>;
@@ -56,12 +57,12 @@ class Logging {
   async logUser(email: boolean, password: boolean) {
     const form = this.modal.formElements;
     if (email && password) {
-      const res = await loginUser({
+      const res = await UserApi.loginUser({
         email: form.email.value,
         password: form.password.value,
       });
       if (res.status === 200) {
-        localStorage.setItem('user', JSON.stringify(await res.json()));
+        localStorage.setItem('user', JSON.stringify(await (res as Response).json()));
         this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
@@ -72,14 +73,14 @@ class Logging {
   async registerUser(email: boolean, password: boolean, name: boolean) {
     const form = this.modal.formElements;
     if (email && password && name) {
-      const res = await createUser({
+      const res = await UserApi.createUser({
         name: form.name.value,
         email: form.email.value,
         password: form.password.value,
       });
 
       if (res.status === 200) {
-        localStorage.setItem('user', JSON.stringify(await res.json()));
+        localStorage.setItem('user', JSON.stringify(await (res as Response).json()));
         this.successLog();
       } else {
         this.modal.callErrorWindow(res.status);
@@ -99,7 +100,7 @@ class Logging {
     const response = localStorage.getItem('user');
     if (response) {
       const user = JSON.parse(response) as IAuth;
-      const req = await getUser(user.userId, user.token);
+      const req = await UserApi.getUser(user.userId, user.token);
       if (req.status === 200) {
         this.successLog();
       }

@@ -1,3 +1,5 @@
+import ErrorUser from '../common/ErrorUser';
+
 const localLink = 'http://localhost:3000';
 const BASELINK = 'https://rs-lang-machine.herokuapp.com';
 
@@ -33,7 +35,7 @@ const createUser = async (user: ICreateUser) => {
   try {
     return rawResponse;
   } catch (e) {
-    return rawResponse;
+    return new ErrorUser(rawResponse);
   }
 };
 
@@ -49,7 +51,7 @@ const loginUser = async (user: ILoginUser) => {
   try {
     return rawResponse;
   } catch (e) {
-    return rawResponse;
+    return new ErrorUser(rawResponse);
   }
 };
 
@@ -64,7 +66,7 @@ const getUser = async (userId: string, token: string) => {
   try {
     return rawResponse;
   } catch (e) {
-    return rawResponse;
+    return new ErrorUser(rawResponse);
   }
 };
 

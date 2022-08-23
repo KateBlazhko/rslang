@@ -1,22 +1,73 @@
-class ErrorUser {
-  status: number;
+import ErrorUser from '../common/ErrorUser';
 
-  errorMessage: string;
-
-  constructor(response: Response) {
-    this.status = response.status;
-    this.errorMessage = '';
-  }
-
-  getErrorMessage(statusCode: number) {
-    if (statusCode === 404) {
-      this.errorMessage = 'пользователя с данным Email не существует';
-    }
-    if (statusCode === 403) {
-      this.errorMessage = 'вы указали неверный пароль';
-    }
-    if (statusCode === 417) {
-      this.errorMessage = 'пользователя с таким Email уже существует';
-    }
-  }
+const localLink = 'http://localhost:3000';
+const BASELINK = 'https://rs-lang-machine.herokuapp.com';
+interface ICreateUser {
+  name: string,
+  email: string,
+  password: string
 }
+
+interface ILoginUser {
+  email: string,
+  password: string
+}
+
+interface IAuth {
+  message: string
+  token: string
+  refreshToken: string
+  userId: string
+  name: string
+}
+class UserApi {
+  static createUser = async (user: ICreateUser) => {
+    const rawResponse = await fetch(`${localLink}/users`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+
+    try {
+      return rawResponse;
+    } catch (e) {
+      return new ErrorUser(rawResponse);
+    }
+  };
+
+  static loginUser = async (user: ILoginUser) => {
+    const rawResponse = await fetch(`${localLink}/signin`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+    try {
+      return rawResponse;
+    } catch (e) {
+      return new ErrorUser(rawResponse);
+    }
+  };
+
+  static getUser = async (userId: string, token: string) => {
+    const rawResponse = await fetch(`${localLink}/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+    try {
+      return rawResponse;
+    } catch (e) {
+      return new ErrorUser(rawResponse);
+    }
+  };
+}
+
+export default UserApi;
