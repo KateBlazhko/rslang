@@ -20,7 +20,7 @@ interface IAuth {
   userId: string
   name: string
 }
-class UserApi {
+class User {
   static createUser = async (user: ICreateUser) => {
     const rawResponse = await fetch(`${localLink}/users`, {
       method: 'POST',
@@ -70,4 +70,4 @@ class UserApi {
   };
 }
 
-export default UserApi;
+export { User, IAuth };

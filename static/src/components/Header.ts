@@ -30,10 +30,10 @@ class Header {
 
   private logging: Logging;
 
-  constructor() {
+  constructor(login: Logging) {
     this.header = document.createElement('header');
     this.location = window.location;
-    this.logging = new Logging();
+    this.logging = login;
     this.getAllElementsHeader = {};
     this.arrHref = [];
     this.createHeader();
