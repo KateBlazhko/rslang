@@ -1,0 +1,47 @@
+$button-log-in-color: rgb(3, 161, 3);
+$button-log-in-border: rgb(2, 101, 2);
+$button-log-out-color: crimson;
+$button-log-out-border: rgb(141, 13, 38);
+
+.logging__container {
+  width: 160px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .profile {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: dimgray;
+    border-radius: 50%;
+  }
+
+  button {
+    border: none;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 4px 0px 6px;
+    width: 85px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .button__log_in {
+    background-color: $button-log-in-color;
+    border-bottom: 3px solid $button-log-in-border;
+  }
+
+  .button__log_out {
+    background-color: $button-log-out-color;
+    border-bottom: 3px solid $button-log-out-border;
+  }
+}
