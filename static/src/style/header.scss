@@ -17,14 +17,14 @@ header {
       text-decoration: none;
       font-size: 20px;
       font-weight: 700;
-      color: dimgrey;
+      color: #696969;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 0 3px rgb(170, 169, 169);
       border-radius: 4px;
       padding: 5px 10px;
-      border-bottom: 3px solid rgb(170, 169, 169);
+      border-bottom: 3px solid #aaa9a9;
       transition: background-color .4s;
   
       &:hover {

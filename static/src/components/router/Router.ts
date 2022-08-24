@@ -1,10 +1,11 @@
 import Signal from '../common/signal';
 import Control from '../common/control';
+import HomePage from '../home/homePage';
 
 class Router {
   private location: Location;
 
-  private currentPage: Control | null = null;
+  private currentPage: Control | HomePage | null = null;
 
   private container: Control;
 
@@ -31,7 +32,8 @@ class Router {
     switch (hash) {
       case 'home':
         this.onGoPage.emit(hash);
-        container.innerHTML = '<h1>Home</h1>';
+        container.innerHTML = '';
+        this.currentPage = new HomePage(container)
         break;
       case 'about':
         container.innerHTML = '<h1>About Us</h1>';
