@@ -18,6 +18,7 @@ class Sprint extends Control {
   private words: Word[] = [];
   private state: SprintState
   private startPage: StartPage
+  private questions: string[][] = [];
 
   constructor(parentNode: HTMLElement | null, onGoBook: Signal<string>) {
     super(parentNode, 'div', 'sprint');
@@ -27,18 +28,21 @@ class Sprint extends Control {
 
     this.preloader = new Control(null, 'span', 'sprint__preloader',TextInner.preloader)
 
-    this.startPage = new StartPage(this.node, this.state);
+    this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
   }
 
-  private async renderPreloader(level: number) {
-
+  private async renderPreloader(words: number[]) {
+    const [group, page] = words
     this.node.append(this.preloader.node)
-    const questions = await this.getQuestions(level)
-    
-    if (questions) {
-      this.preloader.destroy()
-      const gamePage = new GamePage(this.node, this.state, questions);  
+
+    if (this.state.getInitiator() === 'header') {
+      this.questions = await this.getQuestions(group)
+    } else {
+      //todo this.questions = await this.getQuestions(group, page)
     }
+    
+    this.preloader.destroy()
+    const gamePage = new GamePage(this.node, this.state, this.questions);  
   
   }
 
@@ -73,8 +77,9 @@ class Sprint extends Control {
       this.preloader.node.textContent = TextInner.error
       setTimeout(() => {
         this.preloader.destroy()
-        this.startPage = new StartPage(this.node, this.state);
+        this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
       })
+      return []
     }
 
     

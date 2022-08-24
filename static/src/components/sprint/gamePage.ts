@@ -69,7 +69,7 @@ class GamePage extends Control {
 
     this.buttonReturn = new ButtonReturn(this.node, 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
-      const startPage = new StartPage(parentNode, state);
+      const startPage = new StartPage(parentNode, this.state, this.state.getInitiator());
       this.destroy();
     };
 
