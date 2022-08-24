@@ -1,26 +1,36 @@
-import { getWords, Word } from '../api/dbWords';
+import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
-import { randomSort } from '../utils/functions'
+import { randomSort } from '../common/functions'
+import Logging, { IStateLog } from '../Logging';
 
 enum TextInner {
   preloader = `We're getting closer, get ready...`,
   error = `Something is wrong? try again...`
 }
 
+export interface IWordStat {
+  wordId: string,
+  answer: boolean
+}
+
 const COUNTPAGE = 30
 
 class Sprint extends Control {
   private preloader: Control;
-  private words: Word[] = [];
+  private words: IWord[] = [];
   private state: SprintState
   private startPage: StartPage
-  private questions: string[][] = [];
+  private questions: [IWord, string][] = [];
 
-  constructor(parentNode: HTMLElement | null, onGoBook: Signal<string>) {
+  constructor(
+    private parentNode: HTMLElement | null, 
+    private login: Logging,
+    private onGoBook: Signal<string>
+  ) {
     super(parentNode, 'div', 'sprint');
     this.state = new SprintState();
     this.state.onPreload.add(this.renderPreloader.bind(this));
@@ -29,50 +39,46 @@ class Sprint extends Control {
     this.preloader = new Control(null, 'span', 'sprint__preloader',TextInner.preloader)
 
     this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
+    this.onFinish.add(this.recordStatToBD.bind(this))
   }
+
+  public onFinish = new Signal<IWordStat[]>()
 
   private async renderPreloader(words: number[]) {
     const [group, page] = words
     this.node.append(this.preloader.node)
 
     if (this.state.getInitiator() === 'header') {
-      this.questions = await this.getQuestions(group)
+      this.words = await this.getWords(0, 0)
     } else {
       //todo this.questions = await this.getQuestions(group, page)
     }
     
     this.preloader.destroy()
-    const gamePage = new GamePage(this.node, this.state, this.questions);  
-  
+    const gamePage = new GamePage(this.node, this.state, this.words, this.onFinish);  
+
   }
 
-  private async getQuestions(level: number, page?: number) {
+  private async getWords(level: number, page?: number) {
     try {
       if (page) {
-        const words = await getWords({
-          endpoint: '/words',
-          gueryParams: {
+        const words = await Words.getWords({
             group: level,
             page: page,
-          },
-        });
-        this.words = randomSort(words)
+          });
+        return randomSort(words)
         
       } else {
         const wordsAll = await Promise.all([...Array(COUNTPAGE).keys()].map((page) => {
-          return getWords({
-            endpoint: '/words',
-            gueryParams: {
+          return Words.getWords({
               group: level,
               page: page,
-            },
-          })
+            })
         }))
 
-        this.words = randomSort(wordsAll.flat())
+        return randomSort(wordsAll.flat())
       }
   
-      return this.createQuestions();
     } catch {
       this.preloader.node.textContent = TextInner.error
       setTimeout(() => {
@@ -81,23 +87,102 @@ class Sprint extends Control {
       })
       return []
     }
-
     
   }
 
-  private createQuestions(): string[][] {
-    const wordsList = this.words.map((word) => [word.audio, word.word, word.wordTranslate]);
+  private async recordStatToBD(wordsStat: IWordStat[]) {
+    const stateLog = await this.login.checkStorageLogin()
+    if (stateLog.state) {
+      const userWordsAll = await Words.getUserWords(stateLog.userId, stateLog.token)
 
-    const mixList = wordsList.map((word) => {
-      if (Math.round(Math.random())) {
-        return [...word, word[2]];
+      const recordResult = await Promise.all(wordsStat.map(word => {
+        const userWord = userWordsAll.find(userWord => userWord.optional.wordId === word.wordId)
+        if (userWord) {
+          return this.updateUserWord(stateLog, userWord, word.answer)
+        } else {
+          return this.createUserWord(stateLog, word)
+        }
+      }))    
+
+      console.log(recordResult)
+    }
+  }
+
+  private async updateUserWord(stateLog: IStateLog, userWord: IUserWord, answer: boolean) {
+    if (answer) {
+      const isLearn = this.checkIsLearn(userWord)
+      const date = new Date()
+      return await Words.updateUserWord(stateLog.userId, stateLog.token, userWord.optional.wordId, {
+        difficulty: userWord.difficulty,
+        optional: {
+          wordId: userWord.optional.wordId,
+          сountRightAnswer: userWord.optional.сountRightAnswer + 1,
+          countError: userWord.optional.countError,
+          seriesRightAnswer: userWord.optional.seriesRightAnswer + 1,
+          isLearn: isLearn,
+          dataGetNew: userWord.optional.dataGetNew,
+          dataLearn: (isLearn && isLearn !== userWord.optional.isLearn) ? date: undefined,
+        }
+      })
+    } else {
+      return await Words.updateUserWord(stateLog.userId, stateLog.token, userWord.optional.wordId, {
+        difficulty: userWord.difficulty,
+        optional: {
+          wordId: userWord.optional.wordId,
+          сountRightAnswer: userWord.optional.сountRightAnswer,
+          countError: userWord.optional.countError + 1,
+          seriesRightAnswer: 0,
+          isLearn: false,
+          dataGetNew: userWord.optional.dataGetNew,
+        }
+      })
+    }
+  }
+
+  private async createUserWord(stateLog: IStateLog, word: IWordStat) {
+    const date = new Date()
+
+    if (word.answer) {
+      return await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
+        difficulty: 'easy',
+        optional: {
+          wordId: word.wordId,
+          сountRightAnswer: 1,
+          countError: 0,
+          seriesRightAnswer: 1,
+          isLearn: false,
+          dataGetNew: date,
+        }
+      })
+    } else {
+      return await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
+        difficulty: 'easy',
+        optional: {
+          wordId: word.wordId,
+          сountRightAnswer: 0,
+          countError: 1,
+          seriesRightAnswer: 0,
+          isLearn: false,
+          dataGetNew: date,
+        }
+      })
+    }
+  }
+
+  private checkIsLearn(userWord: IUserWord) {
+    if (userWord.difficulty === 'easy') {
+      if (userWord.optional.seriesRightAnswer + 1 >= 3) {
+        return true
       }
-      const randomIndex = Math.floor(Math.random() * wordsList.length);
-      const randomWord = wordsList[randomIndex];
-      return [...word, randomWord[2]];
-    });
+    }
 
-    return mixList;
+    if (userWord.difficulty === 'hard') {
+      if (userWord.optional.seriesRightAnswer + 1 >= 5) {
+        return true
+      }
+    }
+
+    return userWord.optional.isLearn
   }
 }
 

@@ -1,15 +1,16 @@
 import Control from '../common/control';
-import { Word } from '../api/dbWords';
+import Words, { IUserWord, IWord } from '../api/Words';
 import SprintState from './sprintState';
 import Timer from './timer';
 import SVG from '../common/svgElement';
 import icons from '../../assets/icons/sprite.svg';
 import Question from './question';
 import ButtonAnswer from './buttonAnswer';
-import soundManager from '../common/soundManager';
+import soundManager from '../utils/soundManager';
 import StartPage from './startPage';
-import ButtonReturn from './buttonReturn';
 import ResultPage from './resultPage';
+import { IWordStat } from './sprint';
+import Signal from '../common/signal';
 
 enum TextInner {
   points = '0',
@@ -39,12 +40,12 @@ class GamePage extends Control {
   private timerWrap: Control;
 
   private buttonReturn: Control;
+  
+  private questions: [IWord, string][]
 
   private indicatorList: SVG[] = [];
 
   private iconRateList: SVG[] = [];
-
-  private words: Word[] = [];
 
   private buttonList: ButtonAnswer[];
 
@@ -56,18 +57,22 @@ class GamePage extends Control {
 
   private countRightAnswer: number = 0;
 
+  private wordsStat: IWordStat[] = []
+
   private onGetAnswer: (answer: boolean) => void;
 
   constructor(
     public parentNode: HTMLElement | null,
     private state: SprintState,
-    private questions: string[][]
+    private words: IWord[],
+    private onFinish: Signal<IWordStat[]>
   ) {
     super(parentNode, 'div', 'sprint__game');
     this.onGetAnswer = () => {};
     this.state.onSoundOn.add(this.renderSoundSettings.bind(this));
 
-    this.buttonReturn = new ButtonReturn(this.node, 'sprint__button sprint__button_return');
+    this.questions = this.createQuestions()
+    this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
       const startPage = new StartPage(parentNode, this.state, this.state.getInitiator());
       this.destroy();
@@ -131,6 +136,19 @@ class GamePage extends Control {
     };
 
     this.questionCycle(0);
+  }
+
+  private createQuestions(): [IWord, string][] {
+    const mixList: [IWord, string][] = this.words.map((word) => {
+      if (Math.round(Math.random())) {
+        return [word, word.wordTranslate];
+      }
+      const randomIndex = Math.floor(Math.random() * this.words.length);
+      const randomWord = this.words[randomIndex];
+      return [word, randomWord.wordTranslate];
+    });
+
+    return mixList;
   }
 
   private renderSoundSettings(isSoundOn: boolean) {
@@ -200,6 +218,7 @@ class GamePage extends Control {
 
     this.onGetAnswer = (value: boolean) => {
       const result = question.onAnswer(value);
+      const [ word ] = question.word;
 
       if (result) {
         this.countRightAnswer += 10 * this.rate;
@@ -208,9 +227,14 @@ class GamePage extends Control {
         this.correctAnswerSeries += 1;
         this.checkAnswerSeries(this.correctAnswerSeries);
 
+
+        this.getStat(word, true)
+
         if (this.state.getSoundPlay()) soundManager.playOk();
       } else {
         this.resetAnswerSeries();
+
+        this.getStat(word, false)
 
         if (this.state.getSoundPlay()) soundManager.playFail();
       }
@@ -221,6 +245,13 @@ class GamePage extends Control {
     };
   }
 
+  private getStat(word: IWord, answer: boolean) {
+    this.wordsStat.push({
+      wordId: word.id,
+      answer: answer
+    }) 
+  }
+
   private checkAnswerSeries(correctAnswerSeries: number) {
     this.indicatorList[correctAnswerSeries - 1].delClass('default');
     if (correctAnswerSeries === 3) {
@@ -228,8 +259,9 @@ class GamePage extends Control {
         this.rate += 1;
         this.renderRate();
       }
+
+      this.correctAnswerSeries = 0;
       setTimeout(() => {
-        this.correctAnswerSeries = 0;
         this.indicatorList.forEach((indicator) => { indicator.addClass('default'); });
       }, 1000);
     }
@@ -254,6 +286,7 @@ class GamePage extends Control {
   }
 
   private finish() {
+    this.onFinish.emit(this.wordsStat)
     this.destroy();
     const resultPage = new ResultPage(this.parentNode, this.state, this.words, this.results);
   }

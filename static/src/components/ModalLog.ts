@@ -1,8 +1,8 @@
 import Control from './common/control';
 import '../style/modal.scss';
 import Input from './common/Input';
-import Validator from './common/Validator';
-import ErrorUser from './common/ErrorUser';
+import Validator from './utils/Validator';
+import ErrorUser from './utils/ErrorUser';
 
 class ModalLog {
   private background: Control<HTMLElement>;

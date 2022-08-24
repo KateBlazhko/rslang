@@ -10,6 +10,12 @@ class ErrorUser {
 
   static getErrorMessage(statusCode: number, node: HTMLElement) {
     let message: string = '';
+    if (statusCode === 400) {
+      message = 'Bad request';
+    }
+    if (statusCode === 401) {
+      message = 'Access token is missing or invalid';
+    }
     if (statusCode === 404) {
       message = 'пользователя с данным Email не существует';
     }

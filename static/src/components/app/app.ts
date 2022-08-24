@@ -12,7 +12,7 @@ class App {
   constructor() {
     this.login = new Logging();
     this.header = new Header(this.login);
-    this.main = new Router();
+    this.main = new Router(this.login);
   }
 
   render() {

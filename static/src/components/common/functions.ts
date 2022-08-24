@@ -1,6 +1,6 @@
-import { Word } from "../api/dbWords";
+import { IWord } from "../api/Words";
 
-export function randomSort(array: Word[]) {
+export function randomSort(array: IWord[]) {
   let currentIndex: number = +array.length;
   let randomIndex: number;
 

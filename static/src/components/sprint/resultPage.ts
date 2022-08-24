@@ -1,5 +1,5 @@
 import Control from '../common/control';
-import { BASELINK, Word } from '../api/dbWords';
+import { BASELINK, IWord } from '../api/Words';
 import SprintState from './sprintState';
 import SVG from '../common/svgElement';
 import icons from '../../assets/icons/sprite.svg';
@@ -14,7 +14,7 @@ enum TextInner {
 }
 
 class ResultPage extends Control {
-  private settingsSoundWrap: Control;
+  // private settingsSoundWrap: Control;
 
   private buttonReturn: Control;
 
@@ -29,15 +29,15 @@ class ResultPage extends Control {
   constructor(
     parentNode: HTMLElement | null,
     private state: SprintState,
-    private words: Word[],
+    private words: IWord[],
     private results: Boolean[],
   ) {
     super(parentNode, 'div', 'sprint__result result');
-    this.state.onSoundOn.add(this.renderSoundSettings.bind(this));
-    this.state.onSoundOn.add(this.renderSoundIcons.bind(this));
+    // this.state.onSoundOn.add(this.renderSoundSettings.bind(this));
+    // this.state.onSoundOn.add(this.renderSoundIcons.bind(this));
 
-    this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap');
-    this.renderSoundSettings(this.state.getSoundPlay());
+    // this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap');
+    // this.renderSoundSettings(this.state.getSoundPlay());
 
     this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
@@ -54,11 +54,14 @@ class ResultPage extends Control {
   }
 
   private renderResult() {
-    return this.words.map((word, index) => {
+    const answers = this.words.filter((_word, index) => this.results[index] !== undefined)
+
+    return answers.map((word, index) => {
+
       const resultRow = new Control(this.tableWrap.node, 'div', 'result__row');
       const icon = this.results[index]
-        ? new SVG(resultRow.node, 'result__true', `${icons}#true`)
-        : new SVG(resultRow.node, 'result__false', `${icons}#false`);
+      ? new SVG(resultRow.node, 'result__true', `${icons}#true`)
+      : new SVG(resultRow.node, 'result__false', `${icons}#false`);
 
       const wordAudioWrap = new Control(resultRow.node, 'div', 'result__sound-wrap');
 
@@ -73,6 +76,7 @@ class ResultPage extends Control {
         audio: word.audio,
         container: wordAudioWrap.node,
       };
+      
     });
   }
 
@@ -93,19 +97,19 @@ class ResultPage extends Control {
     });
   }
 
-  private renderSoundSettings(isSoundOn: boolean) {
-    if (this.settingsSound) this.settingsSound.destroy();
+  // private renderSoundSettings(isSoundOn: boolean) {
+  //   if (this.settingsSound) this.settingsSound.destroy();
 
-    if (isSoundOn) {
-      this.settingsSound = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
-    } else {
-      this.settingsSound = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#mute`);
-    }
+  //   if (isSoundOn) {
+  //     this.settingsSound = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
+  //   } else {
+  //     this.settingsSound = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#mute`);
+  //   }
 
-    this.settingsSound.svg.onclick = () => {
-      this.state.setSoundPlay(!this.state.getSoundPlay());
-    };
-  }
+  //   this.settingsSound.svg.onclick = () => {
+  //     this.state.setSoundPlay(!this.state.getSoundPlay());
+  //   };
+  // }
 }
 
 export default ResultPage;

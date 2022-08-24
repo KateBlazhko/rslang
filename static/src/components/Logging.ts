@@ -3,8 +3,14 @@ import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
-import Validator from './common/Validator';
+import Validator from './utils/Validator';
 import { User, IAuth } from './api/User';
+
+export interface IStateLog {
+  state: boolean; 
+  userId: string;
+  token: string
+}
 
 class Logging {
   private container: Control<HTMLElement>;
@@ -13,13 +19,13 @@ class Logging {
 
   private profile: ButtonHref;
 
-  private stateLog: { state: boolean; };
+  private stateLog: IStateLog;
 
   private modal: ModalLog;
 
   constructor() {
     this.container = new Control<HTMLDivElement>(null, 'div', 'logging__container');
-    this.stateLog = { state: false };
+    this.stateLog = { state: false, userId: '', token: '' };
     this.checkStorageLogin();
     this.loginBtn = new ButtonLogging<HTMLButtonElement>(this.container.node, this.stateLog.state);
     this.profile = new ButtonHref(this.container.node, '#statistics', '', 'profile');
@@ -59,8 +65,9 @@ class Logging {
         password: form.password.value,
       });
       if (res.status === 200) {
-        localStorage.setItem('user', JSON.stringify(await (res as Response).json()));
-        this.successLog();
+        const user: IAuth = await (res as Response).json()
+        localStorage.setItem('user', JSON.stringify(user));
+        this.successLog(user);
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -82,18 +89,34 @@ class Logging {
       });
 
       if (res.status === 200) {
-        localStorage.setItem('user', JSON.stringify(await (log as Response).json()));
-        this.successLog();
+        const user: IAuth = await (res as Response).json()
+        localStorage.setItem('user', JSON.stringify(user));
+        this.successLog(user);
       } else {
         this.modal.callErrorWindow(res.status);
       }
     }
   }
 
-  successLog() {
+  successLog(user: IAuth) {
     Validator.removeAllWarning(this.modal.name, this.modal.email, this.modal.password);
     this.modal.formElements.background.destroy();
-    this.stateLog.state = true;
+    this.stateLog = {
+      state: true,
+      userId: user.userId,
+      token: user.token
+    }
+    this.loginBtn.updateLogStatus(this.stateLog.state);
+    this.accessStatistics();
+  }
+
+  unsuccessLog() {
+    this.modal.formElements.background.destroy();
+    this.stateLog = {
+      state: false,
+      userId: '',
+      token: ''
+    }
     this.loginBtn.updateLogStatus(this.stateLog.state);
     this.accessStatistics();
   }
@@ -104,9 +127,15 @@ class Logging {
       const user = JSON.parse(response) as IAuth;
       const req = await User.getUser(user.userId, user.token);
       if (req.status === 200) {
-        this.successLog();
+        this.successLog(user);
+      } else {
+        this.unsuccessLog();
       }
+    } else {
+      this.unsuccessLog();
     }
+
+    return this.stateLog
   }
 
   accessStatistics() {
@@ -115,7 +144,9 @@ class Logging {
     });
     if (!this.stateLog.state) {
       this.profile.node.textContent = 'U';
-      window.location.hash = '#home';
+      if (window.location.hash.slice(1) === 'statistics') {
+        window.location.hash = '#home';
+      }
     } else this.profile.node.textContent = 'A';
   }
 
