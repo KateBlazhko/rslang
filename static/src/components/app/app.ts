@@ -1,4 +1,5 @@
 import Header from '../Header';
+import Logging from '../Logging';
 import Router from '../router/Router';
 
 class App {
@@ -6,8 +7,11 @@ class App {
 
   main: Router;
 
+  login: Logging;
+
   constructor() {
-    this.header = new Header();
+    this.login = new Logging();
+    this.header = new Header(this.login);
     this.main = new Router();
   }
 
