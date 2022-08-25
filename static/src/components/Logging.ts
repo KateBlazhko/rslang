@@ -116,6 +116,10 @@ class Logging {
       if (req.status === 200) {
         this.successLog();
         this.saveState(user);
+      } else {
+        this.stateLog = { state: false, token: '', userId: '' };
+        this.loginBtn.updateLogStatus(this.stateLog.state);
+        this.accessStatistics();
       }
     }
     return this.stateLog;
