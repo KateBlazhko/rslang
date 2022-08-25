@@ -25,7 +25,7 @@ class Book extends Control {
 
   private state: BookState;
 
-  private startPage: StartPage;
+  private startPage: StartPage | undefined;
 
   private questions: [IWord, string][] = [];
 
@@ -34,12 +34,12 @@ class Book extends Control {
     private login: Logging,
     private onGoBook: Signal<string>
   ) {
-    console.log('!!!')
     super(parentNode, "div", "book");
-    this.state = new BookState();
-    this.state.onPreload.add(this.renderPreloader.bind(this));
-    onGoBook.add(this.state.setInitiator.bind(this.state));
 
+    this.state = new BookState();
+    // this.state.onPreload.add(this.renderPreloader.bind(this));
+    onGoBook.add(this.state.setInitiator.bind(this.state));
+    this.getWords();
     this.preloader = new Control(
       null,
       "span",
@@ -47,78 +47,56 @@ class Book extends Control {
       TextInner.preloader
     );
 
-    this.startPage = new StartPage(this.node, this.state);
-    this.onFinish.add(this.recordStatToBD.bind(this));
+    // this.startPage = new StartPage(this.node, this.state);
   }
 
   public onFinish = new Signal<IWordStat[]>();
 
-  private async renderPreloader(words: number[]) {
-    const [group, page] = words;
-    this.node.append(this.preloader.node);
-    console.log('!')
-    this.words = await this.getWords(group);
-    console
-    this.preloader.destroy();
-  }
+  // private async renderPreloader(words: number[]) {
+  //   const [group, page] = words;
+  //   this.node.append(this.preloader.node);
+  //   console.log('!')
+  //   this.words = await this.getWords();
+  //   this.preloader.destroy();
+  // }
 
   private async getWords(level = 0, page = 0) {
     try {
-      console.log(page)
-      if (page) {
-        console.log('!')
-        const words = await Words.getWords({
-          group: level,
-          page,
-        });
-        console.log(words)
-        return randomSort(words);
-      }
-      const wordsAll = await Promise.all(
-        [...Array(COUNTPAGE).keys()].map((key) =>
-          Words.getWords({
-            group: level,
-            page: key,
-          })
-        )
-      );
-      const worsResult = wordsAll.flat();
-      console.log(worsResult);
-      return worsResult;
-    } catch {
-      this.preloader.node.textContent = TextInner.error;
-      setTimeout(() => {
-        this.preloader.destroy();
-        console.log('!')
-        this.startPage = new StartPage(this.node, this.state);
+      console.log("!");
+      const words = await Words.getWords({
+        group: level,
+        page,
       });
-      return [];
-    }
-  }
+      console.log(this.node)
+      console.log(words);
 
-  private async recordStatToBD(wordsStat: IWordStat[]) {
-    const stateLog = await this.login.checkStorageLogin();
-    if (stateLog.state) {
-      const userWordsAll = await Words.getUserWords(
-        stateLog.userId,
-        stateLog.token
-      );
+      this.startPage = new StartPage(this.node, words,  this.state);
 
-      const recordResult = await Promise.all(
-        wordsStat.map((word) => {
-          const userWord = userWordsAll.find(
-            (item) => item.optional.wordId === word.wordId
-          );
-          if (userWord) {
-            return Words.updateUserStat(stateLog, userWord, word.answer);
-          }
-          return Words.createUserStat(stateLog, word);
-        })
-      );
+      // return randomSort(words);
+      // const wordsAll = await Promise.all(
+      //   [...Array(COUNTPAGE).keys()].map((key) =>
+      //     Words.getWords({
+      //       group: level,
+      //       page: key,
+      //     })
+      //   )
+      // );
+      // const worsResult = wordsAll.flat();
+      // console.log(worsResult);
+      // return worsResult;
+    } catch {
+      // this.preloader.node.textContent = TextInner.error;
+      // setTimeout(() => {
+      //   this.preloader.destroy();
+      //   console.log('!')
+      //   this.startPage = new StartPage(this.node, this.state);
+      // });
+      // return [];
     }
   }
 
   public destroy() {
+    console.log("destroy");
     // if (this.gamePage) {
     //   this.gamePage.destroy();
     // }

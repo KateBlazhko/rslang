@@ -13,6 +13,7 @@ class ButtonAnswer extends Control {
   }
 
   destroy(): void {
+    console.log('pizdec')
     this.node.remove();
   }
 }

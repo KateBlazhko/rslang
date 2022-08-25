@@ -1,21 +1,12 @@
+import { IWord } from "../api/Words";
 import Control from "../common/control";
 import ButtonAnswer from "./buttonAnswer";
 import BookState from "./bookState";
-
-// enum TextInner {
-//   first = 'Капитан! Мы нашли пещеру, полную сокровищ!!!',
-//   second =
-//   `Торопитесь, до прилива осталась ровно 1 минута!! Какой вы хотите уровень сложности?`,
-//   pagesText =
-//   'Выбирайте, соответствует ли перевод предложенному слову, и собирайте сокровища',
-//   fourth = `Можно использовать мышку или клавиатуру`
-// }
 
 enum TextInner {
   title = "Book",
   pagesText = "Choose page",
   levelsText = "Choose level",
-  buttonFromBook = "Start",
 }
 
 const COUNTLEVELS = 6;
@@ -23,10 +14,10 @@ const COUNTLEVELS = 6;
 class StartPage extends Control {
   constructor(
     private parentNode: HTMLElement | null,
+    private words: IWord[],
     private state: BookState
   ) {
-    super(parentNode, "div", "sprint__start start");
-
+    super(parentNode, "div", "book__start start");
     this.renderStartPage();
   }
 
@@ -44,13 +35,20 @@ class StartPage extends Control {
     </div>
     `;
 
-    const fourth = new Control(
+    const wordsBlock = new Control(this.node, "div", "book__blocks");
+
+    wordsBlock.node.innerHTML = `
+      <span>'test'</span>`;
+
+    console.log("words-words", this.words);
+
+    const button = new Control(
       this.node,
       "div",
       "start__desription start__desription_even",
       TextInner.levelsText
     );
-    const buttonWrap = new Control(fourth.node, "div", "start__button-wrap");
+    const buttonWrap = new Control(button.node, "div", "start__button-wrap");
 
     [...Array(COUNTLEVELS).keys()].map((item) => {
       const button = new ButtonAnswer(

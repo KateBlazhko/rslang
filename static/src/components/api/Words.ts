@@ -2,8 +2,8 @@ import { IStateLog } from '../Logging';
 import { IWordStat } from '../sprint/sprint';
 import ErrorUser from '../utils/ErrorUser';
 
-export const BASELINK = 'http://localhost:3000';
-// export const BASELINK = 'https://rs-lang-machine.herokuapp.com';
+// export const BASELINK = 'http://localhost:3000';
+export const BASELINK = 'https://rs-lang-machine.herokuapp.com';
 
 export interface IWord {
   id: string,
