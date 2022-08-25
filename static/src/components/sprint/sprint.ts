@@ -49,7 +49,7 @@ class Sprint extends Control {
     this.node.append(this.preloader.node)
 
     if (this.state.getInitiator() === 'header') {
-      this.words = await this.getWords(0, 0)
+      this.words = await this.getWords(group)
     } else {
       //todo this.questions = await this.getQuestions(group, page)
     }
@@ -113,7 +113,7 @@ class Sprint extends Control {
       const isLearn = this.checkIsLearn(userWord)
       const date = new Date()
       return await Words.updateUserWord(stateLog.userId, stateLog.token, userWord.optional.wordId, {
-        difficulty: userWord.difficulty,
+        difficulty: isLearn ? 'easy' : userWord.difficulty,
         optional: {
           wordId: userWord.optional.wordId,
           сountRightAnswer: userWord.optional.сountRightAnswer + 1,
