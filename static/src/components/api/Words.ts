@@ -355,20 +355,19 @@ class Words {
     group: number,
     page: number,
   ) {
+    if (words.length < 100 && page > 0) {
+      const pageList = [...Array(page).keys()];
+      const pageIndex = pageList.length - 1;
 
-  if (words.length < 100 && page > 0) {
-    const pageList = [...Array(page).keys()];
-    const pageIndex = pageList.length - 1;
+      words.push(...await Words.addWords(
+        words.length,
+        pageList,
+        pageIndex,
+        group,
+      ));
+    }
 
-    words.push(...await Words.addWords(
-      words.length,
-      pageList,
-      pageIndex,
-      group,
-    ));
-  }
-
-  return words;
+    return words;
   }
 
   public static async addWords(
@@ -389,7 +388,6 @@ class Words {
       page: pageList[pageIndex].toString(),
     });
 
-  
     words.push(...wordsAdd);
     count += wordsAdd.length;
 
@@ -397,7 +395,7 @@ class Words {
       count,
       pageList,
       pageIndex - 1,
-      group
+      group,
     ));
 
     return words;

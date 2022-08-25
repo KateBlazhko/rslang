@@ -59,7 +59,6 @@ class Sprint extends Control {
       if (this.state.getInitiator() === 'book') {
         this.words = await this.getWords(group);
       } else {
-
         const stateLog = await this.login.checkStorageLogin();
 
         if (stateLog.state) {
