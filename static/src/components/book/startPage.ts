@@ -35,10 +35,13 @@ class StartPage extends Control {
     </div>
     `;
 
-    const wordsBlock = new Control(this.node, "div", "book__blocks");
+    const wordsBlock = new Control(this.node, "div", "book__wrapper");
 
-    wordsBlock.node.innerHTML = `
-      <span>'test'</span>`;
+    this.words.forEach(
+      (wordItem) =>
+        (wordsBlock.node.innerHTML += `
+    <div class="book__item"><h1 class="book__item-textExample">${wordItem.textExample}</h1></div>`)
+    );
 
     console.log("words-words", this.words);
 

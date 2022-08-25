@@ -70,7 +70,7 @@ class Book extends Control {
       console.log(this.node)
       console.log(words);
 
-      this.startPage = new StartPage(this.node, words,  this.state);
+      this.startPage = new StartPage(this.node, words, this.state);
 
       // return randomSort(words);
       // const wordsAll = await Promise.all(

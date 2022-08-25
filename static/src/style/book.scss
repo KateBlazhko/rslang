@@ -1,10 +1,10 @@
-$color-points: #966AAD;
+$color-points: #966aad;
 $color-word: #000000;
 $filter-color: #808080;
 $color-button-true-hover: #1f9465;
 $color-button-true: #79bc90;
 $color-button-false-hover: #e0677d;
-$color-button-false: #F69EB0;
+$color-button-false: #f69eb0;
 $color-bg: #ffffff;
 $color-border: #f5a51c;
 
@@ -12,37 +12,16 @@ $color-shadow: #aaa9a9;
 $color-text-start: #696969;
 $color-water: #8ae4ff80;
 
-// $color-border-svg: #AF2137;
-// // $color-main-svg: #EF4B6D;
-// $color-average: #e0677d;
-// // $color-average: #EF4055;
-// $color-average: #F69EB0;
-
-// $color-border-svg: #63387C;
-// // $color-main-svg: #B08DC1;
-// $color-average: #C5A3CD;
-// $color-average: #966AAD;
-// // $color-average: #8857A4;
-
-// $color-border-svg: #017347;
-// // $color-main-svg: #98D2AE;
-// // $color-average: #5DBF89;
-// $color-average: #1f9465;
-// $color-average: #79bc90;
-// // $color-average: #80C999;
-// // $color-average: #27B67C;
-// // $color-border-svg: #007E4E;
-
 .book {
   position: relative;
   flex-grow: 1;
   @include flexCenter();
   flex-wrap: wrap;
-  
+
   width: 100%;
   padding: 2rem;
 
-  background-image: url('./assets/img/sprint-bg.jpg');
+  background-image: url("./assets/img/sprint-bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -51,56 +30,32 @@ $color-water: #8ae4ff80;
     font-size: 3rem;
   }
 
-  &__game {
-    position: relative;
-    z-index: 2;
-    @include flexCenter();
+  &__wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 40px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: start;
+    gap: 2rem;
     flex-wrap: wrap;
-    gap: 10px;
-
-    width: 50%;
-    padding: 2rem 0;
+    width: 45%;
+    padding: 2rem;
+    text-align: start;
+    color: #696969;
+    box-shadow: 0 0 3px #aaa9a9;
+    background-color: #ffffff;
     border-radius: 2rem;
-
-    background-color: $color-bg;
-
-    @media (max-width: 1024px) {
-      width: 65%;
-    }
-
-    @media (max-width: 768px) {
-      width: 90%;
-    }
   }
 
-  &__timer-wrap {
-    @include flexCenter();
-    width: 5rem;
-    height: 5rem;
-    border: 1px solid transparent;
-
-    border-radius: 50%;
-
-    &.finishing {
-      border: 1px solid $color-button-false-hover;
-    }
-
-    span {
-      text-align: center; 
-      font-size: 3rem;
-      color: $color-button-false-hover;
-      line-height: 5rem;
-    }
+  &__textExample {
+    font-size: 1.5rem;
   }
 
-  &__indicator-wrap{
-    @include flexCenter();
-    gap: 10px;
-
-    width: 100%;
-    padding-top: 2rem;
-  }
-  
   &__indicator {
     width: 5rem;
     height: 5rem;
@@ -111,9 +66,8 @@ $color-water: #8ae4ff80;
     &.default {
       filter: $filter-color;
       -webkit-filter: grayscale(1);
-      transition: all 0.5s ease-in-out; 
+      transition: all 0.5s ease-in-out;
     }
-
   }
 
   &__indicator:first-child {
@@ -140,7 +94,7 @@ $color-water: #8ae4ff80;
 
   &__points {
     font-size: 4rem;
-    color: $color-points
+    color: $color-points;
   }
 
   &__question-wrap {
@@ -155,10 +109,9 @@ $color-water: #8ae4ff80;
     flex-wrap: wrap;
     width: 100%;
 
- 
     &__word {
       font-size: 3rem;
-      color: $color-word
+      color: $color-word;
     }
   }
 
@@ -214,7 +167,7 @@ $color-water: #8ae4ff80;
 
       box-shadow: none;
 
-      background-image: url('./assets/icons/arrow.png');
+      background-image: url("./assets/icons/arrow.png");
       background-size: cover;
       background-repeat: no-repeat;
 
@@ -232,25 +185,6 @@ $color-water: #8ae4ff80;
     width: 100%;
     bottom: 0;
     animation: wipe 60s linear forwards;
-  }
-}
-
-.sound {
-  width: 2.5rem;
-  height: 2.5rem;
-
-  cursor: pointer;
-
-  fill: #696969;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-
-  &__wrap {
-    position: absolute;
-    top: 5%;
-    left: 3%;
   }
 }
 
