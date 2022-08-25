@@ -3,53 +3,59 @@ import { IWord } from "../api/Words";
 import Control from "../common/control";
 import stopPlayAudio from "../common/stopPlayAudio";
 
-const createWordItem = (word: IWord, bookItem: Control<HTMLElement>) => {
-  const imageElement = new Control(bookItem.node, "img", "book__item-image");
-  const image = imageElement.node as HTMLImageElement;
-  image.src = `${API_URL}/${word.image}`;
-  image.alt = word.word;
+class CreateWordItem {
+  constructor(word: IWord, bookItem: Control<HTMLElement>) {
+    this.create(word, bookItem);
+  }
 
-  new Control(bookItem.node, "h1", "book__item-word", word.word);
-  [
-    word.transcription,
-    word.wordTranslate,
-    word.textMeaning,
-    word.textMeaningTranslate,
-    word.textExample,
-    word.textExampleTranslate,
-  ].forEach((textElem) => new Control(bookItem.node, "p", "", textElem));
+  private create(word: IWord, bookItem: Control<HTMLElement>) {
+    const imageElement = new Control(bookItem.node, "img", "book__item-image");
+    const image = imageElement.node as HTMLImageElement;
+    image.src = `${API_URL}/${word.image}`;
+    image.alt = word.word;
 
-  const audioElement = new Control(bookItem.node, "img", "book__item-sound");
+    new Control(bookItem.node, "h1", "book__item-word", word.word);
+    [
+      word.transcription,
+      word.wordTranslate,
+      word.textMeaning,
+      word.textMeaningTranslate,
+      word.textExample,
+      word.textExampleTranslate,
+    ].forEach((textElem) => new Control(bookItem.node, "p", "", textElem));
 
-  audioElement.node.addEventListener("click", async () => {
-    const audioItems = document.querySelectorAll(".book__item-sound");
+    const audioElement = new Control(bookItem.node, "img", "book__item-sound");
 
-    stopPlayAudio(audioItems, "none");
+    audioElement.node.addEventListener("click", async () => {
+      const audioItems = document.querySelectorAll(".book__item-sound");
 
-    const sounds = [
-      `${API_URL}/${word.audio}`,
-      `${API_URL}/${word.audioMeaning}`,
-      `${API_URL}/${word.audioExample}`,
-    ];
+      stopPlayAudio(audioItems, "none");
 
-    const firstSound = new Audio(sounds[0]);
-    const secondSound = new Audio(sounds[1]);
-    const thirdSound = new Audio(sounds[2]);
+      const sounds = [
+        `${API_URL}/${word.audio}`,
+        `${API_URL}/${word.audioMeaning}`,
+        `${API_URL}/${word.audioExample}`,
+      ];
 
-    await firstSound.play();
+      const firstSound = new Audio(sounds[0]);
+      const secondSound = new Audio(sounds[1]);
+      const thirdSound = new Audio(sounds[2]);
 
-    setTimeout(async () => {
-      await secondSound.play();
+      await firstSound.play();
 
       setTimeout(async () => {
-        await thirdSound.play();
+        await secondSound.play();
 
-        setTimeout(() => {
-          stopPlayAudio(audioItems, "auto");
-        }, thirdSound.duration * 1000);
-      }, (firstSound.duration + secondSound.duration) * 1000);
-    }, firstSound.duration * 1000);
-  });
-};
+        setTimeout(async () => {
+          await thirdSound.play();
 
-export default createWordItem;
+          setTimeout(() => {
+            stopPlayAudio(audioItems, "auto");
+          }, thirdSound.duration * 1000);
+        }, (firstSound.duration + secondSound.duration) * 1000);
+      }, firstSound.duration * 1000);
+    });
+  }
+}
+
+export default CreateWordItem;
