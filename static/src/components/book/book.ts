@@ -16,7 +16,7 @@ export interface IWordStat {
   answer: boolean;
 }
 
-const COUNTPAGE = 30;
+// const COUNTPAGE = 30;
 
 class Book extends Control {
   private preloader: Control;
@@ -43,7 +43,7 @@ class Book extends Control {
     this.preloader = new Control(
       null,
       "span",
-      "sprint__preloader",
+      "book__preloader",
       TextInner.preloader
     );
 
