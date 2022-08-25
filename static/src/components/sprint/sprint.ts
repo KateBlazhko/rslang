@@ -6,6 +6,7 @@ import SprintState from './sprintState';
 import StartPage from './startPage';
 import { randomSort } from '../common/functions'
 import Logging, { IStateLog } from '../Logging';
+import soundManager from '../utils/soundManager';
 
 enum TextInner {
   preloader = `We're getting closer, get ready...`,
@@ -24,6 +25,7 @@ class Sprint extends Control {
   private words: IWord[] = [];
   private state: SprintState
   private startPage: StartPage
+  private gamePage: GamePage | null = null
   private questions: [IWord, string][] = [];
 
   constructor(
@@ -55,7 +57,7 @@ class Sprint extends Control {
     }
     
     this.preloader.destroy()
-    const gamePage = new GamePage(this.node, this.state, this.words, this.onFinish);  
+    this.gamePage = new GamePage(this.node, this.state, this.words, this.onFinish);  
 
   }
 
@@ -103,8 +105,6 @@ class Sprint extends Control {
           return this.createUserWord(stateLog, word)
         }
       }))    
-
-      console.log(recordResult)
     }
   }
 
@@ -183,6 +183,14 @@ class Sprint extends Control {
     }
 
     return userWord.optional.isLearn
+  }
+
+  public destroy() {
+    if (this.gamePage) {
+      this.gamePage.destroy()
+    }
+    
+    super.destroy();
   }
 }
 

@@ -18,7 +18,7 @@ enum TextInner {
   buttonFalse = 'False ←'
 }
 
-const TIME = 60;
+const TIME = 11;
 
 class GamePage extends Control {
   private correctAnswerSeries: number = 0;

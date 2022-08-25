@@ -19,6 +19,10 @@ class Timer extends Control {
     this.render(time);
     let currentTime = time;
 
+    if (this.timer){
+      this.stop();
+    }
+
     this.timer = window.setInterval(() => {
       currentTime -= 1;
       this.render(currentTime);
