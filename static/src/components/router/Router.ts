@@ -1,4 +1,5 @@
 import Sprint from '../sprint/sprint';
+import Book from '../book/book';
 import Signal from '../common/signal';
 import Control from '../common/control';
 import Logging from '../Logging';
@@ -38,8 +39,8 @@ class Router {
         container.innerHTML = '<h1>About Us</h1>';
         break;
       case 'book':
-        this.onGoPage.emit(hash);
-        container.innerHTML = '<h1>Book</h1>';
+        container.innerHTML = '';
+        this.currentPage = new Book(container, this.login, this.onGoPage);
         break;
       case 'sprint':
         container.innerHTML = '';
