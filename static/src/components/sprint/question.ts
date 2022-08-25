@@ -7,7 +7,8 @@ import SprintState from './sprintState';
 class Question extends Control {
   // private wordAudio: string;
 
-  private wordSound: SVG | null = null;
+  // private wordSound: SVG | null = null;
+  private wordSound: Control<HTMLImageElement> | null = null;
 
   private wordAudioWrap: Control;
 
@@ -18,6 +19,7 @@ class Question extends Control {
   ) {
     super(parentNode, 'div', 'sprint__question question');
     this.state.onSoundOn.add(this.renderSoundIcon.bind(this));
+    
     this.wordAudioWrap = new Control(this.node, 'div', 'question__sound-wrap');
     this.renderSoundIcon(this.state.getSoundPlay());
 
@@ -36,13 +38,16 @@ class Question extends Control {
     if (this.wordSound) this.wordSound.destroy();
 
     if (word.audio && isSoundOn) {
-      this.wordSound = new SVG(this.wordAudioWrap.node, 'sound', `${icons}#volume`);
-      this.wordSound.svg.onclick = () => {
+      this.wordSound = new Control<HTMLImageElement>(this.wordAudioWrap.node, 'img', 'sound');
+      this.wordSound.node.src = './assets/icons/volume.png'
+
+      this.wordSound.node.onclick = () => {
         const audio = new Audio(`${BASELINK}/${word.audio}`);
         if (isSoundOn) audio.play();
       };
     } else {
-      this.wordSound = new SVG(this.wordAudioWrap.node, 'sound', `${icons}#mute`);
+      this.wordSound = new Control<HTMLImageElement>(this.wordAudioWrap.node, 'img', 'sound');
+      this.wordSound.node.src = './assets/icons/mute.png'
     }
   }
 

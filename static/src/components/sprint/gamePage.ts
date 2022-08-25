@@ -25,7 +25,10 @@ class GamePage extends Control {
 
   private settingsSoundWrap: Control;
 
-  private soundSettings: SVG | null = null;
+  // private soundSettings: SVG | null = null;
+
+  private soundSettings: Control<HTMLImageElement> | null = null;
+
 
   private animationWrap: Control | null = null;
 
@@ -155,12 +158,16 @@ class GamePage extends Control {
     if (this.soundSettings) this.soundSettings.destroy();
 
     if (isSoundOn) {
-      this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
+      this.soundSettings = new Control<HTMLImageElement>(this.settingsSoundWrap.node, 'img', 'sound');
+      this.soundSettings.node.src = './assets/icons/volume.png'
+      // this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
     } else {
-      this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#mute`);
+      this.soundSettings = new Control<HTMLImageElement>(this.settingsSoundWrap.node, 'img', 'sound');
+      this.soundSettings.node.src = './assets/icons/mute.png'
+      // this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#mute`);
     }
 
-    this.soundSettings.svg.onclick = () => {
+    this.settingsSoundWrap.node.onclick = () => {
       this.state.setSoundPlay(!this.state.getSoundPlay());
       const curentState = this.state.getSoundPlay();
       if (curentState) {

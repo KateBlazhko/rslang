@@ -336,7 +336,6 @@ class Words {
         .flat();
 
       words.push(...aggregatedWordsAddAll);
-
       count += aggregatedWordsAddAll.length;
 
       words.push(...await Words.addWordsFromOtherPages(
@@ -349,23 +348,8 @@ class Words {
     }
 
     return words;
-    // words.push(...await Words.addWordsFromOtherPages(count, page, group, stateLog))
   }
 
-  // while (count < 100 && pageIndex >= 0) {
-  //   const aggregatedWordsAdd = await Words.getNoLearnWords(stateLog, group, page);
-
-  //   if (Array.isArray(aggregatedWordsAdd)) {
-  //     const aggregatedWordsAddAll = aggregatedWordsAdd
-  //       .map((aggregatedWordAdd) => aggregatedWordAdd.paginatedResults
-  //         .filter((res) => res.page === pageList[pageIndex]))
-  //       .flat();
-
-  //     words.push(...aggregatedWordsAddAll);
-  //     pageIndex -= 1;
-  //     count += aggregatedWordsAddAll.length;
-  //   }
-  // }
 }
 
 export default Words;
