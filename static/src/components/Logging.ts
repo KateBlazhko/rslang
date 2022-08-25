@@ -3,8 +3,14 @@ import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
 import '../style/logging.scss';
 import ModalLog from './ModalLog';
-import Validator from './common/Validator';
+import Validator from './utils/Validator';
 import { User, IAuth } from './api/User';
+
+export interface IStateLog {
+  state: boolean;
+  userId: string;
+  token: string
+}
 
 class Logging {
   private container: Control<HTMLElement>;
@@ -13,13 +19,13 @@ class Logging {
 
   private profile: ButtonHref;
 
-  private stateLog: { state: boolean; };
+  private stateLog: IStateLog;
 
   private modal: ModalLog;
 
   constructor() {
     this.container = new Control<HTMLDivElement>(null, 'div', 'logging__container');
-    this.stateLog = { state: false };
+    this.stateLog = { state: false, userId: '', token: '' };
     this.checkStorageLogin();
     this.loginBtn = new ButtonLogging<HTMLButtonElement>(this.container.node, this.stateLog.state);
     this.profile = new ButtonHref(this.container.node, '#statistics', '', 'profile');
@@ -59,8 +65,10 @@ class Logging {
         password: form.password.value,
       });
       if (res.status === 200) {
-        localStorage.setItem('user', JSON.stringify(await (res as Response).json()));
+        const user: IAuth = await (res as Response).json();
+        localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
+        this.saveState(user);
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -82,8 +90,10 @@ class Logging {
       });
 
       if (res.status === 200) {
-        localStorage.setItem('user', JSON.stringify(await (log as Response).json()));
+        const user: IAuth = await (log as Response).json();
+        localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
+        this.saveState(user);
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -105,8 +115,19 @@ class Logging {
       const req = await User.getUser(user.userId, user.token);
       if (req.status === 200) {
         this.successLog();
+        this.saveState(user);
+      } else {
+        this.stateLog = { state: false, token: '', userId: '' };
+        this.loginBtn.updateLogStatus(this.stateLog.state);
+        this.accessStatistics();
       }
     }
+    return this.stateLog;
+  }
+
+  saveState(user: IAuth) {
+    this.stateLog.token = user.token;
+    this.stateLog.userId = user.userId;
   }
 
   accessStatistics() {
@@ -115,13 +136,15 @@ class Logging {
     });
     if (!this.stateLog.state) {
       this.profile.node.textContent = 'U';
-      window.location.hash = '#home';
+      if (window.location.hash.slice(1) === 'statistics') {
+        window.location.hash = '#home';
+      }
     } else this.profile.node.textContent = 'A';
   }
 
   outModalBtnListen() {
     this.modal.yesBtn.node.addEventListener('click', () => {
-      this.stateLog.state = false;
+      this.stateLog = { state: false, token: '', userId: '' };
       this.loginBtn.updateLogStatus(this.stateLog.state);
       this.accessStatistics();
       localStorage.removeItem('user');

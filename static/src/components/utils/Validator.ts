@@ -1,5 +1,4 @@
-import Control from './control';
-import Input from './Input';
+import Input from '../common/Input';
 
 class Validator {
   static validate(patternType: 'name' | 'email' | 'password', value: Input) {

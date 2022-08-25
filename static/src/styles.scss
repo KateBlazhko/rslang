@@ -1,15 +1,7 @@
 @import '~normalize.css';
+@import './style/abstract.scss';
+@import './style/base.scss';
+@import './style/start.scss';
+@import './style/sprint.scss';
+@import './style/result.scss';
 @import './style/home.scss';
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 10px;
-}
-
-
-// @import './assets/styles/';

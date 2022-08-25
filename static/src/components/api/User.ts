@@ -1,4 +1,4 @@
-import ErrorUser from '../common/ErrorUser';
+import ErrorUser from '../utils/ErrorUser';
 
 const localLink = 'http://localhost:3000';
 const BASELINK = 'https://rs-lang-machine.herokuapp.com';
