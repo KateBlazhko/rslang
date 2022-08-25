@@ -349,6 +349,59 @@ class Words {
 
     return words;
   }
+
+  public static async checkWords(
+    words: IWord[],
+    group: number,
+    page: number,
+  ) {
+
+  if (words.length < 100 && page > 0) {
+    const pageList = [...Array(page).keys()];
+    const pageIndex = pageList.length - 1;
+
+    words.push(...await Words.addWords(
+      words.length,
+      pageList,
+      pageIndex,
+      group,
+    ));
+  }
+
+  return words;
+  }
+
+  public static async addWords(
+    currentCount: number,
+    pageList: number[],
+    pageIndex: number,
+    group: number,
+  ) {
+    let count = currentCount;
+    const words: IWord[] = [];
+
+    if (count >= 100 || pageIndex < 0) {
+      return words;
+    }
+
+    const wordsAdd = await Words.getWords({
+      group: group.toString(),
+      page: pageList[pageIndex].toString(),
+    });
+
+  
+    words.push(...wordsAdd);
+    count += wordsAdd.length;
+
+    words.push(...await Words.addWords(
+      count,
+      pageList,
+      pageIndex - 1,
+      group
+    ));
+
+    return words;
+  }
 }
 
 export default Words;

@@ -56,10 +56,17 @@ class Sprint extends Control {
     this.node.append(this.preloader.node);
 
     try {
-      if (this.state.getInitiator() === 'header') {
+      if (this.state.getInitiator() === 'book') {
         this.words = await this.getWords(group);
       } else {
-        this.words = await this.getAggregatedWords();
+
+        const stateLog = await this.login.checkStorageLogin();
+
+        if (stateLog.state) {
+          this.words = await this.getAggregatedWords(words);
+        } else {
+          this.words = await this.getWords(group, page);
+        }
       }
 
       this.preloader.destroy();
@@ -73,17 +80,18 @@ class Sprint extends Control {
     }
   }
 
-  private async getWords(level: number, page?: number) {
+  private async getWords(group: number, page?: number) {
     try {
       if (page) {
         const words = await Words.getWords({
-          group: level.toString(),
+          group: group.toString(),
           page: page.toString(),
         });
-        return randomSort(words);
+
+        return randomSort(await Words.checkWords(words, group, page));
       }
       const wordsAll = await Promise.all([...Array(COUNTPAGE).keys()].map((key) => Words.getWords({
-        group: level.toString(),
+        group: group.toString(),
         page: key.toString(),
       })));
 
@@ -98,9 +106,9 @@ class Sprint extends Control {
     }
   }
 
-  private async getAggregatedWords() {
-    const group = 0;
-    const page = 2;
+  private async getAggregatedWords(words: number[]) {
+    const [group, page] = words;
+
     const stateLog = await this.login.checkStorageLogin();
 
     if (stateLog.state) {
