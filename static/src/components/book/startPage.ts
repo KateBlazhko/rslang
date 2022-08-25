@@ -2,6 +2,8 @@ import { IWord } from "../api/Words";
 import Control from "../common/control";
 import ButtonAnswer from "./buttonAnswer";
 import BookState from "./bookState";
+import API_URL from "../../constants/api";
+import createWordItem from "./createWordItem";
 
 enum TextInner {
   title = "Book",
@@ -37,11 +39,55 @@ class StartPage extends Control {
 
     const wordsBlock = new Control(this.node, "div", "book__wrapper");
 
-    this.words.forEach(
-      (wordItem) =>
-        (wordsBlock.node.innerHTML += `
-    <div class="book__item"><h1 class="book__item-textExample">${wordItem.textExample}</h1></div>`)
-    );
+    this.words.forEach((wordItem) => {
+      const bookItem = new Control(wordsBlock.node, "div", "book__item");
+      createWordItem(wordItem, bookItem);
+      //   soundElement.element.addEventListener("click", async () => {
+      //     const sounds = [
+      //       `${API_URL}/${word.audio}`,
+      //       `${API_URL}/${word.audioMeaning}`,
+      //       `${API_URL}/${word.audioExample}`,
+      //     ];
+      //     const playSound1 = new Audio(sounds[0]);
+      //     await playSound1.play();
+      //     const playSound1Duration = playSound1.duration * 1000;
+      //     const playSound2 = new Audio(sounds[1]);
+      //     setTimeout(async () => {
+      //       await playSound2.play();
+      //       const playSound2Duration =
+      //         (playSound1.duration + playSound2.duration) * 1000;
+      //       const playSound3 = new Audio(sounds[2]);
+      //       setTimeout(async () => {
+      //         await playSound3.play();
+      //       }, playSound2Duration);
+      //     }, playSound1Duration);
+      //   });
+      //   wordsBlock.node.innerHTML += `
+      // <div class="book__item">
+      //     <img class="book__item-image" src="${API_URL}/${wordItem.image}" alt="${wordItem.word}"/>
+      //     <h1 class="book__item-word">${wordItem.word}</h1>
+      //     <p>${wordItem.transcription}</p>
+      //     <p>${wordItem.wordTranslate}</p>
+      //     <p>${wordItem.textMeaning}</p>
+      //     <p>${wordItem.textMeaningTranslate}</p>
+      //     <p>${wordItem.textExample}</p>
+      //     <p>${wordItem.textExampleTranslate}</p>
+      //     <div class="book__item-sound" data-audio="${wordItem.audio}"></div>
+      // </div>`;
+
+      //   const audioItem = document.querySelector(".book__item-sound");
+
+      //   audioItem?.addEventListener("click", (event) => {
+      //     console.log(wordItem.audio);
+      //     new Audio(`${API_URL}/${wordItem.audio}`).play();
+      //   });
+      //   playSound();
+      //   console.log(wordItem);
+    });
+
+    // this.words.forEach(wordItem => {
+    //     const audioItem = document.querySelector(`"[data-audio=${word.audio}]"`)
+    // })
 
     console.log("words-words", this.words);
 

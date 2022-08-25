@@ -33,15 +33,17 @@ $color-water: #8ae4ff80;
   &__wrapper {
     display: flex;
     flex-flow: row wrap;
-    gap: 40px;
+    row-gap: 40px;
+    column-gap: 40px;
+    justify-content: center;
+    margin: 20px 0;
   }
 
   &__item {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
     justify-content: start;
-    gap: 2rem;
     flex-wrap: wrap;
     width: 45%;
     padding: 2rem;
@@ -52,8 +54,24 @@ $color-water: #8ae4ff80;
     border-radius: 2rem;
   }
 
-  &__textExample {
+  &__item-image {
+    width: 100%;
+  }
+
+  &__item-word {
     font-size: 1.5rem;
+  }
+
+  &__item-sound {
+    margin-top: 10px;
+    width: 5rem;
+    height: 5rem;
+    background-image: url("./assets/icons/sound.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-shadow: 8px 8px 43px -1px $color-text-start;
+    border-radius: 50%;
+    cursor: pointer;
   }
 
   &__indicator {

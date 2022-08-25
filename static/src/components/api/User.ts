@@ -1,32 +1,33 @@
-import ErrorUser from '../utils/ErrorUser';
+import ErrorUser from "../utils/ErrorUser";
+import API_URL from "../../constants/api";
 
-// const localLink = 'http://localhost:3000';
-const localLink = 'https://rs-lang-machine.herokuapp.com';
+const localLink = "http://localhost:3000";
+const BASELINK = API_URL;
 interface ICreateUser {
-  name: string,
-  email: string,
-  password: string
+  name: string;
+  email: string;
+  password: string;
 }
 
 interface ILoginUser {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 
 interface IAuth {
-  message: string
-  token: string
-  refreshToken: string
-  userId: string
-  name: string
+  message: string;
+  token: string;
+  refreshToken: string;
+  userId: string;
+  name: string;
 }
 class User {
   static createUser = async (user: ICreateUser) => {
     const rawResponse = await fetch(`${localLink}/users`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
     });
@@ -40,10 +41,10 @@ class User {
 
   static loginUser = async (user: ILoginUser) => {
     const rawResponse = await fetch(`${localLink}/signin`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
     });
@@ -56,10 +57,10 @@ class User {
 
   static getUser = async (userId: string, token: string) => {
     const rawResponse = await fetch(`${localLink}/users/${userId}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
+        Accept: "application/json",
       },
     });
     try {

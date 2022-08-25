@@ -15,4 +15,6 @@ function randomSort(array: IWord[]) {
   return array;
 }
 
+
+
 export default randomSort;
