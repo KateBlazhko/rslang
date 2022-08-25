@@ -6,7 +6,6 @@ import SprintState from './sprintState';
 import StartPage from './startPage';
 import randomSort from '../common/functions';
 import Logging, { IStateLog } from '../Logging';
-import soundManager from '../utils/soundManager';
 
 enum TextInner {
   preloader = 'We\'re getting closer, get ready...',
@@ -19,6 +18,7 @@ export interface IWordStat {
 }
 
 const COUNTPAGE = 30;
+const COUNTGROUP = 6;
 
 class Sprint extends Control {
   private preloader: Control;
@@ -55,28 +55,36 @@ class Sprint extends Control {
     const [group, page] = words;
     this.node.append(this.preloader.node);
 
-    if (this.state.getInitiator() === 'header') {
-      this.words = await this.getWords(group);
-    } else {
-      // todo this.questions = await this.getQuestions(group, page)
-    }
+    try {
+      if (this.state.getInitiator() === 'header') {
+        this.words = await this.getWords(group);
+      } else {
+        this.words = await this.getAggregatedWords();
+      }
 
-    this.preloader.destroy();
-    this.gamePage = new GamePage(this.node, this.state, this.words, this.onFinish);
+      this.preloader.destroy();
+      this.gamePage = new GamePage(this.node, this.state, this.words, this.onFinish);
+    } catch {
+      this.preloader.node.textContent = TextInner.error;
+      setTimeout(() => {
+        this.preloader.destroy();
+        this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
+      }, 2000);
+    }
   }
 
   private async getWords(level: number, page?: number) {
     try {
       if (page) {
         const words = await Words.getWords({
-          group: level,
-          page,
+          group: level.toString(),
+          page: page.toString(),
         });
         return randomSort(words);
       }
       const wordsAll = await Promise.all([...Array(COUNTPAGE).keys()].map((key) => Words.getWords({
-        group: level,
-        page: key,
+        group: level.toString(),
+        page: key.toString(),
       })));
 
       return randomSort(wordsAll.flat());
@@ -88,6 +96,27 @@ class Sprint extends Control {
       });
       return [];
     }
+  }
+
+  private async getAggregatedWords() {
+    const group = 0;
+    const page = 2;
+    const stateLog = await this.login.checkStorageLogin();
+
+    if (stateLog.state) {
+      const aggregatedWords = await Words.getNoLearnWords(stateLog, group);
+
+      const aggregatedWordsFull = await Words.checkAggregatedWords(
+        aggregatedWords,
+        group,
+        page,
+        stateLog,
+      );
+
+      return randomSort(aggregatedWordsFull);
+    }
+
+    throw new Error('no logging');
   }
 
   private async recordStatToBD(wordsStat: IWordStat[]) {

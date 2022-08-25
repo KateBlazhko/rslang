@@ -35,17 +35,33 @@ export interface IUserWord {
     }
 }
 
+export interface IAggregatedWords {
+  paginatedResults: IWord[]
+  totalCount: {
+    count: number
+  }[]
+}
+
+export interface IQueryParams {
+  group: string,
+  page?: string,
+  wordsPerPage?: string,
+  filter?: string
+}
+
 class Words {
-  public static getQueryParams(gueryParams: Record<string, string | number>): string {
+  public static getQueryParams(gueryParams: IQueryParams): string {
     let search = '';
     Object.keys(gueryParams).forEach((key) => {
-      if (gueryParams[key]) { search += `${key}=${gueryParams[key]}&`; }
+      if (key in gueryParams) {
+        search += `${key}=${gueryParams[key as keyof IQueryParams]}&`;
+      }
     });
 
     return search.slice(0, -1);
   }
 
-  public static async getWords(gueryParams: Record<string, string | number>) {
+  public static async getWords(gueryParams: IQueryParams) {
     const url = `${BASELINK}/words?${Words.getQueryParams(gueryParams)}`;
 
     const rawResponse = await fetch(url);
@@ -226,6 +242,130 @@ class Words {
 
     return userWord.optional.isLearn;
   }
+
+  private static async getAggregatedWords(
+    userId: string,
+    token: string,
+    gueryParams: IQueryParams,
+  ) {
+    const url = `${BASELINK}/users/${userId}/aggregatedWords?${Words.getQueryParams(gueryParams)}`;
+
+    const rawResponse = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+
+    const content: IAggregatedWords[] = await rawResponse.json();
+
+    try {
+      return content;
+    } catch (e) {
+      return new ErrorUser(rawResponse);
+    }
+  }
+
+  public static async getNoLearnWords(stateLog: IStateLog, group: number) {
+    const aggregatedWords = await Words.getAggregatedWords(
+      stateLog.userId,
+      stateLog.token,
+      {
+        group: group.toString(),
+        page: '0',
+        wordsPerPage: '600',
+        filter: encodeURIComponent(JSON.stringify({ $or: [{ 'userWord.optional.isLearn': false }, { userWord: null }] })),
+      },
+    );
+
+    return aggregatedWords;
+  }
+
+  public static async checkAggregatedWords(
+    aggregatedWords: IAggregatedWords[] | ErrorUser,
+    group: number,
+    page: number,
+    stateLog: IStateLog,
+  ) {
+    if (Array.isArray(aggregatedWords)) {
+      const aggregatedWordsAll = aggregatedWords
+        .map((aggregatedWord) => aggregatedWord.paginatedResults
+          .filter((res) => res.page === page))
+        .flat();
+
+      if (aggregatedWordsAll.length < 100 && page > 0) {
+        const pageList = [...Array(page).keys()];
+        const pageIndex = pageList.length - 1;
+
+        aggregatedWordsAll.push(...await Words.addWordsFromOtherPages(
+          aggregatedWordsAll.length,
+          pageList,
+          pageIndex,
+          group,
+          stateLog,
+        ));
+      }
+
+      return aggregatedWordsAll;
+    }
+
+    throw ErrorUser;
+  }
+
+  private static async addWordsFromOtherPages(
+    currentCount: number,
+    pageList: number[],
+    pageIndex: number,
+    group: number,
+    stateLog: IStateLog,
+  ) {
+    let count = currentCount;
+    const words: IWord[] = [];
+
+    if (count >= 100 || pageIndex < 0) {
+      return words;
+    }
+
+    const aggregatedWordsAdd = await Words.getNoLearnWords(stateLog, group);
+
+    if (Array.isArray(aggregatedWordsAdd)) {
+      const aggregatedWordsAddAll = aggregatedWordsAdd
+        .map((aggregatedWordAdd) => aggregatedWordAdd.paginatedResults
+          .filter((res) => res.page === pageList[pageIndex]))
+        .flat();
+
+      words.push(...aggregatedWordsAddAll);
+
+      count += aggregatedWordsAddAll.length;
+
+      words.push(...await Words.addWordsFromOtherPages(
+        count,
+        pageList,
+        pageIndex - 1,
+        group,
+        stateLog,
+      ));
+    }
+
+    return words;
+    // words.push(...await Words.addWordsFromOtherPages(count, page, group, stateLog))
+  }
+
+  // while (count < 100 && pageIndex >= 0) {
+  //   const aggregatedWordsAdd = await Words.getNoLearnWords(stateLog, group, page);
+
+  //   if (Array.isArray(aggregatedWordsAdd)) {
+  //     const aggregatedWordsAddAll = aggregatedWordsAdd
+  //       .map((aggregatedWordAdd) => aggregatedWordAdd.paginatedResults
+  //         .filter((res) => res.page === pageList[pageIndex]))
+  //       .flat();
+
+  //     words.push(...aggregatedWordsAddAll);
+  //     pageIndex -= 1;
+  //     count += aggregatedWordsAddAll.length;
+  //   }
+  // }
 }
 
 export default Words;
