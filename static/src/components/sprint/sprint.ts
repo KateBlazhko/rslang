@@ -98,101 +98,11 @@ class Sprint extends Control {
       const recordResult = await Promise.all(wordsStat.map((word) => {
         const userWord = userWordsAll.find((item) => item.optional.wordId === word.wordId);
         if (userWord) {
-          return Sprint.updateUserWord(stateLog, userWord, word.answer);
+          return Words.updateUserStat(stateLog, userWord, word.answer);
         }
-        return Sprint.createUserWord(stateLog, word);
+        return Words.createUserStat(stateLog, word);
       }));
     }
-  }
-
-  private static async updateUserWord(stateLog: IStateLog, userWord: IUserWord, answer: boolean) {
-    if (answer) {
-      const isLearn = Sprint.checkIsLearn(userWord);
-      const date = new Date();
-      const result = await Words.updateUserWord(
-        stateLog.userId,
-        stateLog.token,
-        userWord.optional.wordId,
-        {
-          difficulty: isLearn ? 'easy' : userWord.difficulty,
-          optional: {
-            wordId: userWord.optional.wordId,
-            сountRightAnswer: userWord.optional.сountRightAnswer + 1,
-            countError: userWord.optional.countError,
-            seriesRightAnswer: userWord.optional.seriesRightAnswer + 1,
-            isLearn,
-            dataGetNew: userWord.optional.dataGetNew,
-            dataLearn: (isLearn && isLearn !== userWord.optional.isLearn) ? date : undefined,
-          },
-        },
-      );
-      return result;
-    }
-    const result = await Words.updateUserWord(
-      stateLog.userId,
-      stateLog.token,
-      userWord.optional.wordId,
-      {
-        difficulty: userWord.difficulty,
-        optional: {
-          wordId: userWord.optional.wordId,
-          сountRightAnswer: userWord.optional.сountRightAnswer,
-          countError: userWord.optional.countError + 1,
-          seriesRightAnswer: 0,
-          isLearn: false,
-          dataGetNew: userWord.optional.dataGetNew,
-        },
-      },
-    );
-    return result;
-  }
-
-  private static async createUserWord(stateLog: IStateLog, word: IWordStat) {
-    const date = new Date();
-
-    if (word.answer) {
-      const result = await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
-        difficulty: 'easy',
-        optional: {
-          wordId: word.wordId,
-          сountRightAnswer: 1,
-          countError: 0,
-          seriesRightAnswer: 1,
-          isLearn: false,
-          dataGetNew: date,
-        },
-      });
-      return result;
-    }
-    const result = await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
-      difficulty: 'easy',
-      optional: {
-        wordId: word.wordId,
-        сountRightAnswer: 0,
-        countError: 1,
-        seriesRightAnswer: 0,
-        isLearn: false,
-        dataGetNew: date,
-      },
-    });
-
-    return result;
-  }
-
-  private static checkIsLearn(userWord: IUserWord) {
-    if (userWord.difficulty === 'easy') {
-      if (userWord.optional.seriesRightAnswer + 1 >= 3) {
-        return true;
-      }
-    }
-
-    if (userWord.difficulty === 'hard') {
-      if (userWord.optional.seriesRightAnswer + 1 >= 5) {
-        return true;
-      }
-    }
-
-    return userWord.optional.isLearn;
   }
 
   public destroy() {

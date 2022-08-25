@@ -1,3 +1,5 @@
+import { IStateLog } from '../Logging';
+import { IWordStat } from '../sprint/sprint';
 import ErrorUser from '../utils/ErrorUser';
 
 export const BASELINK = 'http://localhost:3000';
@@ -94,7 +96,6 @@ class Words {
     word: IUserWord,
   ) {
     const url = `${BASELINK}/users/${userId}/words/${wordId}`;
-    console.log(JSON.stringify(word));
     const rawResponse = await fetch(url, {
       method: 'POST',
       headers: {
@@ -134,6 +135,96 @@ class Words {
     } catch (e) {
       return new ErrorUser(rawResponse);
     }
+  }
+
+  public static async updateUserStat(stateLog: IStateLog, userWord: IUserWord, answer: boolean) {
+    if (answer) {
+      const isLearn = Words.checkIsLearn(userWord);
+      const date = new Date();
+      const result = await Words.updateUserWord(
+        stateLog.userId,
+        stateLog.token,
+        userWord.optional.wordId,
+        {
+          difficulty: isLearn ? 'easy' : userWord.difficulty,
+          optional: {
+            wordId: userWord.optional.wordId,
+            сountRightAnswer: userWord.optional.сountRightAnswer + 1,
+            countError: userWord.optional.countError,
+            seriesRightAnswer: userWord.optional.seriesRightAnswer + 1,
+            isLearn,
+            dataGetNew: userWord.optional.dataGetNew,
+            dataLearn: (isLearn && isLearn !== userWord.optional.isLearn) ? date : undefined,
+          },
+        },
+      );
+      return result;
+    }
+    const result = await Words.updateUserWord(
+      stateLog.userId,
+      stateLog.token,
+      userWord.optional.wordId,
+      {
+        difficulty: userWord.difficulty,
+        optional: {
+          wordId: userWord.optional.wordId,
+          сountRightAnswer: userWord.optional.сountRightAnswer,
+          countError: userWord.optional.countError + 1,
+          seriesRightAnswer: 0,
+          isLearn: false,
+          dataGetNew: userWord.optional.dataGetNew,
+        },
+      },
+    );
+    return result;
+  }
+
+  public static async createUserStat(stateLog: IStateLog, word: IWordStat) {
+    const date = new Date();
+
+    if (word.answer) {
+      const result = await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
+        difficulty: 'easy',
+        optional: {
+          wordId: word.wordId,
+          сountRightAnswer: 1,
+          countError: 0,
+          seriesRightAnswer: 1,
+          isLearn: false,
+          dataGetNew: date,
+        },
+      });
+      return result;
+    }
+    const result = await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
+      difficulty: 'easy',
+      optional: {
+        wordId: word.wordId,
+        сountRightAnswer: 0,
+        countError: 1,
+        seriesRightAnswer: 0,
+        isLearn: false,
+        dataGetNew: date,
+      },
+    });
+
+    return result;
+  }
+
+  private static checkIsLearn(userWord: IUserWord) {
+    if (userWord.difficulty === 'easy') {
+      if (userWord.optional.seriesRightAnswer + 1 >= 3) {
+        return true;
+      }
+    }
+
+    if (userWord.difficulty === 'hard') {
+      if (userWord.optional.seriesRightAnswer + 1 >= 5) {
+        return true;
+      }
+    }
+
+    return userWord.optional.isLearn;
   }
 }
 
