@@ -7,7 +7,7 @@ import Validator from './utils/Validator';
 import { User, IAuth } from './api/User';
 
 export interface IStateLog {
-  state: boolean; 
+  state: boolean;
   userId: string;
   token: string
 }
@@ -65,7 +65,7 @@ class Logging {
         password: form.password.value,
       });
       if (res.status === 200) {
-        const user: IAuth = await (res as Response).json()
+        const user: IAuth = await (res as Response).json();
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog(user);
       } else {
@@ -89,7 +89,7 @@ class Logging {
       });
 
       if (res.status === 200) {
-        const user: IAuth = await (res as Response).json()
+        const user: IAuth = await (res as Response).json();
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog(user);
       } else {
@@ -104,8 +104,8 @@ class Logging {
     this.stateLog = {
       state: true,
       userId: user.userId,
-      token: user.token
-    }
+      token: user.token,
+    };
     this.loginBtn.updateLogStatus(this.stateLog.state);
     this.accessStatistics();
   }
@@ -115,8 +115,8 @@ class Logging {
     this.stateLog = {
       state: false,
       userId: '',
-      token: ''
-    }
+      token: '',
+    };
     this.loginBtn.updateLogStatus(this.stateLog.state);
     this.accessStatistics();
   }
@@ -135,7 +135,7 @@ class Logging {
       this.unsuccessLog();
     }
 
-    return this.stateLog
+    return this.stateLog;
   }
 
   accessStatistics() {

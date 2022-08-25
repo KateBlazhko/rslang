@@ -54,14 +54,13 @@ class ResultPage extends Control {
   }
 
   private renderResult() {
-    const answers = this.words.filter((_word, index) => this.results[index] !== undefined)
+    const answers = this.words.filter((_word, index) => this.results[index] !== undefined);
 
     return answers.map((word, index) => {
-
       const resultRow = new Control(this.tableWrap.node, 'div', 'result__row');
       const icon = this.results[index]
-      ? new SVG(resultRow.node, 'result__true', `${icons}#true`)
-      : new SVG(resultRow.node, 'result__false', `${icons}#false`);
+        ? new SVG(resultRow.node, 'result__true', `${icons}#true`)
+        : new SVG(resultRow.node, 'result__false', `${icons}#false`);
 
       const wordAudioWrap = new Control(resultRow.node, 'div', 'result__sound-wrap');
 
@@ -76,7 +75,6 @@ class ResultPage extends Control {
         audio: word.audio,
         container: wordAudioWrap.node,
       };
-      
     });
   }
 

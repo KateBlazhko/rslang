@@ -1,5 +1,5 @@
 import Control from '../common/control';
-import Words, { IUserWord, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import SprintState from './sprintState';
 import Timer from './timer';
 import SVG from '../common/svgElement';
@@ -40,8 +40,8 @@ class GamePage extends Control {
   private timerWrap: Control;
 
   private buttonReturn: Control;
-  
-  private questions: [IWord, string][]
+
+  private questions: [IWord, string][];
 
   private indicatorList: SVG[] = [];
 
@@ -57,7 +57,7 @@ class GamePage extends Control {
 
   private countRightAnswer: number = 0;
 
-  private wordsStat: IWordStat[] = []
+  private wordsStat: IWordStat[] = [];
 
   private onGetAnswer: (answer: boolean) => void;
 
@@ -65,13 +65,13 @@ class GamePage extends Control {
     public parentNode: HTMLElement | null,
     private state: SprintState,
     private words: IWord[],
-    private onFinish: Signal<IWordStat[]>
+    private onFinish: Signal<IWordStat[]>,
   ) {
     super(parentNode, 'div', 'sprint__game');
     this.onGetAnswer = () => {};
     this.state.onSoundOn.add(this.renderSoundSettings.bind(this));
 
-    this.questions = this.createQuestions()
+    this.questions = this.createQuestions();
     this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
       const startPage = new StartPage(parentNode, this.state, this.state.getInitiator());
@@ -214,11 +214,15 @@ class GamePage extends Control {
       return;
     }
 
-    const question = new Question(this.questionWrap.node, this.questions[indexQuestion], this.state);
+    const question = new Question(
+      this.questionWrap.node,
+      this.questions[indexQuestion],
+      this.state,
+    );
 
     this.onGetAnswer = (value: boolean) => {
       const result = question.onAnswer(value);
-      const [ word ] = question.word;
+      const [word] = question.word;
 
       if (result) {
         this.countRightAnswer += 10 * this.rate;
@@ -227,14 +231,13 @@ class GamePage extends Control {
         this.correctAnswerSeries += 1;
         this.checkAnswerSeries(this.correctAnswerSeries);
 
-
-        this.getStat(word, true)
+        this.getStat(word, true);
 
         if (this.state.getSoundPlay()) soundManager.playOk();
       } else {
         this.resetAnswerSeries();
 
-        this.getStat(word, false)
+        this.getStat(word, false);
 
         if (this.state.getSoundPlay()) soundManager.playFail();
       }
@@ -248,8 +251,8 @@ class GamePage extends Control {
   private getStat(word: IWord, answer: boolean) {
     this.wordsStat.push({
       wordId: word.id,
-      answer: answer
-    }) 
+      answer,
+    });
   }
 
   private checkAnswerSeries(correctAnswerSeries: number) {
@@ -286,7 +289,7 @@ class GamePage extends Control {
   }
 
   private finish() {
-    this.onFinish.emit(this.wordsStat)
+    this.onFinish.emit(this.wordsStat);
     this.destroy();
     const resultPage = new ResultPage(this.parentNode, this.state, this.words, this.results);
   }

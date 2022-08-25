@@ -1,13 +1,12 @@
-import { IWord } from "../api/Words";
+import { IWord } from '../api/Words';
 
-export function randomSort(array: IWord[]) {
+function randomSort(array: IWord[]) {
   let currentIndex: number = +array.length;
   let randomIndex: number;
 
-  while (currentIndex != 0) {
-
+  while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
+    currentIndex -= 1;
 
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex], array[currentIndex]];
@@ -15,3 +14,5 @@ export function randomSort(array: IWord[]) {
 
   return array;
 }
+
+export default randomSort;

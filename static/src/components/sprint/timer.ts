@@ -19,7 +19,7 @@ class Timer extends Control {
     this.render(time);
     let currentTime = time;
 
-    if (this.timer){
+    if (this.timer) {
       this.stop();
     }
 
