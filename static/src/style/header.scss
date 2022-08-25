@@ -1,7 +1,12 @@
+$header-button-shadow: gainsboro;
+$hover-item-background: rgb(112, 112, 198);
+$hover-item-border: rgb(66, 66, 120);
+$color-header-gray: rgb(170, 169, 169);
+
 header {
   height: 60px;
   width: 100%;
-  box-shadow: 0 2px 5px gainsboro;
+  box-shadow: 0 2px 5px $header-button-shadow;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,16 +26,18 @@ header {
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 3px rgb(170, 169, 169);
+      box-shadow: 0 0 3px $color-header-gray;
       border-radius: 4px;
       padding: 5px 10px;
-      border-bottom: 3px solid #aaa9a9;
+
+      border-bottom: 3px solid $color-header-gray;
+
       transition: background-color .4s;
   
       &:hover {
-        background-color: rgb(112, 112, 198);
+        background-color: $hover-item-background;
         color: white;
-        border-bottom: 3px solid rgb(66, 66, 120);
+        border-bottom: 3px solid $hover-item-border;
       }
 
       &.active {
@@ -73,11 +80,6 @@ header {
       &:hover {
         border-bottom: none;
       }
-    }
-
-    .log-in {
-      background-color: rgb(2, 166, 2);
-      border-bottom: 3px solid rgb(1, 92, 1);
     }
   }
 }

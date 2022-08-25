@@ -7,8 +7,9 @@ class ButtonHref extends Control<HTMLAnchorElement> {
     parentNode: HTMLElement | null,
     href: string,
     content?: string,
+    className = '',
   ) {
-    super(parentNode, 'a', '', content);
+    super(parentNode, 'a', className, content);
     this.href = href;
     this.addHref(href);
   }
