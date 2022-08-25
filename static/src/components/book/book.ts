@@ -55,20 +55,16 @@ class Book extends Control {
   // private async renderPreloader(words: number[]) {
   //   const [group, page] = words;
   //   this.node.append(this.preloader.node);
-  //   console.log('!')
   //   this.words = await this.getWords();
   //   this.preloader.destroy();
   // }
 
   private async getWords(level = 0, page = 0) {
     try {
-      console.log("!");
       const words = await Words.getWords({
         group: level,
         page,
       });
-      console.log(this.node)
-      console.log(words);
 
       this.startPage = new StartPage(this.node, words, this.state);
 
@@ -82,13 +78,11 @@ class Book extends Control {
       //   )
       // );
       // const worsResult = wordsAll.flat();
-      // console.log(worsResult);
       // return worsResult;
     } catch {
       // this.preloader.node.textContent = TextInner.error;
       // setTimeout(() => {
       //   this.preloader.destroy();
-      //   console.log('!')
       //   this.startPage = new StartPage(this.node, this.state);
       // });
       // return [];
@@ -96,7 +90,6 @@ class Book extends Control {
   }
 
   public destroy() {
-    console.log("destroy");
     // if (this.gamePage) {
     //   this.gamePage.destroy();
     // }

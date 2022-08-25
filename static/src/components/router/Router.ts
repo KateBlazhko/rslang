@@ -38,7 +38,7 @@ class Router {
       case 'about':
         container.innerHTML = '<h1>About Us</h1>';
         break;
-      case 'book':
+      case 'book/0/0':
         container.innerHTML = '';
         this.currentPage = new Book(container, this.login, this.onGoPage);
         break;

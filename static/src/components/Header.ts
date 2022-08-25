@@ -47,7 +47,7 @@ class Header {
 
     const home = new ButtonHref(nav.node, '#home', ButtonHrefContent.home);
     const about = new ButtonHref(nav.node, '#about', ButtonHrefContent.about);
-    const book = new ButtonHref(nav.node, '#book', ButtonHrefContent.book);
+    const book = new ButtonHref(nav.node, '#book/0/0', ButtonHrefContent.book);
     const sprint = new ButtonHref(nav.node, '#sprint', ButtonHrefContent.sprint);
     const audio = new ButtonHref(nav.node, '#audio', ButtonHrefContent.audio);
 
