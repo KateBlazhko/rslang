@@ -14,16 +14,20 @@ class CreateWordItem {
     image.src = `${API_URL}/${word.image}`;
     image.alt = word.word;
 
-    new Control(bookItem.node, "h1", "book__item-word", word.word);
+    new Control(bookItem.node, "h1", "book__item-text", word.word);
     [
       word.transcription,
       word.wordTranslate,
-      word.textMeaning,
       word.textMeaningTranslate,
-      word.textExample,
       word.textExampleTranslate,
-    ].forEach((textElem) => new Control(bookItem.node, "p", "", textElem));
+    ].forEach(
+      (textElem) => new Control(bookItem.node, "p", "book__item-text", textElem)
+    );
 
+    bookItem.node.innerHTML += `
+      <p class="book__item-text">${word.textExample}</p>
+      <p class="book__item-text">${word.textMeaning}</p>
+    `;
     const audioElement = new Control(bookItem.node, "img", "book__item-sound");
 
     audioElement.node.addEventListener("click", async () => {
