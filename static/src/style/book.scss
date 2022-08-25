@@ -56,6 +56,7 @@ $color-water: #8ae4ff80;
 
   &__item-image {
     width: 100%;
+    border-radius: 8px;
   }
 
   &__item-text {
@@ -73,6 +74,10 @@ $color-water: #8ae4ff80;
     box-shadow: 8px 8px 43px -1px $color-text-start;
     border-radius: 50%;
     cursor: pointer;
+  }
+
+  &__button-current-page {
+    pointer-events: none;
   }
 
   &__desription {
@@ -140,9 +145,6 @@ $color-water: #8ae4ff80;
     &:hover {
       color: $color-button-start;
       background-color: $color-shadow;
-    }
-
-    &_pseudo {
     }
   }
 

@@ -3,6 +3,7 @@ import Control from "../common/control";
 import ButtonAnswer from "./buttonAnswer";
 import BookState from "./bookState";
 import CreateWordItem from "./createWordItem";
+import bookConfig from "../../constants/bookConfig";
 
 enum TextInner {
   title = "Book",
@@ -31,11 +32,28 @@ class StartPage extends Control {
     pagesText.node.innerHTML = `
     <span>${TextInner.pagesText}</span>
     <div class="book__button-wrap book__button-wrap_pseudo">
-      <div class="book__button book__button_pseudo"><span>←</span></div>
-      <div class="book__button">1</div>
-      <div class="book__button book__button_pseudo"><span>→</span></div>
+      <div class="book__button book__button-previous"><span>←</span></div>
+      <div class="book__button book__button-current-page">1</div>
+      <div class="book__button book__button-next"><span>→</span></div>
     </div>
     `;
+
+    const buttonNext = document.querySelector(".book__button-next");
+    const buttonPrevious = document.querySelector(".book__button-previous");
+    const currentPage = document.querySelector(".book__button-current-page");
+    buttonNext?.addEventListener("click", () => {
+      if (
+        currentPage?.textContent &&
+        +currentPage.textContent <= bookConfig.maxPage
+      ) {
+        currentPage.innerHTML = `${+currentPage.innerHTML + 1}`;
+      }
+    });
+    buttonPrevious?.addEventListener("click", () => {
+      if (currentPage?.textContent && +currentPage.textContent > 1) {
+        currentPage.innerHTML = `${+currentPage.innerHTML - 1}`;
+      }
+    });
 
     const button = new Control(
       this.node,
