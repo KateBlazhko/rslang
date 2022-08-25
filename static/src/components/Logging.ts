@@ -67,7 +67,8 @@ class Logging {
       if (res.status === 200) {
         const user: IAuth = await (res as Response).json();
         localStorage.setItem('user', JSON.stringify(user));
-        this.successLog(user);
+        this.successLog();
+        this.saveState(user);
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -89,34 +90,20 @@ class Logging {
       });
 
       if (res.status === 200) {
-        const user: IAuth = await (res as Response).json();
+        const user: IAuth = await (log as Response).json();
         localStorage.setItem('user', JSON.stringify(user));
-        this.successLog(user);
+        this.successLog();
+        this.saveState(user);
       } else {
         this.modal.callErrorWindow(res.status);
       }
     }
   }
 
-  successLog(user: IAuth) {
+  successLog() {
     Validator.removeAllWarning(this.modal.name, this.modal.email, this.modal.password);
     this.modal.formElements.background.destroy();
-    this.stateLog = {
-      state: true,
-      userId: user.userId,
-      token: user.token,
-    };
-    this.loginBtn.updateLogStatus(this.stateLog.state);
-    this.accessStatistics();
-  }
-
-  unsuccessLog() {
-    this.modal.formElements.background.destroy();
-    this.stateLog = {
-      state: false,
-      userId: '',
-      token: '',
-    };
+    this.stateLog.state = true;
     this.loginBtn.updateLogStatus(this.stateLog.state);
     this.accessStatistics();
   }
@@ -127,15 +114,16 @@ class Logging {
       const user = JSON.parse(response) as IAuth;
       const req = await User.getUser(user.userId, user.token);
       if (req.status === 200) {
-        this.successLog(user);
-      } else {
-        this.unsuccessLog();
+        this.successLog();
+        this.saveState(user);
       }
-    } else {
-      this.unsuccessLog();
     }
-
     return this.stateLog;
+  }
+
+  saveState(user: IAuth) {
+    this.stateLog.token = user.token;
+    this.stateLog.userId = user.userId;
   }
 
   accessStatistics() {
@@ -152,7 +140,7 @@ class Logging {
 
   outModalBtnListen() {
     this.modal.yesBtn.node.addEventListener('click', () => {
-      this.stateLog.state = false;
+      this.stateLog = { state: false, token: '', userId: '' };
       this.loginBtn.updateLogStatus(this.stateLog.state);
       this.accessStatistics();
       localStorage.removeItem('user');
