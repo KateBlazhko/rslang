@@ -26,7 +26,6 @@ class ResultPage extends Control {
 
   private wordSoundList: Control<HTMLImageElement>[] = [];
 
-
   private audiotList;
 
   constructor(
@@ -82,8 +81,7 @@ class ResultPage extends Control {
     this.wordSoundList = this.audiotList.map((item) => {
       if (item.audio && isSoundOn) {
         const wordSound = new Control<HTMLImageElement>(item.container, 'img', 'sound');
-        wordSound.node.src = './assets/icons/volume.png'
-
+        wordSound.node.src = './assets/icons/volume.png';
 
         wordSound.node.onclick = () => {
           const audio = new Audio(`${BASELINK}/${item.audio}`);
@@ -92,8 +90,8 @@ class ResultPage extends Control {
         return wordSound;
       }
       const wordSound = new Control<HTMLImageElement>(item.container, 'img', 'sound');
-      wordSound.node.src = './assets/icons/mute.png'
-      return wordSound
+      wordSound.node.src = './assets/icons/mute.png';
+      return wordSound;
     });
   }
 }

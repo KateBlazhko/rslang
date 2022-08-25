@@ -29,7 +29,6 @@ class GamePage extends Control {
 
   private soundSettings: Control<HTMLImageElement> | null = null;
 
-
   private animationWrap: Control | null = null;
 
   private pointsView: Control;
@@ -159,11 +158,11 @@ class GamePage extends Control {
 
     if (isSoundOn) {
       this.soundSettings = new Control<HTMLImageElement>(this.settingsSoundWrap.node, 'img', 'sound');
-      this.soundSettings.node.src = './assets/icons/volume.png'
+      this.soundSettings.node.src = './assets/icons/volume.png';
       // this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
     } else {
       this.soundSettings = new Control<HTMLImageElement>(this.settingsSoundWrap.node, 'img', 'sound');
-      this.soundSettings.node.src = './assets/icons/mute.png'
+      this.soundSettings.node.src = './assets/icons/mute.png';
       // this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#mute`);
     }
 

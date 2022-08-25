@@ -349,7 +349,6 @@ class Words {
 
     return words;
   }
-
 }
 
 export default Words;

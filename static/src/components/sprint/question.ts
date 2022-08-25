@@ -19,7 +19,7 @@ class Question extends Control {
   ) {
     super(parentNode, 'div', 'sprint__question question');
     this.state.onSoundOn.add(this.renderSoundIcon.bind(this));
-    
+
     this.wordAudioWrap = new Control(this.node, 'div', 'question__sound-wrap');
     this.renderSoundIcon(this.state.getSoundPlay());
 
@@ -39,7 +39,7 @@ class Question extends Control {
 
     if (word.audio && isSoundOn) {
       this.wordSound = new Control<HTMLImageElement>(this.wordAudioWrap.node, 'img', 'sound');
-      this.wordSound.node.src = './assets/icons/volume.png'
+      this.wordSound.node.src = './assets/icons/volume.png';
 
       this.wordSound.node.onclick = () => {
         const audio = new Audio(`${BASELINK}/${word.audio}`);
@@ -47,7 +47,7 @@ class Question extends Control {
       };
     } else {
       this.wordSound = new Control<HTMLImageElement>(this.wordAudioWrap.node, 'img', 'sound');
-      this.wordSound.node.src = './assets/icons/mute.png'
+      this.wordSound.node.src = './assets/icons/mute.png';
     }
   }
 
