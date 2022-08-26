@@ -1,11 +1,11 @@
-import Words, { IUserWord, IWord } from '../api/Words';
+import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
 import randomSort from '../common/functions';
-import Logging, { IStateLog } from '../Logging';
+import Logging from '../Logging';
 
 enum TextInner {
   preloader = 'We\'re getting closer, get ready...',
@@ -18,7 +18,6 @@ export interface IWordStat {
 }
 
 const COUNTPAGE = 30;
-const COUNTGROUP = 6;
 
 class Sprint extends Control {
   private preloader: Control;
@@ -56,7 +55,7 @@ class Sprint extends Control {
     this.node.append(this.preloader.node);
 
     try {
-      if (this.state.getInitiator() === 'book') {
+      if (this.state.getInitiator() === 'header') {
         this.words = await this.getWords(group);
       } else {
         const stateLog = await this.login.checkStorageLogin();
@@ -112,7 +111,6 @@ class Sprint extends Control {
 
     if (stateLog.state) {
       const aggregatedWords = await Words.getNoLearnWords(stateLog, group);
-
       const aggregatedWordsFull = await Words.checkAggregatedWords(
         aggregatedWords,
         group,

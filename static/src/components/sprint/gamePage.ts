@@ -25,8 +25,6 @@ class GamePage extends Control {
 
   private settingsSoundWrap: Control;
 
-  // private soundSettings: SVG | null = null;
-
   private soundSettings: Control<HTMLImageElement> | null = null;
 
   private animationWrap: Control | null = null;

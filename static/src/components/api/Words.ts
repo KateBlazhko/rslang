@@ -288,11 +288,12 @@ class Words {
     page: number,
     stateLog: IStateLog,
   ) {
+
     if (Array.isArray(aggregatedWords)) {
       const aggregatedWordsAll = aggregatedWords
-        .map((aggregatedWord) => aggregatedWord.paginatedResults
-          .filter((res) => res.page === page))
-        .flat();
+        .map((aggregatedWord) => aggregatedWord.paginatedResults)
+        .flat()
+        .filter((res) => res.page === page);
 
       if (aggregatedWordsAll.length < 100 && page > 0) {
         const pageList = [...Array(page).keys()];
