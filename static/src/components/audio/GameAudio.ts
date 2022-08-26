@@ -8,8 +8,11 @@ class GameAudio extends Control {
 
   value: { word: number; };
 
+  progress: Control<HTMLElement>;
+
   constructor() {
     super(null, 'div', 'game__page__audio');
+    this.progress = new Control(this.node, 'div', 'audio_call__progress');
     this.arrWords = [];
     this.value = { word: 0 };
   }
@@ -23,14 +26,22 @@ class GameAudio extends Control {
   }
 
   async game(difficult: string) {
-    this.arrWords = (await GameAudio.getAllWords(difficult));
-
-    // console.log(this.arrWords)
+    this.arrWords = await GameAudio.getAllWords(difficult);
+    this.createCard();
   }
 
-  createCard() {
+  createCard(prev?: CardAudio) {
+    if (prev) prev.destroy();
     const card = new CardAudio(this.node, this.value, this.arrWords);
-    this.arrWords.push();
+    card.allWords.forEach((item) => {
+      item.node.addEventListener('click', () => {
+        if (item.word.id === card.successWord.id) {
+          this.value.word += 1;
+          this.arrWords.splice(card.index, 1);
+          this.createCard(card);
+        }
+      });
+    });
   }
 
   render(node: HTMLElement) {

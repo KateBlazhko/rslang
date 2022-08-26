@@ -26,6 +26,7 @@ class Audio extends Control {
 
   startGame() {
     this.startPage.startBtn.node.addEventListener('click', async () => {
+      this.renderPage('game');
       this.game.game(`${this.startPage.difficult}`);
     });
   }

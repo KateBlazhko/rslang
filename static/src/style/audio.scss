@@ -10,6 +10,9 @@ $audio_btn_difficult-6: red;
   height: calc(100vh - 60px);
   background: url('../assets/img/background-audio.jpg');
   background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .start__page__audio {
     width: 100%;
@@ -105,6 +108,71 @@ $audio_btn_difficult-6: red;
           &:hover {
             box-shadow: 0 0 15px $audio_btn_difficult-6;
           }
+        }
+      }
+    }
+  }
+
+  .game__page__audio {
+    width: 70%;
+    height: 500px;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 0 5px dimgray;
+    border-bottom: 5px solid gainsboro;
+    border-top: 5px solid gainsboro;
+    padding: 20px 0px;
+
+    .audio_call__progress {
+      width: 90%;
+      height: 30px;
+      margin: 0 auto;
+      background: linear-gradient(to left, gainsboro 5%, rgb(5, 176, 255) 7%, rgb(5, 176, 255));
+      border-radius: 30px;
+    }
+
+    .audio_call__card {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column-reverse;
+      row-gap: 30px;
+
+      .volume_button__audio {
+        width: 120px;
+        height: 120px;
+        background: url(../assets/icons/volume.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        border: none;
+        box-shadow: 0 0 3px gainsboro;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .container_btn__audio {
+        display: flex;
+        flex-wrap:  wrap;
+        justify-content: center;
+        width: 80%;
+        column-gap: 10px;
+        row-gap: 10px;
+        margin: 0 auto;
+
+        button {
+          border: none;
+          width: 31%;
+          font-size: 18px;
+          padding: 10px 2px;
+          border-radius: 7px;
+          font-weight: 900;
+          color: dimgray;
+          cursor: pointer;
+          box-shadow: 0 0 5px gainsboro;
+          background: white;
+          border-bottom: 3px solid rgb(185, 179, 179)
         }
       }
     }
