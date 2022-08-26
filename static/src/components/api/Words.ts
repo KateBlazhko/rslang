@@ -288,7 +288,6 @@ class Words {
     page: number,
     stateLog: IStateLog,
   ) {
-
     if (Array.isArray(aggregatedWords)) {
       const aggregatedWordsAll = aggregatedWords
         .map((aggregatedWord) => aggregatedWord.paginatedResults)
@@ -332,9 +331,9 @@ class Words {
 
     if (Array.isArray(aggregatedWordsAdd)) {
       const aggregatedWordsAddAll = aggregatedWordsAdd
-        .map((aggregatedWordAdd) => aggregatedWordAdd.paginatedResults
-          .filter((res) => res.page === pageList[pageIndex]))
-        .flat();
+        .map((aggregatedWord) => aggregatedWord.paginatedResults)
+        .flat()
+        .filter((res) => res.page === pageList[pageIndex]);
 
       words.push(...aggregatedWordsAddAll);
       count += aggregatedWordsAddAll.length;
