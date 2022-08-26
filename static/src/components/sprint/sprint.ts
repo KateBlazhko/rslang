@@ -86,14 +86,15 @@ class Sprint extends Control {
           page: page.toString(),
         });
 
-        return randomSort(await Words.checkWords(words, group, page));
+        return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
-      const wordsAll = await Promise.all([...Array(COUNTPAGE).keys()].map((key) => Words.getWords({
+      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 5) as number[]
+      const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
         group: group.toString(),
         page: key.toString(),
       })));
 
-      return randomSort(wordsAll.flat());
+      return randomSort(wordsAll.flat()) as IWord[];
     } catch {
       this.preloader.node.textContent = TextInner.error;
       setTimeout(() => {
@@ -118,7 +119,7 @@ class Sprint extends Control {
         stateLog,
       );
 
-      return randomSort(aggregatedWordsFull);
+      return randomSort(aggregatedWordsFull)  as IWord[];
     }
 
     throw new Error('no logging');
