@@ -74,7 +74,7 @@ class StartPage extends Control {
 
       const button = new ButtonAnswer(fourth.node, 'start__button', TextInner.buttonFromBook);
       button.node.onclick = () => {
-        this.state.onPreload.emit([0, 0]);
+        this.state.onPreload.emit([0, 2]);
         this.destroy();
       };
     }
