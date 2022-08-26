@@ -7,7 +7,7 @@ class CardAudio extends Control {
 
   private containerBtn: Control<HTMLElement>;
 
-  allWords: Array<{value: number, node: HTMLElement, word: IWord}>;
+  allWords: Array<{value: number, node: HTMLButtonElement, word: IWord}>;
 
   successWord: IWord;
 

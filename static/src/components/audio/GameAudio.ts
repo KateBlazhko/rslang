@@ -2,6 +2,7 @@ import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
 import CardAudio from './CardAudio';
+import StatisticCard from './statisticCard';
 
 class GameAudio extends Control {
   arrWords: IWord[];
@@ -10,11 +11,15 @@ class GameAudio extends Control {
 
   progress: Control<HTMLElement>;
 
+  arrWordsStatus: Array<{word: IWord, status: 'failed' | 'success'}>;
+
   constructor() {
     super(null, 'div', 'game__page__audio');
     this.progress = new Control(this.node, 'div', 'audio_call__progress');
     this.arrWords = [];
+    this.arrWordsStatus = [];
     this.value = { word: 0 };
+    this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
   }
 
   static async getAllWords(difficult: string) {
@@ -31,16 +36,46 @@ class GameAudio extends Control {
   }
 
   createCard(prev?: CardAudio) {
+    const success = new Audio('../../assets/sound/ok.mp3');
+    const fail = new Audio('../../assets/sound/fail.mp3');
+
     if (prev) prev.destroy();
     const card = new CardAudio(this.node, this.value, this.arrWords);
     card.allWords.forEach((item) => {
       item.node.addEventListener('click', () => {
         if (item.word.id === card.successWord.id) {
-          this.value.word += 1;
-          this.arrWords.splice(card.index, 1);
-          this.createCard(card);
+          this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+          item.node.classList.add('success');
+          this.arrWordsStatus.push({ word: item.word, status: 'success' });
+          success.play();
+        } else {
+          this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+          item.node.classList.add('failed');
+          fail.play();
+          this.arrWordsStatus.push({ word: item.word, status: 'failed' });
+        }
+        card.allWords.forEach((node) => { node.node.disabled = true; });
+        if (this.value.word < 20) {
+          this.buttonNext(card);
+        } else {
+          this.viewStatistic(card);
         }
       });
+    });
+  }
+
+  viewStatistic(prev?: CardAudio) {
+    if (prev) prev.destroy();
+    const statistic = new StatisticCard(this.node, this.arrWordsStatus);
+  }
+
+  buttonNext(card: CardAudio) {
+    const button = new Control(null, 'button', 'button_next', 'NEXT');
+    card.node.prepend(button.node);
+    button.node.addEventListener('click', () => {
+      this.arrWords.splice(card.index, 1);
+      this.createCard(card);
+      button.destroy();
     });
   }
 
