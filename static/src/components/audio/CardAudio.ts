@@ -32,7 +32,9 @@ class CardAudio extends Control {
     const allValue = shuffleWord(this.index, arrWord.length);
     img.node.addEventListener('click', () => volume.play());
     allValue.forEach((item, index) => {
-      const word = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', 'btn_word__audio', arrWord[item].word);
+      const word = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', 'btn_word__audio', `${arrWord[item].word}`);
+      const number = new Control<HTMLSpanElement>(null, 'span', '', `${index + 1}`);
+      word.node.prepend(number.node);
       this.allWords.push({
         node: word.node,
         value: index + 1,

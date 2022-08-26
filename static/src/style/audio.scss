@@ -132,9 +132,14 @@ $color-header-gray: rgb(170, 169, 169);
       width: 90%;
       height: 30px;
       margin: 0 auto;
-      // background: linear-gradient(to left, gainsboro 5%, rgb(5, 176, 255) 7%, rgb(5, 176, 255));
       border-radius: 30px;
       box-shadow: 0 0 3px dimgray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
     }
 
     .audio_call__card {
@@ -193,6 +198,7 @@ $color-header-gray: rgb(170, 169, 169);
 
         button {
           border: none;
+          position: relative;
           width: 31%;
           font-size: 18px;
           padding: 10px 2px;
@@ -205,6 +211,19 @@ $color-header-gray: rgb(170, 169, 169);
           border-bottom: 3px solid rgb(185, 179, 179);
           transition: .2s;
 
+          span {
+            position: absolute;
+            left: 4px;
+            top: 10px;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid gainsboro;
+          }
+
           &.success {
             background: green;
             color: white;
@@ -216,6 +235,57 @@ $color-header-gray: rgb(170, 169, 169);
             color: white;
             border: none; 
           }
+        }
+      }
+    }
+  }
+
+  .statistic__audio {
+    padding: 20px;
+    height: 100%;
+
+    .list_statistic {
+      overflow-y: scroll;
+      height: 100%;
+      border-radius: 5px;
+      box-shadow: 0 0 4px gainsboro;
+
+      &::-webkit-scrollbar {
+        width: 8px;               /* ширина scrollbar */
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 10px;
+        border: 1px solid gainsboro;        /* цвет дорожки */
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: gainsboro;    /* цвет плашки */
+        border-radius: 20px;       /* закругления плашки */
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        padding: 5px 20px;
+        justify-content: space-between;
+        border-bottom: 1px solid gainsboro;
+        color: whitesmoke;
+        font-size: 14px;
+        text-shadow: 0 0 4px dimgray;
+        border-radius: 3px;
+
+        &.success {
+          background-color: rgba(0, 128, 0, 0.306);
+          border: 1px solid green;
+        }
+
+        &.failed {
+          background-color: rgba(220, 20, 60, 0.402);
+          border: 1px solid crimson;
+        }
+
+        img {
+          height: 20px;
         }
       }
     }

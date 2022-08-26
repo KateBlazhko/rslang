@@ -2,7 +2,7 @@ import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
 import CardAudio from './CardAudio';
-import StatisticCard from './statisticCard';
+import StatisticAudio from './StatisticAudio';
 
 class GameAudio extends Control {
   arrWords: IWord[];
@@ -15,7 +15,7 @@ class GameAudio extends Control {
 
   constructor() {
     super(null, 'div', 'game__page__audio');
-    this.progress = new Control(this.node, 'div', 'audio_call__progress');
+    this.progress = new Control(this.node, 'div', 'audio_call__progress', 'Your Progress');
     this.arrWords = [];
     this.arrWordsStatus = [];
     this.value = { word: 0 };
@@ -66,7 +66,8 @@ class GameAudio extends Control {
 
   viewStatistic(prev?: CardAudio) {
     if (prev) prev.destroy();
-    const statistic = new StatisticCard(this.node, this.arrWordsStatus);
+    this.progress.destroy();
+    const statistic = new StatisticAudio(this.node, this.arrWordsStatus);
   }
 
   buttonNext(card: CardAudio) {
