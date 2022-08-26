@@ -34,7 +34,7 @@ class Router {
       case 'home':
         this.onGoPage.emit(hash);
         container.innerHTML = '';
-        this.currentPage = new HomePage(container)
+        this.currentPage = new HomePage(container, this.login)
         break;
       case 'about':
         container.innerHTML = '<h1>About Us</h1>';
@@ -54,8 +54,9 @@ class Router {
         container.innerHTML = '<h1>statistics</h1>';
         break;
       default:
-        container.innerHTML = '<h1>Home</h1>';
-    }
+        this.onGoPage.emit(hash);
+        container.innerHTML = '';
+        this.currentPage = new HomePage(container, this.login)    }
   }
 
   render() {

@@ -1,19 +1,196 @@
-.home {
-  // position: relative;
-  // overflow: hidden;
+$color-shadow: #aaa9a9;
+$color-text-start: #696969;
+$color-bg: #ffffff;
+$color-title: #696969;
 
-  // max-width: 144rem;
+.home {
+  position: relative;
+
+  max-width: 192rem;
   width: 100%;
-  height: 140em;
+  height: 160em;
   padding: 2rem;
+  margin: 0 auto;
+
+  &__title {
+    // font-family: 'DynaPuff', cursive;
+    font-size: 5rem;
+    color: $color-title;
+    text-align: center;
+
+    @media (max-width: 1024px) {
+      font-size: 4rem;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 3.5rem;
+    }
+  }
 
   &__canvas {
-    // position: absolute;
-    // top: 0;
-    // right: 0;
-    // left: 0;
+    position: absolute;
+    top: 0%;
+    right: 0;
+    left: 0;
     display: block;
     width: 100%;
     height: 100%;
+
+    // background-image: url('./assets/img/water.png');
+    // background-size: cover;
+    // background-repeat: no-repeat;
+  }
+
+  &__icon {
+    position: absolute;
+  
+    @include flexCenter();
+    width: 15rem;
+    height: 15rem;
+
+    box-shadow: 0 0 3px $color-shadow;
+
+    border-radius: 50%;
+  
+    background-color: $color-bg;
+
+    cursor: pointer;
+
+    &_sprint {
+      top: 16%;
+      left: 35%;
+    }
+
+    &_audio {
+      top: 33%;
+      left: 70%;
+
+      @media (max-width: 768px) {
+        top: 31%; 
+        left: 68%;
+      }
+    }
+
+    &_book {
+      top: 53%;
+      left: 18%;
+
+
+      @media (max-width: 768px) {
+        left: 14%;
+      }
+
+      @media (max-width: 500px) {
+        left: 10%;
+      }
+    }
+
+    &_stat {
+      top: 68%;
+      left: 40%;
+
+      @media (max-width: 768px) {
+        left: 35%;
+      }
+    }
+
+  }
+
+  &__team {
+    position: absolute;
+
+    @include flexCenter();
+
+    width: 30rem;
+    height: 20rem;
+
+    top: 87%;
+    left: 5%;
+  }
+
+  &__img {
+    display: block;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+
+    object-fit: contain;
+
+    transition: all 0.5s linear;
+
+    &:hover {
+      width: 100%;
+      height: 100%;
+    }
+
+    &_team {
+      width: 90%;
+      height: 90%;
+      border-radius: 0;
+
+      object-fit: cover;
+    }
+  }
+
+  &__text {
+    position: absolute;
+
+    @include flexCenter();
+    justify-content: start;
+
+    gap: 2rem;
+    flex-wrap: wrap;
+
+    padding: 2rem;
+
+    border-radius:  2rem 2rem 2rem 0;
+
+
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text-start;
+
+    box-shadow: 0 0 3px $color-shadow;
+    background-color: $color-bg;
+
+    &_sprint {
+      top: 10%;
+      left: 44%;
+    }
+
+    &_audio {
+      border-radius:  2rem 2rem 0 2rem;
+
+      top: 27%;
+      left: 65%;
+
+      @media (max-width: 768px) {
+        top: 26%;
+      }
+    }
+
+    &_book {
+      border-radius: 2rem 2rem 0 2rem;
+      top: 47%;
+      left: 14%;
+    }
+
+    &_team {
+      top: 83%;
+      left: 17%; 
+    }
+
+    &_stat {
+      border-radius: 2rem 2rem 2rem 0;
+
+      top: 63%;
+      left: 50%;
+    }
+
+    span {
+      text-align: center;
+      font-weight: bold;
+    }
   }
 }
+
