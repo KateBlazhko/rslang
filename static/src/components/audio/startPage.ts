@@ -28,7 +28,7 @@ class StartPageAudio extends Control {
       const btn = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', '', `${i}`);
       this.arrBtn.push({
         node: btn.node,
-        difficult: i,
+        difficult: i - 1,
       });
       if (i === 1) this.addActive(btn.node);
     }

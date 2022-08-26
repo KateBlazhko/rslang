@@ -21,22 +21,19 @@ class Audio extends Control {
     this.startPage = new StartPageAudio(null);
     this.game = new GameAudio();
     this.renderPage('start');
+    this.startGame();
   }
 
   startGame() {
     this.startPage.startBtn.node.addEventListener('click', async () => {
-      const words = await Words.getWords({
-        group: this.startPage.difficult,
-        page: 1,
-      });
-      console.log(words);
+      this.game.game(`${this.startPage.difficult}`);
     });
   }
 
   renderPage(page: 'start' | 'game') {
     this.node.innerHTML = '';
     if (page === 'start') this.startPage.render(this.node);
-    else this.startPage.render(this.node);
+    else this.game.render(this.node);
   }
 }
 
