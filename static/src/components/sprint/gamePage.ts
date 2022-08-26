@@ -18,14 +18,16 @@ enum TextInner {
   buttonFalse = 'False ←'
 }
 
-const TIME = 11;
+const TIME = 60;
 
 class GamePage extends Control {
   private correctAnswerSeries: number = 0;
 
   private settingsSoundWrap: Control;
 
-  private soundSettings: SVG | null = null;
+  // private soundSettings: SVG | null = null;
+
+  private soundSettings: Control<HTMLImageElement> | null = null;
 
   private animationWrap: Control | null = null;
 
@@ -155,12 +157,14 @@ class GamePage extends Control {
     if (this.soundSettings) this.soundSettings.destroy();
 
     if (isSoundOn) {
-      this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
+      this.soundSettings = new Control<HTMLImageElement>(this.settingsSoundWrap.node, 'img', 'sound');
+      this.soundSettings.node.src = './assets/icons/volume.png';
     } else {
-      this.soundSettings = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#mute`);
+      this.soundSettings = new Control<HTMLImageElement>(this.settingsSoundWrap.node, 'img', 'sound');
+      this.soundSettings.node.src = './assets/icons/mute.png';
     }
 
-    this.soundSettings.svg.onclick = () => {
+    this.settingsSoundWrap.node.onclick = () => {
       this.state.setSoundPlay(!this.state.getSoundPlay());
       const curentState = this.state.getSoundPlay();
       if (curentState) {

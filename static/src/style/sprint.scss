@@ -236,21 +236,22 @@ $color-water: #8ae4ff80;
 }
 
 .sound {
-  width: 2.5rem;
-  height: 2.5rem;
+  display: block;
+  width: 5rem;
+  height: 5rem;
 
   cursor: pointer;
 
-  fill: #696969;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-
   &__wrap {
     position: absolute;
-    top: 5%;
+    top: 3%;
     left: 3%;
+
+    transition: all 0.5s linear;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
 

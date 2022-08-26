@@ -22,7 +22,9 @@ class ResultPage extends Control {
 
   private settingsSound: SVG | null = null;
 
-  private wordSoundList: SVG[] = [];
+  // private wordSoundList: SVG[] = [];
+
+  private wordSoundList: Control<HTMLImageElement>[] = [];
 
   private audiotList;
 
@@ -33,11 +35,6 @@ class ResultPage extends Control {
     private results: Boolean[],
   ) {
     super(parentNode, 'div', 'sprint__result result');
-    // this.state.onSoundOn.add(this.renderSoundSettings.bind(this));
-    // this.state.onSoundOn.add(this.renderSoundIcons.bind(this));
-
-    // this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap');
-    // this.renderSoundSettings(this.state.getSoundPlay());
 
     this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
@@ -83,31 +80,20 @@ class ResultPage extends Control {
 
     this.wordSoundList = this.audiotList.map((item) => {
       if (item.audio && isSoundOn) {
-        const wordSound = new SVG(item.container, 'sound', `${icons}#volume`);
+        const wordSound = new Control<HTMLImageElement>(item.container, 'img', 'sound');
+        wordSound.node.src = './assets/icons/volume.png';
 
-        wordSound.svg.onclick = () => {
+        wordSound.node.onclick = () => {
           const audio = new Audio(`${BASELINK}/${item.audio}`);
           if (isSoundOn) audio.play();
         };
         return wordSound;
       }
-      return new SVG(item.container, 'sound', `${icons}#mute`);
+      const wordSound = new Control<HTMLImageElement>(item.container, 'img', 'sound');
+      wordSound.node.src = './assets/icons/mute.png';
+      return wordSound;
     });
   }
-
-  // private renderSoundSettings(isSoundOn: boolean) {
-  //   if (this.settingsSound) this.settingsSound.destroy();
-
-  //   if (isSoundOn) {
-  //     this.settingsSound = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#volume`);
-  //   } else {
-  //     this.settingsSound = new SVG(this.settingsSoundWrap.node, 'sound', `${icons}#mute`);
-  //   }
-
-  //   this.settingsSound.svg.onclick = () => {
-  //     this.state.setSoundPlay(!this.state.getSoundPlay());
-  //   };
-  // }
 }
 
 export default ResultPage;
