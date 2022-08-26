@@ -1,0 +1,112 @@
+$audio_btn_difficult-1: greenyellow;
+$audio_btn_difficult-2: green;
+$audio_btn_difficult-3: yellow;
+$audio_btn_difficult-4: orange;
+$audio_btn_difficult-5: crimson;
+$audio_btn_difficult-6: red;
+
+.audio__container {
+  width: 100%;
+  height: calc(100vh - 60px);
+  background: url('../assets/img/background-audio.jpg');
+  background-size: cover;
+
+  .start__page__audio {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+
+    .audio_call__title {
+      font-size: 26px;
+      text-shadow: 0 0 3px dimgray;
+      color: white;
+    }
+
+    .start_btn__audio {
+      font-size: 40px;
+      font-weight: 800;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 10px;
+      background-color: rgb(5, 176, 255);
+      color: white;
+      text-shadow: 0 0 3px dimgray;
+      cursor: pointer;
+      transition: .2s;
+
+      &:hover {
+        transform: scale(1.1) translate(0, -5px);
+
+      }
+    }
+
+    .audio_container__btn {
+      display: flex;
+      width: 80%;
+      margin: 0 auto;
+      justify-content: space-between;
+      
+      button {
+        width: 13%;
+        height: 150px;
+        font-size: 40px;
+        font-weight: 900;
+        color: white;
+        border: 0;
+        border-radius: 7px;
+        text-shadow: 0 0 3px dimgray;
+        cursor: pointer;
+        transition: .2s;
+
+        &.active {
+          transform: scale(1.2);
+        }
+
+        &:nth-child(1) {
+          background: $audio_btn_difficult-1;
+          &:hover {
+            box-shadow: 0 0 15px $audio_btn_difficult-1;
+          }
+        }
+
+        &:nth-child(2) {
+          background: $audio_btn_difficult-2;
+          &:hover {
+            box-shadow: 0 0 15px $audio_btn_difficult-2;
+          }
+        }
+
+        &:nth-child(3) {
+          background: $audio_btn_difficult-3;
+          &:hover {
+            box-shadow: 0 0 15px $audio_btn_difficult-3;
+          }
+        }
+
+        &:nth-child(4) {
+          background: $audio_btn_difficult-4;
+          &:hover {
+            box-shadow: 0 0 15px $audio_btn_difficult-4;
+          }
+        }
+
+        &:nth-child(5) {
+          background: $audio_btn_difficult-5;
+          &:hover {
+            box-shadow: 0 0 15px $audio_btn_difficult-5;
+          }
+        }
+
+        &:nth-child(6) {
+          background: $audio_btn_difficult-6;
+          &:hover {
+            box-shadow: 0 0 15px $audio_btn_difficult-6;
+          }
+        }
+      }
+    }
+  }
+}
