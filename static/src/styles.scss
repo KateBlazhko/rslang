@@ -1,9 +1,6 @@
 @import '~normalize.css';
-
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-// @import './assets/styles/';
+@import './style/abstract.scss';
+@import './style/base.scss';
+@import './style/start.scss';
+@import './style/sprint.scss';
+@import './style/result.scss';

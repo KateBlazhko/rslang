@@ -1,16 +1,17 @@
+import Sprint from '../sprint/sprint';
 import Signal from '../common/signal';
 import Control from '../common/control';
+import Logging from '../Logging';
 
 class Router {
   private location: Location;
 
-  private currentPage: Control | null = null;
+  private currentPage: Control | Sprint | null = null;
 
   private container: Control;
 
-  constructor() {
+  constructor(private login: Logging) {
     this.container = new Control(document.body, 'main', 'page');
-
     this.location = window.location;
     this.setPage(this.location.hash.slice(1));
     this.hashChange();
@@ -42,7 +43,7 @@ class Router {
         break;
       case 'sprint':
         container.innerHTML = '';
-        // this.currentPage = new Sprint(container, this.onGoPage)
+        this.currentPage = new Sprint(container, this.login, this.onGoPage);
         break;
       case 'audio':
         container.innerHTML = '<h1>Audio</h1>';
