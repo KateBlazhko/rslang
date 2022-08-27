@@ -2,6 +2,7 @@ import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
 import CardAudio from './CardAudio';
+import StartPageAudio from './startPage';
 import StatisticAudio from './StatisticAudio';
 
 interface ICardAudio {
@@ -20,15 +21,26 @@ class GameAudio extends Control {
 
   repeat: Control<HTMLImageElement>;
 
-  constructor() {
+  startPage: () => void;
+
+  constructor(start: () => void) {
     super(null, 'div', 'game__page__audio');
     this.repeat = new Control<HTMLImageElement>(this.node, 'img', 'arrow_img', '');
+    this.startPage = start;
     this.progress = new Control(this.node, 'div', 'audio_call__progress', 'Your Progress');
     this.repeat.node.src = '../../assets/icons/arrow.png';
     this.arrWords = [];
     this.arrWordsStatus = [];
     this.value = { word: 0 };
     this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+    this.repeatListen();
+  }
+
+  repeatListen() {
+    this.repeat.node.addEventListener('click', () => {
+      document.onkeydown = () => {};
+      this.startPage();
+    });
   }
 
   static async getAllWords(difficult: string) {
@@ -109,6 +121,7 @@ class GameAudio extends Control {
     if (prev) prev.destroy();
     this.progress.destroy();
     const statistic = new StatisticAudio(this.node, this.arrWordsStatus);
+    document.onkeydown = () => {};
   }
 
   buttonNext(card: CardAudio) {

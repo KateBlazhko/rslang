@@ -19,9 +19,15 @@ class Audio extends Control {
     super(parentNode, 'div', 'audio__container', '');
     this.login = login;
     this.startPage = new StartPageAudio(null);
-    this.game = new GameAudio();
+    this.game = new GameAudio(this.repeatListen.bind(this));
     this.renderPage('start');
     this.startGame();
+  }
+
+  repeatListen() {
+    this.node.innerHTML = '';
+    this.game = new GameAudio(this.repeatListen.bind(this));
+    this.renderPage('start');
   }
 
   startGame() {

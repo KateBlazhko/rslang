@@ -1,6 +1,6 @@
-import { BASELINK, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import Control from '../common/control';
-import { shufflePage, shuffleArrayPage, shuffleWord } from '../common/shufflePage';
+import { shuffleWord } from '../common/shufflePage';
 
 class CardAudio extends Control {
   index: number;
