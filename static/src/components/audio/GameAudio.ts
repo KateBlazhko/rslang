@@ -4,6 +4,11 @@ import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
 import CardAudio from './CardAudio';
 import StatisticAudio from './StatisticAudio';
 
+interface ICardAudio {
+    value: number;
+    node: HTMLButtonElement;
+    word: IWord;
+}
 class GameAudio extends Control {
   arrWords: IWord[];
 
@@ -13,9 +18,13 @@ class GameAudio extends Control {
 
   arrWordsStatus: Array<{word: IWord, status: 'failed' | 'success'}>;
 
+  repeat: Control<HTMLImageElement>;
+
   constructor() {
     super(null, 'div', 'game__page__audio');
+    this.repeat = new Control<HTMLImageElement>(this.node, 'img', 'arrow_img', '');
     this.progress = new Control(this.node, 'div', 'audio_call__progress', 'Your Progress');
+    this.repeat.node.src = '../../assets/icons/arrow.png';
     this.arrWords = [];
     this.arrWordsStatus = [];
     this.value = { word: 0 };
@@ -36,32 +45,64 @@ class GameAudio extends Control {
   }
 
   createCard(prev?: CardAudio) {
+    if (prev) prev.destroy();
+    const card = new CardAudio(this.node, this.value, this.arrWords);
+    document.onkeydown = (e) => this.listenKey(card, e.key);
+    card.allWords.forEach((item) => {
+      item.node.addEventListener('click', () => this.listenGame(item, card));
+    });
+  }
+
+  listenKey(card: CardAudio, key: string) {
+    const success = new Audio('../../assets/sound/ok.mp3');
+    const fail = new Audio('../../assets/sound/fail.mp3');
+    const successWord = card.allWords.find((el) => el.word.id === card.successWord.id);
+
+    if (card.allWords.map((i) => i.value).includes(+key)) {
+      const thisCard = card.allWords.find((el) => el.value === +key);
+
+      if (successWord?.value === +key) {
+        this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+        successWord.node.classList.add('success');
+        this.arrWordsStatus.push({ word: successWord.word, status: 'success' });
+        success.play();
+      } else if (thisCard) {
+        this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+        thisCard.node.classList.add('failed');
+        fail.play();
+        this.arrWordsStatus.push({ word: thisCard.word, status: 'failed' });
+      }
+
+      card.allWords.forEach((node) => { node.node.disabled = true; });
+      if (this.value.word < 20) {
+        this.buttonNext(card);
+      } else {
+        this.viewStatistic(card);
+      }
+    }
+  }
+
+  listenGame(item: ICardAudio, card: CardAudio) {
     const success = new Audio('../../assets/sound/ok.mp3');
     const fail = new Audio('../../assets/sound/fail.mp3');
 
-    if (prev) prev.destroy();
-    const card = new CardAudio(this.node, this.value, this.arrWords);
-    card.allWords.forEach((item) => {
-      item.node.addEventListener('click', () => {
-        if (item.word.id === card.successWord.id) {
-          this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
-          item.node.classList.add('success');
-          this.arrWordsStatus.push({ word: item.word, status: 'success' });
-          success.play();
-        } else {
-          this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
-          item.node.classList.add('failed');
-          fail.play();
-          this.arrWordsStatus.push({ word: item.word, status: 'failed' });
-        }
-        card.allWords.forEach((node) => { node.node.disabled = true; });
-        if (this.value.word < 20) {
-          this.buttonNext(card);
-        } else {
-          this.viewStatistic(card);
-        }
-      });
-    });
+    if (item.word.id === card.successWord.id) {
+      this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+      item.node.classList.add('success');
+      this.arrWordsStatus.push({ word: item.word, status: 'success' });
+      success.play();
+    } else {
+      this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+      item.node.classList.add('failed');
+      fail.play();
+      this.arrWordsStatus.push({ word: item.word, status: 'failed' });
+    }
+    card.allWords.forEach((node) => { node.node.disabled = true; });
+    if (this.value.word < 20) {
+      this.buttonNext(card);
+    } else {
+      this.viewStatistic(card);
+    }
   }
 
   viewStatistic(prev?: CardAudio) {
@@ -78,6 +119,13 @@ class GameAudio extends Control {
       this.createCard(card);
       button.destroy();
     });
+    document.onkeydown = (e) => {
+      if (e.key === 'Enter') {
+        this.arrWords.splice(card.index, 1);
+        this.createCard(card);
+        button.destroy();
+      }
+    };
   }
 
   render(node: HTMLElement) {

@@ -120,6 +120,7 @@ $color-header-gray: rgb(170, 169, 169);
 
   .game__page__audio {
     width: 70%;
+    position: relative;
     height: 500px;
     background: white;
     border-radius: 50px;
@@ -127,6 +128,17 @@ $color-header-gray: rgb(170, 169, 169);
     border-bottom: 5px solid gainsboro;
     border-top: 5px solid gainsboro;
     padding: 20px 0px;
+
+    .arrow_img {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      right: -33px;
+      top: -33px;
+      cursor: pointer;
+      border-radius: 50%;
+      background: white;
+    }
 
     .audio_call__progress {
       width: 90%;
