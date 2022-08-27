@@ -6,18 +6,18 @@ class StatisticAudio extends Control {
 
   constructor(
     parentNode: HTMLElement | null,
-    arr: Array<{word: IWord, status: 'failed' | 'success'}>,
+    arr: Array<{word: IWord, status: boolean}>,
   ) {
     super(parentNode, 'div', 'statistic__audio');
     this.container = new Control(this.node, 'div', 'list_statistic');
     this.createStatistic(arr);
   }
 
-  createLine(word: IWord, status: 'failed' | 'success') {
+  createLine(word: IWord, status: boolean) {
     const el = new Control(this.container.node, 'div', 'item');
     const title = new Control<HTMLDivElement>(el.node, 'h3', '', word.word);
     const img = new Control<HTMLImageElement>(el.node, 'img', 'icon');
-    if (status === 'success') {
+    if (status) {
       img.node.src = '../../assets/icons/success.png';
       el.node.classList.add('success');
     } else {
@@ -26,7 +26,7 @@ class StatisticAudio extends Control {
     }
   }
 
-  createStatistic(arr: Array<{word: IWord, status: 'failed' | 'success'}>) {
+  createStatistic(arr: Array<{word: IWord, status: boolean}>) {
     arr.forEach((item) => this.createLine(item.word, item.status));
   }
 

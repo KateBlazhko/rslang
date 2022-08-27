@@ -1,4 +1,4 @@
-import Words, { IWord } from '../api/Words';
+import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
 import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
 import Logging from '../Logging';
@@ -18,7 +18,7 @@ class GameAudio extends Control {
 
   progress: Control<HTMLElement>;
 
-  arrWordsStatus: Array<{word: IWord, status: 'failed' | 'success'}>;
+  arrWordsStatus: Array<{word: IWord, status: boolean}>;
 
   repeat: Control<HTMLImageElement>;
 
@@ -80,23 +80,19 @@ class GameAudio extends Control {
       if (successWord?.value === +key) {
         this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
         successWord.node.classList.add('success');
-        this.arrWordsStatus.push({ word: successWord.word, status: 'success' });
+        this.arrWordsStatus.push({ word: successWord.word, status: true });
         success.play();
       } else if (thisCard) {
         successWord?.node.classList.toggle('success');
         this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
         thisCard.node.classList.add('failed');
         fail.play();
-        this.arrWordsStatus.push({ word: thisCard.word, status: 'failed' });
+        this.arrWordsStatus.push({ word: thisCard.word, status: false });
       }
 
       card.allWords.forEach((node) => { node.node.disabled = true; });
       card.viewCard();
-      if (this.value.word < 20) {
-        this.buttonNext(card);
-      } else {
-        this.viewStatistic(card);
-      }
+      this.buttonNext(card);
     }
   }
 
@@ -108,30 +104,54 @@ class GameAudio extends Control {
     if (item.word.id === card.successWord.id) {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
       item.node.classList.add('success');
-      this.arrWordsStatus.push({ word: item.word, status: 'success' });
+      this.arrWordsStatus.push({ word: item.word, status: true });
       success.play();
     } else {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
       item.node.classList.add('failed');
       fail.play();
-      this.arrWordsStatus.push({ word: item.word, status: 'failed' });
+      this.arrWordsStatus.push({ word: item.word, status: false });
       successWord?.node.classList.toggle('success');
     }
     card.allWords.forEach((node) => { node.node.disabled = true; });
     card.viewCard();
-    if (this.value.word < 20) {
-      this.buttonNext(card);
-    } else {
-      this.viewStatistic(card);
+    this.buttonNext(card);
+  }
+
+  async saveWordsUser() {
+    const user = await this.login.checkStorageLogin();
+    const userWords = await Words.getUserWords(user.userId, user.token);
+
+    const successArr: Array<{wordRes: IUserWord, wordThis: { word: IWord; status: boolean; }}> = [];
+    const failedArr: { word: IWord; status: boolean; }[] = [];
+
+    this.arrWordsStatus.forEach((item) => {
+      const word = userWords.find((el) => el.optional.wordId === item.word.id);
+      if (word) {
+        successArr.push({ wordRes: word, wordThis: item });
+      } else {
+        failedArr.push(item);
+      }
+    });
+
+    if (successArr.length > 0) {
+      Promise.all(successArr.map((req) => (
+        Words.updateUserStat(user, req.wordRes, req.wordThis.status)
+      )));
+    }
+    if (successArr.length > 0) {
+      Promise.all(failedArr.map((req) => (
+        Words.createUserStat(user, { wordId: req.word.id, answer: req.status })
+      )));
     }
   }
 
   viewStatistic(prev?: CardAudio) {
     if (prev) prev.destroy();
+    this.saveWordsUser();
     this.progress.destroy();
     const statistic = new StatisticAudio(this.node, this.arrWordsStatus);
     document.onkeydown = () => {};
-    // console.log(Words.getUserWords(lo));
   }
 
   buttonNext(card: CardAudio) {
@@ -139,13 +159,21 @@ class GameAudio extends Control {
     card.node.prepend(button.node);
     button.node.addEventListener('click', () => {
       this.arrWords.splice(card.index, 1);
-      this.createCard(card);
+      if (this.value.word < 20) {
+        this.createCard(card);
+      } else {
+        this.viewStatistic(card);
+      }
       button.destroy();
     });
     document.onkeydown = (e) => {
       if (e.key === 'Enter') {
         this.arrWords.splice(card.index, 1);
-        this.createCard(card);
+        if (this.value.word < 20) {
+          this.createCard(card);
+        } else {
+          this.viewStatistic(card);
+        }
         button.destroy();
       }
     };
