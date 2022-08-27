@@ -139,11 +139,13 @@ class GameAudio extends Control {
         Words.updateUserStat(user, req.wordRes, req.wordThis.status)
       )));
     }
-    if (successArr.length > 0) {
+    if (failedArr.length > 0) {
       Promise.all(failedArr.map((req) => (
         Words.createUserStat(user, { wordId: req.word.id, answer: req.status })
       )));
     }
+
+    console.log()
   }
 
   viewStatistic(prev?: CardAudio) {
