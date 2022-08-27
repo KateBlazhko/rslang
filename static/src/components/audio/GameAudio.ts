@@ -1,6 +1,7 @@
 import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
+import Logging from '../Logging';
 import CardAudio from './CardAudio';
 import StartPageAudio from './startPage';
 import StatisticAudio from './StatisticAudio';
@@ -23,8 +24,11 @@ class GameAudio extends Control {
 
   startPage: () => void;
 
-  constructor(start: () => void) {
+  login: Logging;
+
+  constructor(start: () => void, login: Logging) {
     super(null, 'div', 'game__page__audio');
+    this.login = login;
     this.repeat = new Control<HTMLImageElement>(this.node, 'img', 'arrow_img', '');
     this.startPage = start;
     this.progress = new Control(this.node, 'div', 'audio_call__progress', 'Your Progress');
@@ -127,6 +131,7 @@ class GameAudio extends Control {
     this.progress.destroy();
     const statistic = new StatisticAudio(this.node, this.arrWordsStatus);
     document.onkeydown = () => {};
+    // console.log(Words.getUserWords(lo));
   }
 
   buttonNext(card: CardAudio) {

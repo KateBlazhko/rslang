@@ -120,6 +120,7 @@ $color-header-gray: rgb(170, 169, 169);
 
   .game__page__audio {
     width: 70%;
+    min-width: 470px;
     position: relative;
     height: 500px;
     background: white;
@@ -128,6 +129,10 @@ $color-header-gray: rgb(170, 169, 169);
     border-bottom: 5px solid gainsboro;
     border-top: 5px solid gainsboro;
     padding: 20px 0px;
+
+    @media(max-width: 890px) {
+      height: 550px;
+    }
 
     .arrow_img {
       width: 50px;
@@ -173,8 +178,13 @@ $color-header-gray: rgb(170, 169, 169);
         height: 200px;
         margin-top: 30px;
 
+        @media (max-width: 600px) {
+          height: 220px;
+          margin-top: 10px;
+        }
+
         .content {
-          width: 70%;
+          width: 80%;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -188,6 +198,11 @@ $color-header-gray: rgb(170, 169, 169);
             border-radius: 7px;
             padding-bottom: 10px;
             margin-left: auto;
+
+            @media (max-width: 600px) {
+              margin-left: 0;
+              margin: 20px 0;
+            }
 
             img {
               width: 100%;
@@ -226,6 +241,10 @@ $color-header-gray: rgb(170, 169, 169);
             font-style: italic;
             color: dimgray;
             box-shadow: 0 0 3px dimgray;
+
+            @media (max-width: 860px) {
+              width: 140px;
+            }
           }
         }        
       }
@@ -236,10 +255,16 @@ $color-header-gray: rgb(170, 169, 169);
         background: url(../assets/icons/volume.png);
         background-position: center;
         background-repeat: no-repeat;
+        background-size: contain;
         border: none;
         box-shadow: 0 0 3px gainsboro;
         border-radius: 50%;
         cursor: pointer;
+
+        @media(max-width: 750px) {
+          width: 70px;
+          height: 70px;
+        }
       }
 
       .button_next {
@@ -274,10 +299,15 @@ $color-header-gray: rgb(170, 169, 169);
         row-gap: 10px;
         margin: 0 auto;
 
+        @media(max-width: 1020px) {
+          width: 90%;
+        }
+
         button {
           border: none;
           position: relative;
           width: 31%;
+          min-width: 180px;
           font-size: 18px;
           padding: 10px 2px;
           border-radius: 7px;
