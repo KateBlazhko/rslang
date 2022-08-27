@@ -86,6 +86,7 @@ class GameAudio extends Control {
       }
 
       card.allWords.forEach((node) => { node.node.disabled = true; });
+      card.viewCard();
       if (this.value.word < 20) {
         this.buttonNext(card);
       } else {
@@ -110,6 +111,7 @@ class GameAudio extends Control {
       this.arrWordsStatus.push({ word: item.word, status: 'failed' });
     }
     card.allWords.forEach((node) => { node.node.disabled = true; });
+    card.viewCard();
     if (this.value.word < 20) {
       this.buttonNext(card);
     } else {

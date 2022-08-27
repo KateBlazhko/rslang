@@ -11,12 +11,15 @@ class CardAudio extends Control {
 
   successWord: IWord;
 
+  volumeContainer: Control<HTMLElement>;
+
   constructor(
     parentNode: HTMLElement | null,
     value: { word: number },
     arrWord: Array<IWord>,
   ) {
     super(parentNode, 'div', 'audio_call__card');
+    this.volumeContainer = new Control(this.node, 'div', 'container__volume');
     this.containerBtn = new Control(this.node, 'div', 'container_btn__audio');
     this.index = Math.floor(Math.random() * arrWord.length);
     this.successWord = arrWord[this.index];
@@ -24,10 +27,28 @@ class CardAudio extends Control {
     this.createCard(value, arrWord);
   }
 
+  viewCard() {
+    const container = new Control(this.volumeContainer.node, 'div', 'content');
+    container.node.innerHTML += `
+    <div class="image_preview">
+      <img src='http://localhost:3000/${this.successWord.image}'>
+      <h3>${this.successWord.wordTranslate} <span><h3>${this.successWord.transcription}</h3></span></h3>
+    </div>
+    <fieldset>
+      <legend>Example</legend>
+      ${this.successWord.textExample}
+    </fieldset>
+    <fieldset>
+      <legend>Translate</legend>
+      ${this.successWord.textExampleTranslate}
+    </fieldset>
+    `;
+  }
+
   createCard(value: { word: number }, arrWord: Array<IWord>) {
     const volume = new Audio(`http://localhost:3000/${arrWord[this.index].audio}`);
     volume.play();
-    const img = new Control<HTMLImageElement>(this.node, 'button', 'volume_button__audio');
+    const img = new Control<HTMLImageElement>(this.volumeContainer.node, 'button', 'volume_button__audio');
 
     const allValue = shuffleWord(this.index, arrWord.length);
     img.node.addEventListener('click', () => volume.play());

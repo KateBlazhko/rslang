@@ -159,10 +159,74 @@ $color-header-gray: rgb(170, 169, 169);
       height: 100%;
       position: relative;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
-      flex-direction: column-reverse;
+      flex-direction: column;
       row-gap: 30px;
+
+      .container__volume {
+        display: flex;
+        width: 90%;
+        justify-content: center;
+        align-items: center;
+        column-gap: 20px;
+        height: 180px;
+        margin-top: 40px;
+
+        .content {
+          width: 70%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          flex-wrap: wrap;
+          height: 100%;
+
+          .image_preview {
+            width: 35%;
+            box-shadow: 0 0 5px gainsboro;
+            border-radius: 7px;
+            padding-bottom: 10px;
+
+            img {
+              width: 100%;
+              border-top-right-radius: 7px;
+              border-top-left-radius: 7px;
+            }
+
+            h3 {
+              width: 100%;
+              text-align: center;
+              font-size: 16px;
+              font-weight: 700;
+
+              span {
+                color: rebeccapurple;
+              }
+            }
+          }
+
+          legend {
+            border-radius: 7px;
+            padding: 0 5px;
+            font-size: 14px;
+            font-weight: 600;
+            background: white
+          }
+
+          fieldset {
+            border-radius: 7px;
+            margin-top: 10px;
+            font-size: 12px;
+            width: 200px;
+            border: none;
+            font-weight: 500;
+            font-style: italic;
+            color: dimgray;
+            box-shadow: 0 0 3px dimgray;
+          }
+        }        
+      }
 
       .volume_button__audio {
         width: 120px;
