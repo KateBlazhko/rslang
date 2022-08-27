@@ -1,6 +1,6 @@
 import { IWord } from '../api/Words';
 
-function randomSort(array: IWord[]) {
+function randomSort(array: IWord[] | number[]) {
   let currentIndex: number = +array.length;
   let randomIndex: number;
 

@@ -1,11 +1,11 @@
-import Words, { IUserWord, IWord } from '../api/Words';
+import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
 import randomSort from '../common/functions';
-import Logging, { IStateLog } from '../Logging';
+import Logging from '../Logging';
 
 enum TextInner {
   preloader = 'We\'re getting closer, get ready...',
@@ -18,7 +18,6 @@ export interface IWordStat {
 }
 
 const COUNTPAGE = 30;
-const COUNTGROUP = 6;
 
 class Sprint extends Control {
   private preloader: Control;
@@ -56,7 +55,7 @@ class Sprint extends Control {
     this.node.append(this.preloader.node);
 
     try {
-      if (this.state.getInitiator() === 'book') {
+      if (this.state.getInitiator() === 'header') {
         this.words = await this.getWords(group);
       } else {
         const stateLog = await this.login.checkStorageLogin();
@@ -87,14 +86,15 @@ class Sprint extends Control {
           page: page.toString(),
         });
 
-        return randomSort(await Words.checkWords(words, group, page));
+        return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
-      const wordsAll = await Promise.all([...Array(COUNTPAGE).keys()].map((key) => Words.getWords({
+      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 5) as number[]
+      const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
         group: group.toString(),
         page: key.toString(),
       })));
 
-      return randomSort(wordsAll.flat());
+      return randomSort(wordsAll.flat()) as IWord[];
     } catch {
       this.preloader.node.textContent = TextInner.error;
       setTimeout(() => {
@@ -112,7 +112,6 @@ class Sprint extends Control {
 
     if (stateLog.state) {
       const aggregatedWords = await Words.getNoLearnWords(stateLog, group);
-
       const aggregatedWordsFull = await Words.checkAggregatedWords(
         aggregatedWords,
         group,
@@ -120,7 +119,7 @@ class Sprint extends Control {
         stateLog,
       );
 
-      return randomSort(aggregatedWordsFull);
+      return randomSort(aggregatedWordsFull)  as IWord[];
     }
 
     throw new Error('no logging');
