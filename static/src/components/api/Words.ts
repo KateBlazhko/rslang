@@ -290,15 +290,15 @@ class Words {
   ) {
     if (Array.isArray(aggregatedWords)) {
       const aggregatedWordsAll = aggregatedWords
-        .map((aggregatedWord) => aggregatedWord.paginatedResults
-          .filter((res) => res.page === page))
-        .flat();
+        .map((aggregatedWord) => aggregatedWord.paginatedResults)
+        .flat()
+        .filter((res) => res.page === page);
 
       if (aggregatedWordsAll.length < 100 && page > 0) {
         const pageList = [...Array(page).keys()];
         const pageIndex = pageList.length - 1;
 
-        aggregatedWordsAll.push(...await Words.addWordsFromOtherPages(
+        aggregatedWordsAll.push(...await Words.addAggregatedWordsFromOtherPages(
           aggregatedWordsAll.length,
           pageList,
           pageIndex,
@@ -313,7 +313,7 @@ class Words {
     throw ErrorUser;
   }
 
-  private static async addWordsFromOtherPages(
+  private static async addAggregatedWordsFromOtherPages(
     currentCount: number,
     pageList: number[],
     pageIndex: number,
@@ -331,14 +331,14 @@ class Words {
 
     if (Array.isArray(aggregatedWordsAdd)) {
       const aggregatedWordsAddAll = aggregatedWordsAdd
-        .map((aggregatedWordAdd) => aggregatedWordAdd.paginatedResults
-          .filter((res) => res.page === pageList[pageIndex]))
-        .flat();
+        .map((aggregatedWord) => aggregatedWord.paginatedResults)
+        .flat()
+        .filter((res) => res.page === pageList[pageIndex]);
 
       words.push(...aggregatedWordsAddAll);
       count += aggregatedWordsAddAll.length;
 
-      words.push(...await Words.addWordsFromOtherPages(
+      words.push(...await Words.addAggregatedWordsFromOtherPages(
         count,
         pageList,
         pageIndex - 1,
@@ -359,7 +359,7 @@ class Words {
       const pageList = [...Array(page).keys()];
       const pageIndex = pageList.length - 1;
 
-      words.push(...await Words.addWords(
+      words.push(...await Words.addWordsFromOtherPages(
         words.length,
         pageList,
         pageIndex,
@@ -370,7 +370,7 @@ class Words {
     return words;
   }
 
-  public static async addWords(
+  public static async addWordsFromOtherPages(
     currentCount: number,
     pageList: number[],
     pageIndex: number,
@@ -391,7 +391,7 @@ class Words {
     words.push(...wordsAdd);
     count += wordsAdd.length;
 
-    words.push(...await Words.addWords(
+    words.push(...await Words.addWordsFromOtherPages(
       count,
       pageList,
       pageIndex - 1,
