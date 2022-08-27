@@ -18,7 +18,7 @@ class HomePage extends Control {
     const ctx = this.canvas.node.getContext('2d');   
     if (ctx) {
       this.draw(ctx)
-      // window.addEventListener('resize', this.windowResize.bind(this, ctx));
+      window.addEventListener('resize', this.windowResize.bind(this, ctx));
     }
     this.init()
 
@@ -36,22 +36,22 @@ class HomePage extends Control {
   }
 
   private async draw(ctx: CanvasRenderingContext2D) {
-    console.log('dd')
-
 
     const s = 1400 / this.node.clientWidth
-    ctx.canvas.width  = this.node.clientWidth;
+
+    ctx.canvas.width  = this.node.clientWidth + 20;
     ctx.canvas.height = this.node.clientHeight;
 
     this.drawWay(ctx, s)
-    this.drawImg(ctx, './assets/img/ship.png', 50, 60, 150, 210)
+    this.drawImg(ctx, './assets/img/ship.png', 30, 60, 150, 210)
 
-    const widthCross = 160
-    this.drawImg(ctx, './assets/img/cross.png', 1010 / s - widthCross / 2, 1300, widthCross, 140)
+    const widthCross = 120
+    this.drawImg(ctx, './assets/img/cross.png', 1200 / s - widthCross / 2, 1350, widthCross, 110)
 
  
-    this.drawImg(ctx, './assets/img/island.png', 700 / s, 750, 300 / s, 200)
-    
+    this.drawImg(ctx, './assets/img/island.png', 150 / s, 400, 220, 200)
+    this.drawImg(ctx, './assets/img/island.png', 750 / s, 750, 220, 200)
+
   }
 
   private windowResize(ctx: CanvasRenderingContext2D) {
@@ -110,9 +110,9 @@ class HomePage extends Control {
     ctx.setLineDash([30, 30]);
     ctx.beginPath();
     ctx.moveTo(56, 278);
-    ctx.bezierCurveTo(103.2 / s, 435.2, 1293.6 / s, 180, 1320 / s, 403.2);
+    ctx.bezierCurveTo(103.2 / s, 435.2, 1293.6 / s, 180, 1370 / s, 403.2);
     ctx.bezierCurveTo(1348.8 / s, 658.4, 350.4 / s, 651.2, 312 / s, 936.8);
-    ctx.bezierCurveTo(276 / s, 1210.4, 1130.4 / s, 1199.2, 1010 / s, 1356.8);
+    ctx.bezierCurveTo(276 / s, 1210.4, 1130.4 / s, 1199.2, 1200 / s, 1356.8);
     ctx.stroke();
   }
 
