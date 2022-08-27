@@ -79,6 +79,7 @@ class GameAudio extends Control {
         this.arrWordsStatus.push({ word: successWord.word, status: 'success' });
         success.play();
       } else if (thisCard) {
+        successWord?.node.classList.toggle('success')
         this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
         thisCard.node.classList.add('failed');
         fail.play();
@@ -98,6 +99,7 @@ class GameAudio extends Control {
   listenGame(item: ICardAudio, card: CardAudio) {
     const success = new Audio('../../assets/sound/ok.mp3');
     const fail = new Audio('../../assets/sound/fail.mp3');
+    const successWord = card.allWords.find((el) => el.word.id === card.successWord.id);
 
     if (item.word.id === card.successWord.id) {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
@@ -109,6 +111,7 @@ class GameAudio extends Control {
       item.node.classList.add('failed');
       fail.play();
       this.arrWordsStatus.push({ word: item.word, status: 'failed' });
+      successWord?.node.classList.toggle('success');
     }
     card.allWords.forEach((node) => { node.node.disabled = true; });
     card.viewCard();

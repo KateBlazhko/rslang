@@ -170,8 +170,8 @@ $color-header-gray: rgb(170, 169, 169);
         justify-content: center;
         align-items: center;
         column-gap: 20px;
-        height: 180px;
-        margin-top: 40px;
+        height: 200px;
+        margin-top: 30px;
 
         .content {
           width: 70%;
@@ -187,9 +187,11 @@ $color-header-gray: rgb(170, 169, 169);
             box-shadow: 0 0 5px gainsboro;
             border-radius: 7px;
             padding-bottom: 10px;
+            margin-left: auto;
 
             img {
               width: 100%;
+              max-height: 140px;
               border-top-right-radius: 7px;
               border-top-left-radius: 7px;
             }
