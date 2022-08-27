@@ -79,7 +79,7 @@ class GameAudio extends Control {
         this.arrWordsStatus.push({ word: successWord.word, status: 'success' });
         success.play();
       } else if (thisCard) {
-        successWord?.node.classList.toggle('success')
+        successWord?.node.classList.toggle('success');
         this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
         thisCard.node.classList.add('failed');
         fail.play();
