@@ -1,21 +1,28 @@
-$color-shadow: #aaa9a9;
-$color-text-start: #696969;
-$color-bg: #ffffff;
-$color-title: #696969;
-
 .home {
-  position: relative;
+  @include flexCenter();
+  flex-wrap: wrap;
 
   max-width: 160rem;
+  max-height: 220rem;
   width: 100%;
-  height: 160em;
   padding: 2rem;
   margin: 0 auto;
+
+  &__title-wrap {
+    @include flexCenter();
+    width: 90%;
+    padding: 2rem;
+
+    border-radius:  2rem 2rem 2rem 0;
+
+    box-shadow: 0 0 3px $color-shadow;
+    background-color: $color-bg;
+  }
 
   &__title {
     // font-family: 'DynaPuff', cursive;
     font-size: 5rem;
-    color: $color-title;
+    color: $color-text;
     text-align: center;
 
     @media (max-width: 1024px) {
@@ -25,6 +32,13 @@ $color-title: #696969;
     @media (max-width: 768px) {
       font-size: 3.5rem;
     }
+  }
+
+  &__canvas-wrap {
+    position: relative;
+
+    width: 100%;
+    height: 190em;
   }
 
   &__canvas {
@@ -57,22 +71,21 @@ $color-title: #696969;
     cursor: pointer;
 
     &_sprint {
-      top: 15%;
+      top: 13%;
       left: 40%;
     }
 
     &_audio {
-      top: 33%;
+      top: 27%;
       left: 70%;
 
       @media (max-width: 768px) {
-        top: 32%; 
-        left: 65%;
+        left: 63%;
       }
     }
 
     &_book {
-      top: 53%;
+      top: 43%;
       left: 18%;
 
 
@@ -86,11 +99,11 @@ $color-title: #696969;
     }
 
     &_stat {
-      top: 68%;
-      left: 40%;
+      top: 60%;
+      left: 53%;
 
       @media (max-width: 768px) {
-        left: 35%;
+        left: 46%;
       }
     }
 
@@ -104,7 +117,7 @@ $color-title: #696969;
     width: 35rem;
     height: 20rem;
 
-    top: 85%;
+    top: 88%;
     left: 1%;
   }
 
@@ -153,43 +166,86 @@ $color-title: #696969;
     box-shadow: 0 0 3px $color-shadow;
     background-color: $color-bg;
 
+    span {
+      text-align: center;
+      font-weight: bold;
+    }
+
     &_sprint {
-      top: 9%;
+      top: 8%;
       left: 48%;
     }
 
     &_audio {
       border-radius:  2rem 2rem 0 2rem;
 
-      top: 27%;
+      top: 22%;
       left: 65%;
-
-      @media (max-width: 768px) {
-        top: 25%;
-      }
     }
 
     &_book {
       border-radius: 2rem 2rem 0 2rem;
-      top: 47%;
+      top: 38%;
       left: 14%;
     }
 
     &_team {
-      top: 81%;
+      @include flexCenter();
+      justify-content: start;
+      flex-wrap: wrap;
+      top: 79%;
       left: 17%; 
+
+      width: 38%;
+
+      @media (max-width: 1024px) {
+        width: 60%;
+      }
+      
+      @media (max-width: 768px) {
+        width: 80%;
+      }
+
+      h3 {
+        width: 100%;
+      }
+
+      span {
+        text-align: start;
+        font-weight: normal;
+      }
     }
 
     &_stat {
       border-radius: 2rem 2rem 2rem 0;
 
-      top: 62%;
-      left: 48%;
+      top: 55%;
+      left: 60%;
+    }
+  }
+
+  &__island {
+    position: absolute;
+
+    width: 250px;
+    height: 210px;
+
+    &_left {
+      top: 20%;
+      left: 20%;
+
+      @media (max-width: 768px) {
+        left: 5%;
+      }
     }
 
-    span {
-      text-align: center;
-      font-weight: bold;
+    &_right {
+      top: 40%;
+      left: 60%;
+
+      @media (max-width: 768px) {
+        left: 45%;
+      }
     }
   }
 }

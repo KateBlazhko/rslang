@@ -1,4 +1,3 @@
-import '../style/header.scss';
 import ButtonHref from './common/ButtonHref';
 import Control from './common/control';
 import Logging from './Logging';
@@ -19,8 +18,8 @@ const enum ButtonHrefContent {
   audio = 'Audio'
 }
 
-class Header {
-  private header: HTMLElement;
+class Header extends Control{
+  // private header: HTMLElement;
 
   public getAllElementsHeader: Partial<IHeaderEl>;
 
@@ -30,8 +29,9 @@ class Header {
 
   private logging: Logging;
 
-  constructor(login: Logging) {
-    this.header = document.createElement('header');
+  constructor(parent: HTMLElement | null, className: string, login: Logging) {
+    super(parent, 'header', className)
+    // this.header = new Control('header');
     this.location = window.location;
     this.logging = login;
     this.getAllElementsHeader = {};
@@ -43,7 +43,7 @@ class Header {
   }
 
   createHeader() {
-    const nav = new Control(this.header, 'nav', 'navbar');
+    const nav = new Control(this.node, 'nav', 'navbar');
 
     const home = new ButtonHref(nav.node, '#home', ButtonHrefContent.home);
     const about = new ButtonHref(nav.node, '#about', ButtonHrefContent.about);
@@ -81,8 +81,8 @@ class Header {
   }
 
   render() {
-    this.header.append(this.logging.node);
-    return this.header;
+    this.node.append(this.logging.node);
+    return this.node;
   }
 }
 
