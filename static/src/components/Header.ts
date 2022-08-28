@@ -1,4 +1,5 @@
 import '../style/header.scss';
+import Burger from './common/BurgerEl.';
 import ButtonHref from './common/ButtonHref';
 import Control from './common/control';
 import Logging from './Logging';
@@ -30,26 +31,30 @@ class Header {
 
   private logging: Logging;
 
+  burger: Burger;
+
+  nav: Control<HTMLElement>;
+
   constructor(login: Logging) {
     this.header = document.createElement('header');
     this.location = window.location;
     this.logging = login;
     this.getAllElementsHeader = {};
     this.arrHref = [];
+    this.nav = new Control(this.header, 'nav', 'navbar');
     this.createHeader();
+    this.burger = new Burger(this.header);
     this.addThisActive();
     this.addEventListen();
     this.forwardHistory();
   }
 
   createHeader() {
-    const nav = new Control(this.header, 'nav', 'navbar');
-
-    const home = new ButtonHref(nav.node, '#home', ButtonHrefContent.home);
-    const about = new ButtonHref(nav.node, '#about', ButtonHrefContent.about);
-    const book = new ButtonHref(nav.node, '#book', ButtonHrefContent.book);
-    const sprint = new ButtonHref(nav.node, '#sprint', ButtonHrefContent.sprint);
-    const audio = new ButtonHref(nav.node, '#audio', ButtonHrefContent.audio);
+    const home = new ButtonHref(this.nav.node, '#home', ButtonHrefContent.home);
+    const about = new ButtonHref(this.nav.node, '#about', ButtonHrefContent.about);
+    const book = new ButtonHref(this.nav.node, '#book', ButtonHrefContent.book);
+    const sprint = new ButtonHref(this.nav.node, '#sprint', ButtonHrefContent.sprint);
+    const audio = new ButtonHref(this.nav.node, '#audio', ButtonHrefContent.audio);
 
     this.getAllElementsHeader = {
       home, about, book, sprint, audio,
@@ -63,7 +68,19 @@ class Header {
       item.node.addEventListener('click', () => {
         this.arrHref.forEach((el) => el.removeActiveState());
         item.addActiveState();
+        this.nav.node.classList.toggle('active');
+        this.burger.node.classList.toggle('active');
       });
+    });
+    document.addEventListener('click', (event) => {
+      const t = event.target as HTMLElement;
+      if (!t.className.includes('navbar') && !t.className.includes('burger')) {
+        this.nav.node.classList.remove('active');
+        this.burger.node.classList.remove('active');
+      }
+    });
+    this.burger.node.addEventListener('click', () => {
+      this.nav.node.classList.toggle('active');
     });
   }
 

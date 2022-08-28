@@ -3,13 +3,9 @@ import Control from '../common/control';
 import { randomWord } from '../common/shufflePage';
 
 class CardAudio extends Control {
-  // index: number;
-
   private containerBtn: Control<HTMLElement>;
 
   allWords: Array<{value: number, node: HTMLButtonElement, word: IWord}>;
-
-  // successWord: IWord;
 
   volumeContainer: Control<HTMLElement>;
 
@@ -28,8 +24,6 @@ class CardAudio extends Control {
     super(parentNode, 'div', 'audio_call__card');
     this.volumeContainer = new Control(this.node, 'div', 'container__volume');
     this.containerBtn = new Control(this.node, 'div', 'container_btn__audio');
-    // this.index = Math.floor(Math.random() * arrWord.length);
-    // this.successWord = arrWord[this.index];
     this.allWords = [];
     this.arrWord = arrWord;
     this.arrReqWord = arrReqWord;
@@ -74,7 +68,6 @@ class CardAudio extends Control {
     volume.play();
     const img = new Control<HTMLImageElement>(this.volumeContainer.node, 'button', 'volume_button__audio');
 
-    // const allValue = shuffleWord(this.index, arrWord.length);
     img.node.addEventListener('click', () => volume.play());
     this.words.allWords.forEach((item, index) => {
       const word = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', 'btn_word__audio', `${item.word}`);
@@ -87,7 +80,6 @@ class CardAudio extends Control {
       });
     });
     value.word += 1;
-    // this.allWords.splice(this.index, 1);
   }
 }
 

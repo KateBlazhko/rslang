@@ -3,7 +3,6 @@ import Control from '../common/control';
 import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
 import Logging from '../Logging';
 import CardAudio from './CardAudio';
-import StartPageAudio from './startPage';
 import StatisticAudio from './StatisticAudio';
 
 interface ICardAudio {
@@ -146,16 +145,13 @@ class GameAudio extends Control {
       }
     });
 
-    if (successArr.length > 0) {
-      Promise.all(successArr.map((req) => (
-        Words.updateUserStat(user, req.wordRes, req.wordThis.status)
-      )));
-    }
-    if (failedArr.length > 0) {
-      Promise.all(failedArr.map((req) => (
-        Words.createUserStat(user, { wordId: req.word.id, answer: req.status })
-      )));
-    }
+    Promise.all(successArr.map((req) => (
+      Words.updateUserStat(user, req.wordRes, req.wordThis.status)
+    )));
+
+    Promise.all(failedArr.map((req) => (
+      Words.createUserStat(user, { wordId: req.word.id, answer: req.status })
+    )));
   }
 
   viewStatistic(prev?: CardAudio) {
