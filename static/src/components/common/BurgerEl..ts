@@ -11,9 +11,9 @@ class Burger extends Control {
     parentNode: HTMLElement | null,
   ) {
     super(parentNode, 'div', 'header__burger_menu');
-    this.spanOne = new Control(this.node, 'span');
-    this.spanTwo = new Control(this.node, 'span');
-    this.spanTree = new Control(this.node, 'span');
+    this.spanOne = new Control(this.node, 'span', 'burger');
+    this.spanTwo = new Control(this.node, 'span', 'burger');
+    this.spanTree = new Control(this.node, 'span', 'burger');
     this.addActive();
   }
 
