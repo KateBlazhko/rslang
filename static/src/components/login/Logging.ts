@@ -1,10 +1,11 @@
-import ButtonHref from './common/ButtonHref';
-import ButtonLogging from './common/ButtonLogging';
-import Control from './common/control';
-import '../style/logging.scss';
+import ButtonHref from '../common/ButtonHref';
+import ButtonLogging from '../common/ButtonLogging';
+import Control from '../common/control';
 import ModalLog from './ModalLog';
-import Validator from './utils/Validator';
-import { User, IAuth } from './api/User';
+import Validator from '../utils/Validator';
+import { User, IAuth } from '../api/User';
+import StatisticPage from '../stat/statistic';
+import Stats from '../api/Stats';
 
 export interface IStateLog {
   state: boolean;
@@ -94,10 +95,41 @@ class Logging {
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
         this.saveState(user);
+        this.createStats()
+        
       } else {
         this.modal.callErrorWindow(res.status);
       }
     }
+  }
+
+  createStats() {
+    const date = new Date()
+    Stats.updateStat(this.stateLog.userId, this.stateLog.token, {
+      learnedWords: 0,
+      optional: {
+        dateReg: date,
+        dateCurrent: date,
+        sprint: {
+          newWords: 0, 
+          сountRightAnswer: 0, 
+          countError: 0, 
+          maxSeriesRightAnswer: 0
+        },
+        audio: {
+          newWords: 0, 
+          сountRightAnswer: 0, 
+          countError: 0, 
+          maxSeriesRightAnswer: 0
+        },
+        words: {
+          newWords: 0, 
+          сountRightAnswer: 0, 
+          countError: 0, 
+          learnedWords: 0
+        }
+      }
+    })
   }
 
   successLog() {

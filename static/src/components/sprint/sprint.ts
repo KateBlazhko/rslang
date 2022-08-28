@@ -4,8 +4,9 @@ import Signal from '../common/signal';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
-import randomSort from '../common/functions';
-import Logging from '../Logging';
+import randomSort from '../utils/functions';
+import Logging from '../login/Logging';
+import Stats from '../api/Stats';
 
 enum TextInner {
   preloader = 'We\'re getting closer, get ready...',
@@ -16,6 +17,15 @@ export interface IWordStat {
   wordId: string,
   answer: boolean
 }
+
+export interface IGameStat {
+  newWords: number,
+  сountRightAnswer: number,
+  countError: number,
+  maxSeriesRightAnswer: number
+}
+
+export type Stat = [IWordStat[], IGameStat]
 
 const COUNTPAGE = 30;
 
@@ -48,7 +58,7 @@ class Sprint extends Control {
     this.onFinish.add(this.recordStatToBD.bind(this));
   }
 
-  public onFinish = new Signal<IWordStat[]>();
+  public onFinish = new Signal<Stat>();
 
   private async renderPreloader(words: number[]) {
     const [group, page] = words;
@@ -88,7 +98,7 @@ class Sprint extends Control {
 
         return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
-      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 5) as number[]
+      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 10) as number[];
       const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
         group: group.toString(),
         page: key.toString(),
@@ -119,24 +129,30 @@ class Sprint extends Control {
         stateLog,
       );
 
-      return randomSort(aggregatedWordsFull)  as IWord[];
+      return randomSort(aggregatedWordsFull) as IWord[];
     }
 
     throw new Error('no logging');
   }
 
-  private async recordStatToBD(wordsStat: IWordStat[]) {
+  private async recordStatToBD(stat: Stat) {
+    const [ wordsStat, gameStat ] = stat
+
     const stateLog = await this.login.checkStorageLogin();
     if (stateLog.state) {
       const userWordsAll = await Words.getUserWords(stateLog.userId, stateLog.token);
 
-      const recordResult = await Promise.all(wordsStat.map((word) => {
+      const recordWordResult = await Promise.all(wordsStat.map((word) => {
         const userWord = userWordsAll.find((item) => item.optional.wordId === word.wordId);
         if (userWord) {
-          return Words.updateUserStat(stateLog, userWord, word.answer);
+          return Words.updateWordStat(stateLog, userWord, word.answer);
         }
-        return Words.createUserStat(stateLog, word);
+        gameStat.newWords += 1
+        return Words.createWordStat(stateLog, word);
       }));
+
+      const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'sprint')
+
     }
   }
 

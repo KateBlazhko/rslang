@@ -1,7 +1,8 @@
 import Sprint from '../sprint/sprint';
+import Statistic from '../stat/statistic';
 import Signal from '../common/signal';
 import Control from '../common/control';
-import Logging from '../Logging';
+import Logging from '../login/Logging';
 
 class Router {
   private location: Location;
@@ -49,7 +50,8 @@ class Router {
         container.innerHTML = '<h1>Audio</h1>';
         break;
       case 'statistics':
-        container.innerHTML = '<h1>statistics</h1>';
+        container.innerHTML = '';
+        this.currentPage = new Statistic(container, 'stat');
         break;
       default:
         container.innerHTML = '<h1>Home</h1>';

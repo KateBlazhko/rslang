@@ -48,6 +48,8 @@ class ResultPage extends Control {
     this.audiotList = this.renderResult();
 
     this.renderSoundIcons(this.state.getSoundPlay());
+
+    document.onkeydown = (e) => false;
   }
 
   private renderResult() {

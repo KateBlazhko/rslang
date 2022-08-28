@@ -1,0 +1,148 @@
+$color-bg: #ffffff;
+$color-shadow: #aaa9a9;
+
+$color-text: #696969;
+
+.stat {
+  @include flexCenter();
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 10rem;
+
+  width: 100%;
+  padding: 2rem;
+
+  &__button-wrap {
+    @include flexCenter();
+    gap: 1rem;
+
+    width: 100%;
+  }
+
+  &__button {
+    width: 20rem;
+    height: 5rem;
+
+    box-shadow: 0 0 3px $color-shadow;
+    border-bottom: 3px solid $color-shadow;
+    border-radius: 4px;
+
+    text-align: center;
+    color: $color-text;
+    font-size: 2.5rem;
+    line-height: 5rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: all 0.4s;
+
+    &:hover {
+      color: $color-bg;
+
+      background-color: $color-shadow;
+    }
+
+    &.active {
+      color: $color-bg;
+
+      background-color: $color-shadow;
+    }
+ 
+  }
+
+  // &__inner {
+  //   width: 100%;
+  // }
+}
+
+.daily {
+  display: grid;
+  grid-template-columns: 10rem 30rem;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+
+  &__button-wrap {
+    @include flexCenter();
+    flex-direction: column;
+
+    gap: 7rem;
+
+    width: 100%;
+  }
+
+  &__icon {
+    position: relative;
+
+    @include flexCenter();
+    width: 10rem;
+    height: 10rem;
+    
+    box-shadow: 0 0 3px $color-shadow;
+    
+    border-radius: 50%;
+    background-color: $color-bg;
+    
+    cursor: pointer;
+
+    &.active .daily__img {
+      width: 100%;
+      height: 100%;
+    }
+
+  }
+
+  &__img {
+    display: block;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    
+    object-fit: contain;
+    
+    transition: all 0.5s linear;
+    
+    &:hover {
+    width: 100%;
+    height: 100%;
+    }
+
+  }
+
+  &__text {  
+    position: absolute;
+    top: -55%;
+    left: -70%;
+ 
+    @include flexCenter();
+    justify-content: start;
+
+    padding: 1rem;
+
+    border-radius:  2rem 2rem 0 2rem;
+
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text-start;
+
+    box-shadow: 0 0 3px $color-shadow;
+    background-color: $color-bg;
+
+    span {
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+
+  &__stat-wrap {
+    box-shadow: 0 0 3px $color-shadow;
+    height: 100%;
+  }
+
+  &__name {
+    font-size: 3rem;
+    text-align: center;
+    color: $color-text-start;
+  }
+}

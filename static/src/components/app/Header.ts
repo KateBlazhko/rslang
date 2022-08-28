@@ -1,7 +1,6 @@
-import '../style/header.scss';
-import ButtonHref from './common/ButtonHref';
-import Control from './common/control';
-import Logging from './Logging';
+import ButtonHref from '../common/ButtonHref';
+import Control from '../common/control';
+import Logging from '../login/Logging';
 
 interface IHeaderEl {
   home: ButtonHref,

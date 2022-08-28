@@ -15,4 +15,12 @@ function randomSort(array: IWord[] | number[]) {
   return array;
 }
 
+export function adapterDate (date: Date) {
+  const year = new Date(Date.parse(date.toString())).getFullYear()
+  const month = new Date(Date.parse(date.toString())).getMonth()
+  const day = new Date(Date.parse(date.toString())).getDate()
+
+  return `${day}, ${month} ${year}`
+}
+
 export default randomSort;
