@@ -1,9 +1,9 @@
-$audio_btn_difficult-1: greenyellow;
-$audio_btn_difficult-2: green;
-$audio_btn_difficult-3: yellow;
-$audio_btn_difficult-4: orange;
-$audio_btn_difficult-5: crimson;
-$audio_btn_difficult-6: red;
+$audio_btn_difficult-1: rgb(253, 188, 7);
+$audio_btn_difficult-2: rgb(240, 236, 12);
+$audio_btn_difficult-3: rgb(25, 242, 43);
+$audio_btn_difficult-4: rgb(6, 140, 250);
+$audio_btn_difficult-5: rgb(49, 6, 143);
+$audio_btn_difficult-6: rgb(100, 4, 99);
 
 $header-button-shadow: gainsboro;
 $hover-item-background: rgb(112, 112, 198);
@@ -21,11 +21,102 @@ $color-header-gray: rgb(170, 169, 169);
 
   .start__page__audio {
     width: 100%;
+    max-width: 750px;
     height: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
+
+    .description__audio {
+      width: 90%;
+
+      .preview {
+        width: 320px;
+        font-weight: 600;
+        color: gray;
+        background: white;
+        border-radius: 20px;
+        padding: 10px;
+        font-size: 18px;
+        border-top-left-radius: 0px;
+      }
+
+      .instruction {
+        width: 300px;
+        font-weight: 600;
+        color: gray;
+        background: white;
+        border-radius: 20px;
+        padding: 20px 10px;
+        font-size: 18px;
+        border-top-right-radius: 0px;
+        margin-top: 10px;
+        margin-left: auto;
+      }
+
+      .key-instruction {
+        width: 250px;
+        font-weight: 600;
+        color: gray;
+        background: white;
+        border-radius: 20px;
+        padding: 20px 10px;
+        font-size: 18px;
+        border-top-left-radius: 0px;
+        margin-top: 10px;
+        margin-right: auto;
+
+        span {
+          display: inline-block;
+          width: 25px;
+          text-align: center;
+          margin-top: 10px;
+          padding: 5px 0;
+          box-shadow: 0 0 3px dimgray;
+          margin-right:10px;
+          border-radius: 4px;
+          border-bottom: 3px solid gainsboro;
+          cursor: pointer;
+        }
+      }
+
+      .key-instruction-two {
+        width: 250px;
+        font-weight: 600;
+        color: gray;
+        background: white;
+        border-radius: 20px;
+        padding: 20px 10px;
+        font-size: 18px;
+        border-top-right-radius: 0px;
+        margin-top: 10px;
+        margin-left: auto;
+
+        span {
+          display: inline-block;
+          width: 120px;
+          text-align: center;
+          margin-top: 10px;
+          padding: 5px 0;
+          box-shadow: 0 0 3px dimgray;
+          margin-right:10px;
+          border-radius: 4px;
+          border-bottom: 3px solid gainsboro;
+          cursor: pointer;
+        }
+      }
+
+      span:hover {
+        background: rgb(232, 232, 232);
+        color: white;
+        text-shadow: 0 0 3px dimgray;
+      }
+
+      h2 {
+        color: dimgray
+      }
+    }
 
     .audio_call__title {
       font-size: 26px;
@@ -44,6 +135,7 @@ $color-header-gray: rgb(170, 169, 169);
       text-shadow: 0 0 3px dimgray;
       cursor: pointer;
       transition: .2s;
+      margin-bottom: 40px;
 
       &:hover {
         transform: scale(1.1) translate(0, -5px);
@@ -59,7 +151,7 @@ $color-header-gray: rgb(170, 169, 169);
       
       button {
         width: 13%;
-        height: 150px;
+        height: 90px;
         font-size: 40px;
         font-weight: 900;
         color: white;
