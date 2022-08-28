@@ -108,8 +108,8 @@ class GameAudio extends Control {
     } else {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
       item.node.classList.add('failed');
-      fail.play();
       this.arrWordsStatus.push({ word: item.word, status: false });
+      fail.play();
       successWord?.node.classList.toggle('success');
     }
     card.allWords.forEach((node) => { node.node.disabled = true; });
@@ -118,40 +118,18 @@ class GameAudio extends Control {
   }
 
   async saveWordsUser() {
-    // const stateLog = await this.login.checkStorageLogin();
-    // if (stateLog.state) {
-    //   const userWordsAll = await Words.getUserWords(stateLog.userId, stateLog.token);
+    const stateLog = await this.login.checkStorageLogin();
+    if (stateLog.state) {
+      const userWordsAll = await Words.getUserWords(stateLog.userId, stateLog.token);
 
-    //   const recordResult = await Promise.all(wordsStat.map((word) => {
-    //     const userWord = userWordsAll.find((item) => item.optional.wordId === word.wordId);
-    //     if (userWord) {
-    //       return Words.updateUserStat(stateLog, userWord, word.answer);
-    //     }
-    //     return Words.createUserStat(stateLog, word);
-    //   }));
-    // }
-    const user = await this.login.checkStorageLogin();
-    const userWords = await Words.getUserWords(user.userId, user.token);
-
-    const successArr: Array<{wordRes: IUserWord, wordThis: { word: IWord; status: boolean; }}> = [];
-    const failedArr: { word: IWord; status: boolean; }[] = [];
-
-    this.arrWordsStatus.forEach((item) => {
-      const word = userWords.find((el) => el.optional.wordId === item.word.id);
-      if (word) {
-        successArr.push({ wordRes: word, wordThis: item });
-      } else {
-        failedArr.push(item);
-      }
-    });
-
-    Promise.all(successArr.map((req) => (
-      Words.updateUserStat(user, req.wordRes, req.wordThis.status)
-    )));
-
-    Promise.all(failedArr.map((req) => (
-      Words.createUserStat(user, { wordId: req.word.id, answer: req.status })
-    )));
+      await Promise.all(this.arrWordsStatus.map((word) => {
+        const userWord = userWordsAll.find((item) => item.optional.wordId === word.word.id);
+        if (userWord) {
+          return Words.updateUserStat(stateLog, userWord, word.status);
+        }
+        return Words.createUserStat(stateLog, { wordId: word.word.id, answer: word.status });
+      }));
+    }
   }
 
   viewStatistic(prev?: CardAudio) {

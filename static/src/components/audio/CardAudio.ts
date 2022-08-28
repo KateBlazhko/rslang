@@ -38,14 +38,16 @@ class CardAudio extends Control {
       <img src='http://localhost:3000/${this.words.successWord.image}'>
       <h3>${this.words.successWord.wordTranslate} <span><h3>${this.words.successWord.transcription}</h3></span></h3>
     </div>
-    <fieldset>
-      <legend>Example</legend>
-      ${this.words.successWord.textExample}
-    </fieldset>
-    <fieldset>
-      <legend>Translate</legend>
-      ${this.words.successWord.textExampleTranslate}
-    </fieldset>
+    <div class='example'>
+      <fieldset>
+        <legend>Example</legend>
+        ${this.words.successWord.textExample}
+      </fieldset>
+      <fieldset>
+        <legend>Translate</legend>
+        ${this.words.successWord.textExampleTranslate}
+      </fieldset>
+    </div>
     `;
   }
 

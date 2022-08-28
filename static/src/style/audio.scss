@@ -221,6 +221,7 @@ $color-header-gray: rgb(170, 169, 169);
     border-bottom: 5px solid gainsboro;
     border-top: 5px solid gainsboro;
     padding: 20px 0px;
+    margin-top: 20px;
 
     @media(max-width: 890px) {
       height: 550px;
@@ -235,6 +236,11 @@ $color-header-gray: rgb(170, 169, 169);
       cursor: pointer;
       border-radius: 50%;
       background: white;
+
+      @media (max-width: 550px) {
+        right: 0;
+        top: -55px;
+      }
     }
 
     .audio_call__progress {
@@ -461,6 +467,16 @@ $color-header-gray: rgb(170, 169, 169);
       &::-webkit-scrollbar-thumb {
         background-color: gainsboro;    /* цвет плашки */
         border-radius: 20px;       /* закругления плашки */
+      }
+
+      .audio {
+        margin-right: auto;
+        margin-left: 10px;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.1);
+        }
       }
 
       .item {
