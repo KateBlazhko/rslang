@@ -31,13 +31,13 @@ class Router {
     const container = this.container.node;
 
     if (hash) {
-      this.onGoPage.emit(hash)
-    };
+      this.onGoPage.emit(hash);
+    }
 
     switch (hash) {
       case 'home':
         container.innerHTML = '';
-        this.currentPage = new HomePage(container, this.login)
+        this.currentPage = new HomePage(container, this.login);
         break;
       case 'about':
         container.innerHTML = '<h1>About Us</h1>';
@@ -58,7 +58,8 @@ class Router {
       default:
         this.onGoPage.emit('home');
         container.innerHTML = '';
-        this.currentPage = new HomePage(container, this.login)    }
+        this.currentPage = new HomePage(container, this.login);
+    }
   }
 
   render() {

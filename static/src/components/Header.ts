@@ -18,7 +18,7 @@ const enum ButtonHrefContent {
   audio = 'Audio'
 }
 
-class Header extends Control{
+class Header extends Control {
   // private header: HTMLElement;
 
   public getAllElementsHeader: Partial<IHeaderEl>;
@@ -30,7 +30,7 @@ class Header extends Control{
   private logging: Logging;
 
   constructor(parent: HTMLElement | null, className: string, login: Logging) {
-    super(parent, 'header', className)
+    super(parent, 'header', className);
     // this.header = new Control('header');
     this.location = window.location;
     this.logging = login;

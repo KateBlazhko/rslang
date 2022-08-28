@@ -1,10 +1,13 @@
 import Header from '../Header';
 import Logging from '../Logging';
 import Router from '../router/Router';
-import Footer from '../footer'
+import Footer from '../footer';
+
 class App {
   private header: Header;
-  private footer: Footer
+
+  private footer: Footer;
+
   private main: Router;
 
   private login: Logging;
@@ -14,8 +17,7 @@ class App {
     this.header = new Header(null, 'header', this.login);
     this.main = new Router(this.login);
     this.footer = new Footer(null, 'footer');
-    this.main.onGoPage.add(this.footer.hide.bind(this.footer))
-
+    this.main.onGoPage.add(this.footer.hide.bind(this.footer));
   }
 
   render() {
@@ -25,7 +27,6 @@ class App {
       this.footer.render(),
     );
   }
-
 }
 
 export default App;

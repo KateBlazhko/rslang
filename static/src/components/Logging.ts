@@ -37,7 +37,7 @@ class Logging {
     this.listenSubmit();
   }
 
-  public onLogin = new Signal<boolean>()
+  public onLogin = new Signal<boolean>();
 
   listenSubmit() {
     this.modal.formElements.form.node.addEventListener('click', (e) => {
@@ -72,7 +72,7 @@ class Logging {
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
         this.saveState(user);
-        this.onLogin.emit(true)
+        this.onLogin.emit(true);
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -98,7 +98,7 @@ class Logging {
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
         this.saveState(user);
-        this.onLogin.emit(true)
+        this.onLogin.emit(true);
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -154,7 +154,7 @@ class Logging {
       this.accessStatistics();
       localStorage.removeItem('user');
       this.modal.formElements.background.destroy();
-      this.onLogin.emit(false)
+      this.onLogin.emit(false);
     });
     this.modal.noBtn.node.addEventListener('click', () => this.modal.formElements.background.destroy());
   }

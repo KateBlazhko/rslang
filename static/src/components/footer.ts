@@ -3,7 +3,6 @@ import Control from '../components/common/control';
 class Footer extends Control {
   constructor(parent: HTMLElement | null, className: string) {
     super(parent, 'footer', className);
-
   }
 
   private static drawFooter() {
@@ -30,14 +29,13 @@ class Footer extends Control {
 
   hide(hash: string) {
     if (hash === 'sprint' || hash === 'audio') {
-      this.destroy()
+      this.destroy();
     } else {
       document.body.append(
         this.render(),
       );
     }
   }
-
 }
 
 export default Footer;
