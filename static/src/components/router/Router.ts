@@ -30,9 +30,12 @@ class Router {
   private setPage(hash: string) {
     const container = this.container.node;
 
+    if (hash) {
+      this.onGoPage.emit(hash)
+    };
+
     switch (hash) {
       case 'home':
-        this.onGoPage.emit(hash);
         container.innerHTML = '';
         this.currentPage = new HomePage(container, this.login)
         break;
@@ -40,7 +43,6 @@ class Router {
         container.innerHTML = '<h1>About Us</h1>';
         break;
       case 'book':
-        this.onGoPage.emit(hash);
         container.innerHTML = '<h1>Book</h1>';
         break;
       case 'sprint':
@@ -54,7 +56,7 @@ class Router {
         container.innerHTML = '<h1>statistics</h1>';
         break;
       default:
-        this.onGoPage.emit(hash);
+        this.onGoPage.emit('home');
         container.innerHTML = '';
         this.currentPage = new HomePage(container, this.login)    }
   }

@@ -4,7 +4,6 @@ class Footer extends Control {
   constructor(parent: HTMLElement | null, className: string) {
     super(parent, 'footer', className);
 
-    this.node.innerHTML = Footer.drawFooter();
   }
 
   private static drawFooter() {
@@ -24,8 +23,21 @@ class Footer extends Control {
   }
 
   render() {
+    this.node.innerHTML = Footer.drawFooter();
+
     return this.node;
   }
+
+  hide(hash: string) {
+    if (hash === 'sprint' || hash === 'audio') {
+      this.destroy()
+    } else {
+      document.body.append(
+        this.render(),
+      );
+    }
+  }
+
 }
 
 export default Footer;

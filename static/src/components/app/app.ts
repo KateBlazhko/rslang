@@ -14,6 +14,8 @@ class App {
     this.header = new Header(null, 'header', this.login);
     this.main = new Router(this.login);
     this.footer = new Footer(null, 'footer');
+    this.main.onGoPage.add(this.footer.hide.bind(this.footer))
+
   }
 
   render() {
@@ -23,6 +25,7 @@ class App {
       this.footer.render(),
     );
   }
+
 }
 
 export default App;
