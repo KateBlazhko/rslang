@@ -22,6 +22,23 @@ export interface IWord {
   textExampleTranslate: string
 }
 
+export interface IWordAgr {
+  _id: string,
+  group: number,
+  page: number,
+  word: string,
+  image: string,
+  audio: string,
+  audioMeaning: string,
+  audioExample: string,
+  textMeaning: string,
+  textExample: string,
+  transcription: string,
+  wordTranslate: string,
+  textMeaningTranslate: string,
+  textExampleTranslate: string
+}
+
 export interface IUserWord {
     difficulty: 'easy' | 'hard',
     optional: {
@@ -36,7 +53,7 @@ export interface IUserWord {
 }
 
 export interface IAggregatedWords {
-  paginatedResults: IWord[]
+  paginatedResults: IWordAgr[]
   totalCount: {
     count: number
   }[]
@@ -307,10 +324,21 @@ class Words {
         ));
       }
 
-      return aggregatedWordsAll;
+      return Words.adapterAggregatedWords(aggregatedWordsAll);
     }
 
     throw ErrorUser;
+  }
+
+  private static adapterAggregatedWords(aggregatedWordsAll: IWordAgr[]) {
+    const wordsAll: IWord[] = aggregatedWordsAll.map((word) => {
+      const { _id: id, ...wordRest } = word;
+      return {
+        id,
+        ...wordRest,
+      };
+    });
+    return wordsAll;
   }
 
   private static async addAggregatedWordsFromOtherPages(
@@ -321,7 +349,7 @@ class Words {
     stateLog: IStateLog,
   ) {
     let count = currentCount;
-    const words: IWord[] = [];
+    const words: IWordAgr[] = [];
 
     if (count >= 100 || pageIndex < 0) {
       return words;

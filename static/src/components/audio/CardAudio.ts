@@ -27,7 +27,7 @@ class CardAudio extends Control {
     this.allWords = [];
     this.arrWord = arrWord;
     this.arrReqWord = arrReqWord;
-    this.words = this.createWorlds();
+    this.words = this.createWords();
     this.createCard(value, arrWord);
   }
 
@@ -51,7 +51,7 @@ class CardAudio extends Control {
     `;
   }
 
-  createWorlds() {
+  createWords() {
     const idWords = this.arrReqWord.map((el) => el.word.id);
     const res: IWord[] = [];
     while (res.length < 6) {
@@ -65,7 +65,7 @@ class CardAudio extends Control {
   }
 
   createCard(value: { word: number }, arrWord: Array<IWord>) {
-    this.createWorlds();
+    this.createWords();
     const volume = new Audio(`http://localhost:3000/${this.words.successWord.audio}`);
     volume.play();
     const img = new Control<HTMLImageElement>(this.volumeContainer.node, 'button', 'volume_button__audio');

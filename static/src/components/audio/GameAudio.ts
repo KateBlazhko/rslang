@@ -1,7 +1,8 @@
 import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
+import randomSort from '../common/functions';
 import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
-import Logging from '../Logging';
+import Logging, { IStateLog } from '../Logging';
 import CardAudio from './CardAudio';
 import StatisticAudio from './StatisticAudio';
 
@@ -46,22 +47,60 @@ class GameAudio extends Control {
     });
   }
 
-  static async getAllWords(difficult: string) {
-    const wordsAll = await Promise.all(shufflePage().map((page) => Words.getWords({
+  static async getAllWords(difficult: string, page?: string) {
+    if (page) {
+      const words = await Words.getWords({
+        group: difficult,
+        page,
+      });
+
+      const wordsAll = await Words.checkWords(words, +difficult, +page);
+
+      return shuffleArrayPage(wordsAll);
+    }
+    const wordsAll = await Promise.all(shufflePage().map((pageNumber) => Words.getWords({
       group: difficult,
-      page: page.toString(),
+      page: pageNumber.toString(),
     })));
+
     return shuffleArrayPage(wordsAll.flat());
   }
 
-  async game(difficult: string) {
-    this.arrWords = await GameAudio.getAllWords(difficult);
+  async game(difficult: string, initiator: 'book' | 'header') {
+    if (initiator === 'header') {
+      this.arrWords = await GameAudio.getAllWords(difficult);
+    } else {
+      const group = 0;
+      const page = 2;
+      // todo getting group, page from book
+      const stateLog = await this.login.checkStorageLogin();
+
+      if (stateLog.state) {
+        this.arrWords = await GameAudio.getAggregatedWords(stateLog, group, page);
+      } else {
+        this.arrWords = await GameAudio.getAllWords(group.toString(), page.toString());
+      }
+    }
+
     this.createCard();
+  }
+
+  private static async getAggregatedWords(stateLog: IStateLog, group: number, page: number) {
+    const aggregatedWords = await Words.getNoLearnWords(stateLog, group);
+    const aggregatedWordsFull = await Words.checkAggregatedWords(
+      aggregatedWords,
+      group,
+      page,
+      stateLog,
+    );
+
+    return shuffleArrayPage(aggregatedWordsFull);
   }
 
   createCard(prev?: CardAudio) {
     if (prev) prev.destroy();
     const card = new CardAudio(this.node, this.value, this.arrWords, this.arrWordsStatus);
+
     document.onkeydown = (e) => this.listenKey(card, e.key);
     card.allWords.forEach((item) => {
       item.node.addEventListener('click', () => this.listenGame(item, card));

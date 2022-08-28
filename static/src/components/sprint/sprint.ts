@@ -88,7 +88,7 @@ class Sprint extends Control {
 
         return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
-      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 5) as number[]
+      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 5) as number[];
       const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
         group: group.toString(),
         page: key.toString(),
@@ -119,7 +119,7 @@ class Sprint extends Control {
         stateLog,
       );
 
-      return randomSort(aggregatedWordsFull)  as IWord[];
+      return randomSort(aggregatedWordsFull) as IWord[];
     }
 
     throw new Error('no logging');

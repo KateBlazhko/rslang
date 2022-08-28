@@ -48,7 +48,7 @@ class Router {
         break;
       case 'audio':
         this.onGoPage.emit(hash);
-        this.currentPage = new Audio(container, this.login);
+        this.currentPage = new Audio(container, this.login, this.onGoPage);
         break;
       case 'statistics':
         container.innerHTML = '<h1>statistics</h1>';
