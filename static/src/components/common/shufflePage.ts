@@ -24,24 +24,19 @@ const shuffleArrayPage = (array: Array<IWord>) => {
   return array;
 };
 
-const shuffleWord = (word: number, countWord = 100) => {
-  const arrWord: Array<number> = [];
-  arrWord.push(word);
-  while (arrWord.length < 6) {
-    const value = Math.floor(Math.random() * countWord);
-    if (!arrWord.find((i) => i === value)) arrWord.push(value);
-  }
-  let currentIndex: number = arrWord.length;
+function randomWord(array: IWord[]) {
+  let currentIndex: number = +array.length;
   let randomIndex: number;
 
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
 
-    [arrWord[currentIndex], arrWord[randomIndex]] = [
-      arrWord[randomIndex], arrWord[currentIndex]];
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
   }
-  return arrWord;
-};
 
-export { shufflePage, shuffleArrayPage, shuffleWord };
+  return array;
+}
+
+export { shufflePage, shuffleArrayPage, randomWord };

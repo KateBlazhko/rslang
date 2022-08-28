@@ -62,7 +62,7 @@ class GameAudio extends Control {
 
   createCard(prev?: CardAudio) {
     if (prev) prev.destroy();
-    const card = new CardAudio(this.node, this.value, this.arrWords);
+    const card = new CardAudio(this.node, this.value, this.arrWords, this.arrWordsStatus);
     document.onkeydown = (e) => this.listenKey(card, e.key);
     card.allWords.forEach((item) => {
       item.node.addEventListener('click', () => this.listenGame(item, card));
@@ -72,7 +72,7 @@ class GameAudio extends Control {
   listenKey(card: CardAudio, key: string) {
     const success = new Audio('../../assets/sound/ok.mp3');
     const fail = new Audio('../../assets/sound/fail.mp3');
-    const successWord = card.allWords.find((el) => el.word.id === card.successWord.id);
+    const successWord = card.allWords.find((el) => el.word.id === card.words.successWord.id);
 
     if (card.allWords.map((i) => i.value).includes(+key)) {
       const thisCard = card.allWords.find((el) => el.value === +key);
@@ -99,9 +99,9 @@ class GameAudio extends Control {
   listenGame(item: ICardAudio, card: CardAudio) {
     const success = new Audio('../../assets/sound/ok.mp3');
     const fail = new Audio('../../assets/sound/fail.mp3');
-    const successWord = card.allWords.find((el) => el.word.id === card.successWord.id);
+    const successWord = card.allWords.find((el) => el.word.id === card.words.successWord.id);
 
-    if (item.word.id === card.successWord.id) {
+    if (item.word.id === card.words.successWord.id) {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
       item.node.classList.add('success');
       this.arrWordsStatus.push({ word: item.word, status: true });
@@ -119,6 +119,18 @@ class GameAudio extends Control {
   }
 
   async saveWordsUser() {
+    // const stateLog = await this.login.checkStorageLogin();
+    // if (stateLog.state) {
+    //   const userWordsAll = await Words.getUserWords(stateLog.userId, stateLog.token);
+
+    //   const recordResult = await Promise.all(wordsStat.map((word) => {
+    //     const userWord = userWordsAll.find((item) => item.optional.wordId === word.wordId);
+    //     if (userWord) {
+    //       return Words.updateUserStat(stateLog, userWord, word.answer);
+    //     }
+    //     return Words.createUserStat(stateLog, word);
+    //   }));
+    // }
     const user = await this.login.checkStorageLogin();
     const userWords = await Words.getUserWords(user.userId, user.token);
 
@@ -144,8 +156,6 @@ class GameAudio extends Control {
         Words.createUserStat(user, { wordId: req.word.id, answer: req.status })
       )));
     }
-
-    console.log()
   }
 
   viewStatistic(prev?: CardAudio) {
@@ -160,7 +170,6 @@ class GameAudio extends Control {
     const button = new Control(null, 'button', 'button_next', 'NEXT');
     card.node.prepend(button.node);
     button.node.addEventListener('click', () => {
-      this.arrWords.splice(card.index, 1);
       if (this.value.word < 20) {
         this.createCard(card);
       } else {
@@ -170,7 +179,6 @@ class GameAudio extends Control {
     });
     document.onkeydown = (e) => {
       if (e.key === 'Enter') {
-        this.arrWords.splice(card.index, 1);
         if (this.value.word < 20) {
           this.createCard(card);
         } else {
