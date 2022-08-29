@@ -1,3 +1,4 @@
+import Burger from './common/BurgerEl.';
 import ButtonHref from './common/ButtonHref';
 import Control from './common/control';
 import Logging from './Logging';
@@ -29,21 +30,22 @@ class Header extends Control {
 
   private logging: Logging;
 
-  constructor(parent: HTMLElement | null, className: string, login: Logging) {
-    super(parent, 'header', className);
-    // this.header = new Control('header');
+  constructor(login: Logging) {
+    this.header = document.createElement('header');
     this.location = window.location;
     this.logging = login;
     this.getAllElementsHeader = {};
     this.arrHref = [];
+    this.nav = new Control(this.header, 'nav', 'navbar');
     this.createHeader();
+    this.burger = new Burger(this.header);
     this.addThisActive();
     this.addEventListen();
     this.forwardHistory();
   }
 
   createHeader() {
-    const nav = new Control(this.node, 'nav', 'navbar');
+    const nav = new Control(this.header, 'nav', 'navbar');
 
     const home = new ButtonHref(nav.node, '#home', ButtonHrefContent.home);
     const about = new ButtonHref(nav.node, '#about', ButtonHrefContent.about);
@@ -63,7 +65,19 @@ class Header extends Control {
       item.node.addEventListener('click', () => {
         this.arrHref.forEach((el) => el.removeActiveState());
         item.addActiveState();
+        this.nav.node.classList.toggle('active');
+        this.burger.node.classList.toggle('active');
       });
+    });
+    document.addEventListener('click', (event) => {
+      const t = event.target as HTMLElement;
+      if (!t.className.includes('navbar') && !t.className.includes('burger')) {
+        this.nav.node.classList.remove('active');
+        this.burger.node.classList.remove('active');
+      }
+    });
+    this.burger.node.addEventListener('click', () => {
+      this.nav.node.classList.toggle('active');
     });
   }
 

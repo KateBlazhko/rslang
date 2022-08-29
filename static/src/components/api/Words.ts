@@ -22,6 +22,23 @@ export interface IWord {
   textExampleTranslate: string
 }
 
+export interface IWordAgr {
+  _id: string,
+  group: number,
+  page: number,
+  word: string,
+  image: string,
+  audio: string,
+  audioMeaning: string,
+  audioExample: string,
+  textMeaning: string,
+  textExample: string,
+  transcription: string,
+  wordTranslate: string,
+  textMeaningTranslate: string,
+  textExampleTranslate: string
+}
+
 export interface IUserWord {
     difficulty: 'easy' | 'hard',
     optional: {
@@ -36,7 +53,7 @@ export interface IUserWord {
 }
 
 export interface IAggregatedWords {
-  paginatedResults: IWord[]
+  paginatedResults: IWordAgr[]
   totalCount: {
     count: number
   }[]
@@ -290,15 +307,15 @@ class Words {
   ) {
     if (Array.isArray(aggregatedWords)) {
       const aggregatedWordsAll = aggregatedWords
-        .map((aggregatedWord) => aggregatedWord.paginatedResults
-          .filter((res) => res.page === page))
-        .flat();
+        .map((aggregatedWord) => aggregatedWord.paginatedResults)
+        .flat()
+        .filter((res) => res.page === page);
 
       if (aggregatedWordsAll.length < 100 && page > 0) {
         const pageList = [...Array(page).keys()];
         const pageIndex = pageList.length - 1;
 
-        aggregatedWordsAll.push(...await Words.addWordsFromOtherPages(
+        aggregatedWordsAll.push(...await Words.addAggregatedWordsFromOtherPages(
           aggregatedWordsAll.length,
           pageList,
           pageIndex,
@@ -307,13 +324,24 @@ class Words {
         ));
       }
 
-      return aggregatedWordsAll;
+      return Words.adapterAggregatedWords(aggregatedWordsAll);
     }
 
     throw ErrorUser;
   }
 
-  private static async addWordsFromOtherPages(
+  private static adapterAggregatedWords(aggregatedWordsAll: IWordAgr[]) {
+    const wordsAll: IWord[] = aggregatedWordsAll.map((word) => {
+      const { _id: id, ...wordRest } = word;
+      return {
+        id,
+        ...wordRest,
+      };
+    });
+    return wordsAll;
+  }
+
+  private static async addAggregatedWordsFromOtherPages(
     currentCount: number,
     pageList: number[],
     pageIndex: number,
@@ -321,7 +349,7 @@ class Words {
     stateLog: IStateLog,
   ) {
     let count = currentCount;
-    const words: IWord[] = [];
+    const words: IWordAgr[] = [];
 
     if (count >= 100 || pageIndex < 0) {
       return words;
@@ -331,14 +359,14 @@ class Words {
 
     if (Array.isArray(aggregatedWordsAdd)) {
       const aggregatedWordsAddAll = aggregatedWordsAdd
-        .map((aggregatedWordAdd) => aggregatedWordAdd.paginatedResults
-          .filter((res) => res.page === pageList[pageIndex]))
-        .flat();
+        .map((aggregatedWord) => aggregatedWord.paginatedResults)
+        .flat()
+        .filter((res) => res.page === pageList[pageIndex]);
 
       words.push(...aggregatedWordsAddAll);
       count += aggregatedWordsAddAll.length;
 
-      words.push(...await Words.addWordsFromOtherPages(
+      words.push(...await Words.addAggregatedWordsFromOtherPages(
         count,
         pageList,
         pageIndex - 1,
@@ -346,6 +374,57 @@ class Words {
         stateLog,
       ));
     }
+
+    return words;
+  }
+
+  public static async checkWords(
+    words: IWord[],
+    group: number,
+    page: number,
+  ) {
+    if (words.length < 100 && page > 0) {
+      const pageList = [...Array(page).keys()];
+      const pageIndex = pageList.length - 1;
+
+      words.push(...await Words.addWordsFromOtherPages(
+        words.length,
+        pageList,
+        pageIndex,
+        group,
+      ));
+    }
+
+    return words;
+  }
+
+  public static async addWordsFromOtherPages(
+    currentCount: number,
+    pageList: number[],
+    pageIndex: number,
+    group: number,
+  ) {
+    let count = currentCount;
+    const words: IWord[] = [];
+
+    if (count >= 100 || pageIndex < 0) {
+      return words;
+    }
+
+    const wordsAdd = await Words.getWords({
+      group: group.toString(),
+      page: pageList[pageIndex].toString(),
+    });
+
+    words.push(...wordsAdd);
+    count += wordsAdd.length;
+
+    words.push(...await Words.addWordsFromOtherPages(
+      count,
+      pageList,
+      pageIndex - 1,
+      group,
+    ));
 
     return words;
   }

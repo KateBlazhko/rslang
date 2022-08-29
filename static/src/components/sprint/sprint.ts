@@ -1,11 +1,11 @@
-import Words, { IUserWord, IWord } from '../api/Words';
+import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
 import randomSort from '../common/functions';
-import Logging, { IStateLog } from '../Logging';
+import Logging from '../Logging';
 
 enum TextInner {
   preloader = 'We\'re getting closer, get ready...',
@@ -18,7 +18,6 @@ export interface IWordStat {
 }
 
 const COUNTPAGE = 30;
-const COUNTGROUP = 6;
 
 class Sprint extends Control {
   private preloader: Control;
@@ -59,7 +58,13 @@ class Sprint extends Control {
       if (this.state.getInitiator() === 'header') {
         this.words = await this.getWords(group);
       } else {
-        this.words = await this.getAggregatedWords();
+        const stateLog = await this.login.checkStorageLogin();
+
+        if (stateLog.state) {
+          this.words = await this.getAggregatedWords(words);
+        } else {
+          this.words = await this.getWords(group, page);
+        }
       }
 
       this.preloader.destroy();
@@ -73,17 +78,19 @@ class Sprint extends Control {
     }
   }
 
-  private async getWords(level: number, page?: number) {
+  private async getWords(group: number, page?: number) {
     try {
       if (page) {
         const words = await Words.getWords({
-          group: level.toString(),
+          group: group.toString(),
           page: page.toString(),
         });
-        return randomSort(words) as IWord[];
+
+        return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
-      const wordsAll = await Promise.all([...Array(COUNTPAGE).keys()].map((key) => Words.getWords({
-        group: level.toString(),
+      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 5) as number[];
+      const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
+        group: group.toString(),
         page: key.toString(),
       })));
 
@@ -98,14 +105,13 @@ class Sprint extends Control {
     }
   }
 
-  private async getAggregatedWords() {
-    const group = 0;
-    const page = 2;
+  private async getAggregatedWords(words: number[]) {
+    const [group, page] = words;
+
     const stateLog = await this.login.checkStorageLogin();
 
     if (stateLog.state) {
       const aggregatedWords = await Words.getNoLearnWords(stateLog, group);
-
       const aggregatedWordsFull = await Words.checkAggregatedWords(
         aggregatedWords,
         group,

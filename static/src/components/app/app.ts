@@ -1,3 +1,4 @@
+import Words from '../api/Words';
 import Header from '../Header';
 import Logging from '../Logging';
 import Router from '../router/Router';

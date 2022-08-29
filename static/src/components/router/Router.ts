@@ -3,6 +3,7 @@ import Signal from '../common/signal';
 import Control from '../common/control';
 import HomePage from '../home/homePage';
 import Logging from '../Logging';
+import Audio from '../audio/Audio';
 
 class Router {
   private location: Location;
@@ -46,11 +47,12 @@ class Router {
         container.innerHTML = '<h1>Book</h1>';
         break;
       case 'sprint':
-        container.innerHTML = '';
+        this.onGoPage.emit(hash);
         this.currentPage = new Sprint(container, this.login, this.onGoPage);
         break;
       case 'audio':
-        container.innerHTML = '<h1>Audio</h1>';
+        this.onGoPage.emit(hash);
+        this.currentPage = new Audio(container, this.login, this.onGoPage);
         break;
       case 'statistics':
         container.innerHTML = '<h1>statistics</h1>';
