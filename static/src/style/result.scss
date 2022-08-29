@@ -1,19 +1,9 @@
 $color-points: #966AAD;
 $color-word: #000000;
 $filter-color: #808080;
-$color-button-true-hover: #1f9465;
-$color-button-true: #79bc90;
-$color-button-false-hover: #e0677d;
-$color-button-false: #F69EB0;
-$color-text-result: #696969;
-$color-shadow: rgb(170, 169, 169);
-$color-bg-result: #ffffff;
+
 $color-table: #f5a51c;
 
-$brown: #cc9165;
-$gold: #fcdd2e;
-$dark-gold: #f5a51c;
-$grey: #afafaf;
 
 .result {
   position: relative;
@@ -24,9 +14,11 @@ $grey: #afafaf;
 
   width: 50%;
   padding: 2rem;
-  border-radius: 2rem;
+  border-radius: 5rem;
+  border-bottom: 5px solid $color-scroll;
+  border-top: 5px solid $color-scroll;
 
-  background-color: $color-bg-result;
+  background-color: $color-bg;
 
   @media (max-width: 1024px) {
     width: 65%;
@@ -41,11 +33,11 @@ $grey: #afafaf;
 
     text-align: center;
     font-size: 3rem;
-    color: $color-text-result
+    color: $color-text
   }  
 
   &__table {
-    overflow: scroll;
+    overflow-y: scroll;
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 5rem;
@@ -54,9 +46,22 @@ $grey: #afafaf;
 
     width: 100%;
     padding: 0.1rem;
-    max-height: 75vh;
+    max-height: 70vh;
+    box-shadow: 0 0 4px $color-scroll;
+    // background-color: $color-shadow;
 
-    background-color: $color-shadow;
+    &::-webkit-scrollbar {
+      width: 8px;               /* ширина scrollbar */
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $color-bg; 
+      // border-radius: 10px;
+      // border: 1px solid $color-scroll;       /* цвет дорожки */
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-scroll;    /* цвет плашки */
+      border-radius: 20px;       /* закругления плашки */
+    }
   }
 
   &__row {
@@ -65,7 +70,8 @@ $grey: #afafaf;
     gap: 2rem;
 
     width: 100%;
-    padding: 1rem 1rem 1rem 3rem;
+    padding: 0.5rem 1rem 0.5rem 3rem;
+    box-shadow: 0 0 4px $color-scroll;
 
     background-color: $color-bg;
 

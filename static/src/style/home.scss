@@ -10,18 +10,22 @@
 
   &__title-wrap {
     @include flexCenter();
-    width: 90%;
+    width: 50%;
     padding: 2rem;
 
     border-radius:  2rem 2rem 2rem 0;
 
     box-shadow: 0 0 3px $color-shadow;
     background-color: $color-bg;
+
+    @media (max-width: 768px) {
+      width: 70%;
+    }
   }
 
   &__title {
     // font-family: 'DynaPuff', cursive;
-    font-size: 5rem;
+    font-size: 3rem;
     color: $color-text;
     text-align: center;
 

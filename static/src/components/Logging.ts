@@ -1,7 +1,6 @@
 import ButtonHref from './common/ButtonHref';
 import ButtonLogging from './common/ButtonLogging';
 import Control from './common/control';
-import '../style/logging.scss';
 import ModalLog from './ModalLog';
 import Validator from './utils/Validator';
 import { User, IAuth } from './api/User';

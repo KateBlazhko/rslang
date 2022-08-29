@@ -28,6 +28,7 @@ class Footer extends Control {
   }
 
   hide(hash: string) {
+    console.log(hash)
     if (hash === 'sprint' || hash === 'audio') {
       this.destroy();
     } else {

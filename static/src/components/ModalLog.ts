@@ -1,5 +1,4 @@
 import Control from './common/control';
-import '../style/modal.scss';
 import Input from './common/Input';
 import Validator from './utils/Validator';
 import ErrorUser from './utils/ErrorUser';

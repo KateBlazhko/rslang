@@ -20,7 +20,6 @@ const enum ButtonHrefContent {
 }
 
 class Header extends Control {
-  // private header: HTMLElement;
 
   public getAllElementsHeader: Partial<IHeaderEl>;
 
@@ -30,28 +29,36 @@ class Header extends Control {
 
   private logging: Logging;
 
-  constructor(login: Logging) {
-    this.header = document.createElement('header');
+  private nav: Control;
+
+  private burger: Control
+
+  constructor(
+    private parent: HTMLElement | null,
+    login: Logging
+  ) {
+    super(parent, 'header', 'header')
     this.location = window.location;
     this.logging = login;
     this.getAllElementsHeader = {};
     this.arrHref = [];
-    this.nav = new Control(this.header, 'nav', 'navbar');
+    const title = new Control(this.node, 'h1', 'header__title', 'RSS Lang')
+    this.nav = new Control(this.node, 'nav', 'navbar');
     this.createHeader();
-    this.burger = new Burger(this.header);
+    this.burger = new Burger(this.node);
     this.addThisActive();
     this.addEventListen();
     this.forwardHistory();
   }
 
   createHeader() {
-    const nav = new Control(this.header, 'nav', 'navbar');
+    // const nav = new Control(this.node, 'nav', 'navbar');
 
-    const home = new ButtonHref(nav.node, '#home', ButtonHrefContent.home);
-    const about = new ButtonHref(nav.node, '#about', ButtonHrefContent.about);
-    const book = new ButtonHref(nav.node, '#book', ButtonHrefContent.book);
-    const sprint = new ButtonHref(nav.node, '#sprint', ButtonHrefContent.sprint);
-    const audio = new ButtonHref(nav.node, '#audio', ButtonHrefContent.audio);
+    const home = new ButtonHref(this.nav.node, '#home', ButtonHrefContent.home);
+    const about = new ButtonHref(this.nav.node, '#about', ButtonHrefContent.about);
+    const book = new ButtonHref(this.nav.node, '#book', ButtonHrefContent.book);
+    const sprint = new ButtonHref(this.nav.node, '#sprint', ButtonHrefContent.sprint);
+    const audio = new ButtonHref(this.nav.node, '#audio', ButtonHrefContent.audio);
 
     this.getAllElementsHeader = {
       home, about, book, sprint, audio,
