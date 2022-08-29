@@ -3,6 +3,7 @@ import Signal from '../common/signal';
 import Control from '../common/control';
 import Logging from '../Logging';
 import Audio from '../audio/Audio';
+import Book from '../book/Book';
 
 class Router {
   private location: Location;
@@ -30,6 +31,11 @@ class Router {
   private setPage(hash: string) {
     const container = this.container.node;
 
+    if (hash.includes('book')) {
+      this.onGoPage.emit(hash);
+      this.currentPage = new Book(container, this.login, hash);
+    }
+
     switch (hash) {
       case 'home':
         this.onGoPage.emit(hash);
@@ -37,10 +43,6 @@ class Router {
         break;
       case 'about':
         container.innerHTML = '<h1>About Us</h1>';
-        break;
-      case 'book':
-        this.onGoPage.emit(hash);
-        container.innerHTML = '<h1>Book</h1>';
         break;
       case 'sprint':
         this.onGoPage.emit(hash);
@@ -54,7 +56,7 @@ class Router {
         container.innerHTML = '<h1>statistics</h1>';
         break;
       default:
-        container.innerHTML = '<h1>Home</h1>';
+        // container.innerHTML = '<h1>Home</h1>';
     }
   }
 
