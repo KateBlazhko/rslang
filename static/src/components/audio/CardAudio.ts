@@ -1,4 +1,4 @@
-import { IWord } from '../api/Words';
+import { BASELINK, IWord } from '../api/Words';
 import Control from '../common/control';
 import { randomWord } from '../common/shufflePage';
 
@@ -35,7 +35,7 @@ class CardAudio extends Control {
     const container = new Control(this.volumeContainer.node, 'div', 'content');
     container.node.innerHTML += `
     <div class="image_preview">
-      <img src='http://localhost:3000/${this.words.successWord.image}'>
+      <img src='${BASELINK}/${this.words.successWord.image}'>
       <h3>${this.words.successWord.wordTranslate} <span><h3>${this.words.successWord.transcription}</h3></span></h3>
     </div>
     <div class='example'>
@@ -66,7 +66,7 @@ class CardAudio extends Control {
 
   createCard(value: { word: number }, arrWord: Array<IWord>) {
     this.createWords();
-    const volume = new Audio(`http://localhost:3000/${this.words.successWord.audio}`);
+    const volume = new Audio(`${BASELINK}/${this.words.successWord.audio}`);
     volume.play();
     const img = new Control<HTMLImageElement>(this.volumeContainer.node, 'button', 'volume_button__audio');
 

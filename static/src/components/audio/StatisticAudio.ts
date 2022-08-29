@@ -1,4 +1,4 @@
-import { IWord } from '../api/Words';
+import { BASELINK, IWord } from '../api/Words';
 import Control from '../common/control';
 
 class StatisticAudio extends Control {
@@ -16,12 +16,14 @@ class StatisticAudio extends Control {
   createLine(word: IWord, status: boolean) {
     const el = new Control(this.container.node, 'div', 'item');
     const title = new Control<HTMLDivElement>(el.node, 'h3', '', word.word);
+    const Translate = new Control(el.node, 'h3', '', word.wordTranslate);
     const audioIcon = new Control<HTMLImageElement>(el.node, 'img', 'icon audio');
-    const audio = new Audio(`http://localhost:3000/${word.audio}`);
+    const audio = new Audio(`${BASELINK}/${word.audio}`);
     const img = new Control<HTMLImageElement>(el.node, 'img', 'icon');
     audioIcon.node.addEventListener('click', () => {
       audio.play();
     });
+    title.node.innerHTML += '<span> | </span>';
     if (status) {
       img.node.src = '../../assets/icons/success.png';
       el.node.classList.add('success');

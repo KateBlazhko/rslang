@@ -136,6 +136,7 @@ $color-header-gray: rgb(170, 169, 169);
       cursor: pointer;
       transition: .2s;
       margin-bottom: 40px;
+      margin-top: 10px;
 
       &:hover {
         transform: scale(1.1) translate(0, -5px);
@@ -146,7 +147,7 @@ $color-header-gray: rgb(170, 169, 169);
     .audio_container__btn {
       display: flex;
       width: 80%;
-      margin: 0 auto;
+      margin: 10px auto 5px;
       justify-content: space-between;
       
       button {
