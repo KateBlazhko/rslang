@@ -6,6 +6,7 @@ import Validator from '../utils/Validator';
 import { User, IAuth } from '../api/User';
 import StatisticPage from '../stat/statistic';
 import Stats from '../api/Stats';
+import { adapterDate } from '../utils/functions';
 
 export interface IStateLog {
   state: boolean;
@@ -104,7 +105,8 @@ class Logging {
   }
 
   createStats() {
-    const date = new Date()
+    const date = adapterDate( new Date() )
+
     Stats.updateStat(this.stateLog.userId, this.stateLog.token, {
       learnedWords: 0,
       optional: {
@@ -122,12 +124,6 @@ class Logging {
           countError: 0, 
           maxSeriesRightAnswer: 0
         },
-        words: {
-          newWords: 0, 
-          сountRightAnswer: 0, 
-          countError: 0, 
-          learnedWords: 0
-        }
       }
     })
   }

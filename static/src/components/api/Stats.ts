@@ -10,16 +10,10 @@ export const BASELINK = 'http://localhost:3000';
 export interface IStat {
   learnedWords: number,
   optional: {
-    dateReg: Date,
-    dateCurrent: Date,
+    dateReg: string,
+    dateCurrent: string,
     sprint: IGameStat,
     audio: IGameStat,
-    words: {
-      newWords: number,
-      сountRightAnswer: number,
-      countError: number,
-      learnedWords: number
-    }
   }
 }
 
@@ -66,11 +60,10 @@ class Stats {
 
   public static async recordGameStats(stateLog: IStateLog, gameStat: IGameStat, game: 'sprint' | 'audio') {
     const userStat = await Stats.getStats(stateLog.userId, stateLog.token)
-    const dateCurrent = new Date
-    const dataAdapt = adapterDate(new Date)
+    const dataCarrentAdapt = adapterDate(new Date)
 
-    const isSameDate = Stats.checkDate(userStat.optional.dateCurrent, dateCurrent)
-    const learnedWords = await Words.getLearnedWords(stateLog, dataAdapt)
+    const isSameDate = userStat.optional.dateCurrent = dataCarrentAdapt
+    const learnedWords = await Words.getLearnedWordsByDate(stateLog, dataCarrentAdapt)
     if (Array.isArray(learnedWords)) {
       const countLearnedWords = learnedWords
         .map((learnedWord) => learnedWord.paginatedResults)
@@ -78,9 +71,9 @@ class Stats {
         .length
 
       if (isSameDate) {
-        Stats.addToStat(stateLog, userStat, gameStat, countLearnedWords, game)
+        Stats.addToStat(stateLog, userStat, gameStat, game)
       } else {
-        Stats.resetStat(stateLog, userStat, gameStat, countLearnedWords, game, dateCurrent)
+        Stats.resetStat(stateLog, userStat, gameStat, game, dataCarrentAdapt)
       }
     }
 
@@ -104,7 +97,6 @@ class Stats {
     stateLog: IStateLog, 
     userStat: IStat, 
     gameStat: IGameStat,
-    countLearnedWords: number, 
     game: 'sprint' | 'audio'
   ) {
 
@@ -116,11 +108,6 @@ class Stats {
           countError: countErrorLast, 
           maxSeriesRightAnswer:  maxSeriesRightAnswerLast
         },
-        words: {
-          newWords: newWordsLastAll, 
-          сountRightAnswer: сountRightAnswerLastAll, 
-          countError: countErrorLastAll, 
-        }
       } 
     } = userStat;
 
@@ -136,12 +123,6 @@ class Stats {
           countError: countErrorLast + countError,
           maxSeriesRightAnswer: Math.max(maxSeriesRightAnswerLast, maxSeriesRightAnswer)
         },
-        words: {
-          newWords: newWordsLastAll + newWords, 
-          сountRightAnswer: сountRightAnswerLastAll + сountRightAnswer, 
-          countError: countErrorLastAll + countError, 
-          learnedWords:  countLearnedWords
-        }
       }
     })
   }
@@ -150,9 +131,8 @@ class Stats {
     stateLog: IStateLog, 
     userStat: IStat, 
     gameStat: IGameStat, 
-    countLearnedWords: number,
     game: 'sprint' | 'audio',
-    dateCurrent: Date
+    dateCurrent: string
   ) {
     const { newWords, сountRightAnswer, countError, maxSeriesRightAnswer } = gameStat
   
@@ -167,12 +147,6 @@ class Stats {
           countError: countError,
           maxSeriesRightAnswer: maxSeriesRightAnswer
         },
-        words: {
-          newWords: newWords, 
-          сountRightAnswer: сountRightAnswer, 
-          countError: countError, 
-          learnedWords:  countLearnedWords
-        }
       }
     })
   }

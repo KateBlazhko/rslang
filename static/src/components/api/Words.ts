@@ -31,7 +31,7 @@ export interface IUserWord {
       countError: number
       seriesRightAnswer: number
       isLearn: boolean
-      dataGetNew: Date
+      dataGetNew: string
       dataLearn?: string | undefined
     }
 }
@@ -198,7 +198,7 @@ class Words {
   }
 
   public static async createWordStat(stateLog: IStateLog, word: IWordStat) {
-    const date = new Date();
+    const date = adapterDate(new Date()) ;
 
     if (word.answer) {
       const result = await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
@@ -284,7 +284,7 @@ class Words {
     return aggregatedWords;
   }
 
-  public static async getLearnedWords(stateLog: IStateLog, date: string) {
+  public static async getLearnedWordsByDate(stateLog: IStateLog, date: string) {
     const aggregatedWords = await Words.getAggregatedWords(
       stateLog.userId,
       stateLog.token,
@@ -295,6 +295,24 @@ class Words {
           $and: [
             { 'userWord.optional.isLearn': true }, 
             { 'userWord.optional.dataLearn': date }
+          ] 
+        })),
+      },
+    );
+
+    return aggregatedWords;
+  }
+
+  public static async getNewWordsByDate(stateLog: IStateLog, date: string) {
+    const aggregatedWords = await Words.getAggregatedWords(
+      stateLog.userId,
+      stateLog.token,
+      {
+        page: '0',
+        wordsPerPage: '600',
+        filter: encodeURIComponent(JSON.stringify({ 
+          $and: [
+            { 'userWord.optional.dataGetNew': date }, 
           ] 
         })),
       },
