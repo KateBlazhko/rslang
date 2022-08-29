@@ -36,6 +36,10 @@ class Router {
       this.currentPage = new Book(container, this.login, hash);
     }
 
+    if (window.location.hash.length === 0) {
+      window.location.hash = '#home';
+    }
+
     switch (hash) {
       case 'home':
         this.onGoPage.emit(hash);
