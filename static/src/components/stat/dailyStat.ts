@@ -1,5 +1,9 @@
+import Stats from '../api/Stats';
+import Words from '../api/Words';
 import Control from '../common/control';
 import Input from '../common/Input';
+import Logging from '../login/Logging';
+import { adapterDate } from '../utils/functions';
 import ButtonStat from './buttonStat';
 
 // enum TextInner {
@@ -13,6 +17,7 @@ class DailyStat extends Control {
 
   constructor(
     public parentNode: HTMLElement | null,
+    private login: Logging
   ) {
     super(parentNode, 'div', 'stat__daily daily');
 
@@ -54,8 +59,17 @@ class DailyStat extends Control {
     return icon;
   }
 
-  private getStat(name: string) {
+  private async getStat(name: string) {
     this.drawStat(name)
+    const stateLog = await this.login.checkStorageLogin()
+    const date = adapterDate(new Date)
+
+    const stat = await Stats.getStats(stateLog.userId, stateLog.token)
+    const learnedWord = await Words.getLearnedWordsByDate(stateLog, date)
+    const newWordsAll = await Words.getNewWordsByDate(stateLog, date)
+
+    console.log(newWordsAll)
+    
   }
 
   private drawStat(name: string) {

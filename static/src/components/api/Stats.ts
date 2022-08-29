@@ -1,5 +1,5 @@
 import { IStateLog } from '../login/Logging';
-import { IGameStat, IWordStat } from '../sprint/sprint';
+import { IGameStat } from '../sprint/sprint';
 import ErrorUser from '../utils/ErrorUser';
 import { adapterDate } from '../utils/functions';
 import Words from './Words';

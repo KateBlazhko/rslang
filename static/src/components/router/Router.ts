@@ -51,7 +51,7 @@ class Router {
         break;
       case 'statistics':
         container.innerHTML = '';
-        this.currentPage = new Statistic(container, 'stat');
+        this.currentPage = new Statistic(container, this.login);
         break;
       default:
         container.innerHTML = '<h1>Home</h1>';

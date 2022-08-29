@@ -1,4 +1,5 @@
 import Control from '../common/control';
+import Logging from '../login/Logging';
 
 // enum TextInner {
 //   daily = 'Daily stats',
@@ -8,6 +9,7 @@ import Control from '../common/control';
 class GeneralStat extends Control {
   constructor(
     public parentNode: HTMLElement | null,
+    private login: Logging
   ) {
     super(parentNode, 'div', 'stat__general');
 

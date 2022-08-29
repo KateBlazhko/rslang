@@ -1,4 +1,5 @@
 import Control from '../common/control';
+import Logging from '../login/Logging';
 import DailyStat from './dailyStat';
 import GeneralStat from './generalStat';
 
@@ -18,15 +19,15 @@ class StatisticPage extends Control {
 
   constructor(
     public parentNode: HTMLElement | null,
-    public className: string,
+    public login: Logging,
   ) {
-    super(parentNode, 'div', className);
+    super(parentNode, 'div', 'stat');
 
     const buttonWrap = new Control(this.node, 'div', 'stat__button-wrap');
     this.statWrap = new Control(this.node, 'div', 'stat__inner');
 
-    this.dailyStat = new DailyStat(null);
-    this.generalStat = new GeneralStat(null);
+    this.dailyStat = new DailyStat(null, login);
+    this.generalStat = new GeneralStat(null, login);
     this.currentStat = null;
 
     const buttonsDaily = new Control(buttonWrap.node, 'div', 'stat__button', TextInner.daily);
