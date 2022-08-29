@@ -1,3 +1,16 @@
+$color-level-english-1: rgb(245, 5, 5);
+$border-level-english-1: rgb(114, 6, 6);
+$color-level-english-2: rgb(253, 169, 0);
+$border-level-english-2: rgb(169, 128, 6);
+$color-level-english-3: rgb(18, 251, 10);
+$border-level-english-3: rgb(22, 99, 5);
+$color-level-english-4: rgb(13, 246, 242);
+$border-level-english-4: rgb(8, 107, 124);
+$color-level-english-5: rgb(46, 18, 255);
+$border-level-english-5: rgb(20, 7, 90);
+$color-level-english-6: rgb(173, 6, 181);
+$border-level-english-6: rgb(98, 5, 81);
+
 .book_container {
   width: 100%;
   height: calc(100vh - 60px);
@@ -27,6 +40,43 @@
       border-radius: 7px;
       border-bottom: 3px solid green;
       border-right: 3px solid green;
+      transition: .4s;
+      text-shadow: 0 0 3px dimgray;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &:nth-child(1) {
+        background: $color-level-english-1;
+        border-bottom: 3px solid $border-level-english-1;
+        border-right: 3px solid $border-level-english-1;
+      }
+      &:nth-child(2) {
+        background: $color-level-english-2;
+        border-bottom: 3px solid $border-level-english-2;
+        border-right: 3px solid $border-level-english-2;
+      }
+      &:nth-child(3) {
+        background: $color-level-english-3;
+        border-bottom: 3px solid $border-level-english-3;
+        border-right: 3px solid $border-level-english-3;
+      }
+      &:nth-child(4) {
+        background: $color-level-english-4;
+        border-bottom: 3px solid $border-level-english-4;
+        border-right: 3px solid $border-level-english-4;
+      }
+      &:nth-child(5) {
+        background: $color-level-english-5;
+        border-bottom: 3px solid $border-level-english-5;
+        border-right: 3px solid $border-level-english-5;
+      }
+      &:nth-child(6) {
+        background: $color-level-english-6;
+        border-bottom: 3px solid $border-level-english-6;
+        border-right: 3px solid $border-level-english-6;
+      }
     }
   }
 
@@ -42,6 +92,129 @@
       width: 90%;
       height: 80%;
       margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      overflow-y: scroll;
+      row-gap: 20px;
+      column-gap: 20px;
+      background-color:rgba(37, 35, 37, 0.572);
+      border-radius: 10px;
+      padding: 10px;
+
+      &::-webkit-scrollbar {
+        width: 8px;               /* ширина scrollbar */
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 10px;
+        border: 1px solid rgb(83, 79, 79);        /* цвет дорожки */
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: rgb(43, 43, 43);    /* цвет плашки */
+        border-radius: 20px;       /* закругления плашки */
+      }
+
+      .card_item {
+        width: 370px;
+        height: 450px;
+        background: white;
+        border-radius: 7px;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        img {
+          width: 100%;
+          position: absolute;
+          border-radius: 7px;
+          top: 0;
+        }
+
+        .description {
+          background: white;
+          position: relative;
+          width: 100%;
+          height: 230px;
+          margin-top: auto;
+          border-radius: 7px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+          row-gap: 5px;
+          
+
+          .example {
+            display: flex;
+            width: 97%;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            position: relative;
+
+            fieldset {
+              width: 90%;
+              border: none;
+              box-shadow: 0 0 5px gainsboro;
+              border-radius: 4px;
+              font-weight: 700;
+              color: dimgray;
+
+              legend {
+                background: white;
+                padding: 0 5px;
+                font-weight: 600;
+                color: dimgray;
+                font-style: italic;
+              }
+            }
+
+            .volume {
+              width: 30px;
+              position: absolute;
+              right: 3px;
+              top: 30%;
+              cursor: pointer;
+              border-radius: 50%;
+              box-shadow: 0 0 4px dimgrey;
+            }
+          }
+          
+
+          &::before {
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to top, white 30%, transparent);
+            top: -73px;
+          }
+
+          .title {
+            margin-top: 10px;
+            width: 95%;
+            height: 33px;
+            font-size: 12px;
+            display: flex;
+            position: relative;
+            justify-content: space-between;
+
+            .volume {
+              width: 50px;
+              right: 10px;
+              top: -60px;
+              cursor: pointer;
+            }
+
+            h3 {
+              box-shadow: 0 0 4px dimgray;
+              padding: 5px;
+              border-radius: 5px;
+            }
+            
+          }
+        }
+      }
     }
 
     .pagination {
@@ -51,6 +224,52 @@
       border-radius: 10px;
       background: white;
       border-bottom: 3px solid darkgray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      column-gap: 20px;
+
+      a {
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 700;
+        color: dimgray;
+        border-radius: 5px;
+        box-shadow: 0 0 4px dimgray;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.active {
+          background: rgb(0, 255, 255);
+          color: azure;
+          text-shadow: 0 0 4px dimgray;
+          box-shadow: 0 0 4px rgb(0, 255, 255);
+        }
+      }
+
+      .arrow {
+        font-size: 30px;
+        font-weight: 700;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        box-shadow: 0 0 3px dimgray;
+        border-radius: 5px;
+        text-decoration: none;
+        color: dimgray;
+
+        &:first-child {
+          transform: rotate(180deg);
+        }
+        &:last-child {
+          padding-bottom: 5px;
+        }
+      }
     }
   }
 }
