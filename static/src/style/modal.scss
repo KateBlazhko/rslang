@@ -1,9 +1,8 @@
-$modal-color-green: green;
-$modal-color-red: crimson;
-$background-container: rgba(212, 209, 209, 0.407);
-$warning-background: rgba(255, 0, 0, 0.297);
-$shadow-background: dimgray;
-$color-text: dimgray;
+$modal-color-green: #1f9465;
+$modal-color-red: #e0677d;
+$background-container: #d4d1d168;
+$warning-background: #f4c0ca;
+
 
 .background__container {
   position: fixed;
@@ -16,7 +15,7 @@ $color-text: dimgray;
   z-index: 1;
 
   .out__modal {
-    background-color: white;
+    background-color: $color-bg;
     padding: 20px;
     display: flex;
     flex-wrap: wrap;
@@ -24,7 +23,7 @@ $color-text: dimgray;
     row-gap: 30px;
     column-gap: 20px;
     border-radius: 7px;
-    box-shadow: 0 0 3px $shadow-background;
+    box-shadow: 0 0 3px $color-shadow;
 
     button {
       width: 40%;
@@ -32,7 +31,7 @@ $color-text: dimgray;
       font-size: 20px;
       font-weight: 700;
       padding: 3px;
-      background: white;
+      background: $color-bg;
       border-radius: 4px;
       cursor: pointer;
     }
@@ -43,7 +42,7 @@ $color-text: dimgray;
 
       &:hover {
         background: $modal-color-green;
-        color: white;
+        color: $color-bg;
       }
     }
 
@@ -53,33 +52,38 @@ $color-text: dimgray;
 
       &:hover {
         background: $modal-color-red;
-        color: white;
+        color: $color-bg;
       }
     }
 
   }
 
   form {
+    overflow: hidden;
     display: flex;
     justify-content: center;
     width: 320px;
     padding: 0px 0px 20px;
     row-gap: 10px;
     flex-wrap: wrap;
-    background-color: white;
-    border-radius: 7px;
-    box-shadow: 0 0 3px $shadow-background;
+    background-color: $color-bg;
+    border-radius: 20px;
+    border-bottom: 5px solid $color-scroll;
+    border-top: 5px solid $color-scroll;
+    box-shadow: 0 0 3px $color-shadow;
 
     button {
       width: 50%;
       padding: 0px;
-      height: 40px;
+      height: 45px;
+
       font-weight: 700;
       font-size: 18px;
       border: none;
-      background-color: white;
+      
+      background-color: $color-bg;
       cursor: pointer;
-      box-shadow: 0 0 3px $shadow-background;
+      box-shadow: 0 0 3px $color-shadow;
       z-index: 3;
     }
 
@@ -108,12 +112,11 @@ $color-text: dimgray;
       color: $color-text;
 
       .warning__div {
-        font-size: 9px;
+        font-size: 1.6rem;
         text-align: start;
         width: 100%;
         padding: 5px;
         border-radius: 5px;
-        background-color: $warning-background;
         border: 1px solid $modal-color-red; 
         color: $modal-color-red;
       }
@@ -123,7 +126,7 @@ $color-text: dimgray;
       width: 100%;
       border: none;
       border-radius: 4px;
-      box-shadow: 0 0 3px $shadow-background;
+      box-shadow: 0 0 3px $color-shadow;
       font-size: 20px;
       height: 30px;
       padding: 0px 6px;
@@ -150,14 +153,17 @@ $color-text: dimgray;
 
     .button__submit {
       border-radius: 7px;
+      border-bottom: 3px solid $modal-color-green;
+
       box-shadow: 0 0 4px $modal-color-green;
       color: $modal-color-green;
       margin-top: 20px;
       transition: .3s;
+      
    
       &:hover {
         background-color: $modal-color-green;
-        color: white;
+        color: $color-bg;
         box-shadow: 0 0 2px $modal-color-green;;
       }
     }

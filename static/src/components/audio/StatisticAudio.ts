@@ -1,5 +1,8 @@
 import { BASELINK, IWord } from '../api/Words';
 import Control from '../common/control';
+import icons from '../../assets/icons/sprite.svg';
+
+import SVG from '../common/svgElement';
 
 class StatisticAudio extends Control {
   container: Control<HTMLElement>;
@@ -15,20 +18,21 @@ class StatisticAudio extends Control {
 
   createLine(word: IWord, status: boolean) {
     const el = new Control(this.container.node, 'div', 'item');
-    const title = new Control<HTMLDivElement>(el.node, 'h3', '', word.word);
-    const Translate = new Control(el.node, 'h3', '', word.wordTranslate);
+    const img = new Control(el.node, 'div', 'icon');
     const audioIcon = new Control<HTMLImageElement>(el.node, 'img', 'icon audio');
     const audio = new Audio(`${BASELINK}/${word.audio}`);
-    const img = new Control<HTMLImageElement>(el.node, 'img', 'icon');
     audioIcon.node.addEventListener('click', () => {
       audio.play();
     });
-    title.node.innerHTML += '<span> | </span>';
+
+    const title = new Control<HTMLDivElement>(el.node, 'span', '', word.word);
+    const Translate = new Control(el.node, 'span', '', word.wordTranslate);
+
     if (status) {
-      img.node.src = '../../assets/icons/success.png';
+      const svg = new SVG(img.node, 'icon__true', `${icons}#true`)
       el.node.classList.add('success');
     } else {
-      img.node.src = '../../assets/icons/fail.png';
+      const svg = new SVG(img.node, 'icon__false', `${icons}#false`)
       el.node.classList.add('failed');
     }
     audioIcon.node.src = '../../assets/icons/volume.png';

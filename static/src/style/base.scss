@@ -1,3 +1,6 @@
+$color-water: #8ae4ff80;
+
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,4 +22,7 @@ body {
   flex-grow: 1;
   display: flex;
   align-items: stretch;
+
+  background-color: $color-water;
+
 }
