@@ -44,7 +44,7 @@ class Sprint extends Control {
 
     this.preloader = new Control(null, 'span', 'sprint__preloader', TextInner.preloader);
 
-    this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
+    this.startPage = new StartPage(this.node, this.state);
     this.onFinish.add(this.recordStatToBD.bind(this));
   }
 
@@ -73,7 +73,7 @@ class Sprint extends Control {
       this.preloader.node.textContent = TextInner.error;
       setTimeout(() => {
         this.preloader.destroy();
-        this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
+        this.startPage = new StartPage(this.node, this.state);
       }, 2000);
     }
   }
@@ -99,7 +99,7 @@ class Sprint extends Control {
       this.preloader.node.textContent = TextInner.error;
       setTimeout(() => {
         this.preloader.destroy();
-        this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
+        this.startPage = new StartPage(this.node, this.state);
       });
       return [];
     }
