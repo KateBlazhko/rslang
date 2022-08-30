@@ -28,7 +28,7 @@
     box-shadow: 0 0 3px $color-shadow;
     background-color: $color-bg;
 
-    width: 38%;
+    width: 50%;
 
     @media (max-width: 1024px) {
       width: 60%;
@@ -61,7 +61,7 @@
   &__team {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 60px;
 
     @media (max-width: 1450px) {
       grid-template-columns: repeat(auto-fill, 1fr);
