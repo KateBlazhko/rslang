@@ -13,9 +13,9 @@ $border-level-english-3: #f5a51c;
 $color-level-english-4: #1f9465;
 $border-level-english-4: #017347;
 $color-level-english-5: #068cfa;
-$border-level-english-5: #31068f;
-$color-level-english-6: #9aa2e6;
-$border-level-english-6: #40396e;
+$border-level-english-5: #162fbd;
+$color-level-english-6: #966AAD;
+$border-level-english-6: #63387C;
 
 .start {
   @include flexCenter();
@@ -69,6 +69,10 @@ $border-level-english-6: #40396e;
 
     span {
       text-align: start;
+    }
+
+    &:nth-child(4) {
+      justify-content: center;
     }
 
     @media (max-width: 1024px) {
@@ -195,6 +199,25 @@ $border-level-english-6: #40396e;
         &:hover {
           background-color: $color-bg;
           border-bottom: 3px solid $color-shadow;
+        }
+      }
+    }
+
+    &_start {
+      
+      width: 8rem;
+      height: 5rem;
+
+      font-size: 3rem;
+
+      &:nth-child(1) {
+        background: $color-level-english-6;
+        border-bottom: 3px solid $border-level-english-6;
+  
+        &:hover {
+          transform: translateY(-5px);
+  
+          background-color: $border-level-english-6;
         }
       }
     }

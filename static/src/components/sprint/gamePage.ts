@@ -18,7 +18,7 @@ enum TextInner {
   buttonFalse = 'False ←'
 }
 
-const TIME = 10;
+const TIME = 60;
 
 class GamePage extends Control {
   private correctAnswerSeries: number = 0;
@@ -281,7 +281,7 @@ class GamePage extends Control {
   }
 
   public destroy() {
-    this.animationWrap.destroy();
+    if (this.animationWrap) this.animationWrap.destroy();
     this.timer.stop();
     soundManager.stopPlayTimer();
     super.destroy();

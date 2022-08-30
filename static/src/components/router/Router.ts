@@ -59,7 +59,7 @@ class Router {
         break;
       case 'sprint':
         this.onGoPage.emit(hash);
-        this.currentPage = new Sprint(container, this.login, this.onGoPage);
+        this.currentPage = new Sprint(container, this.login, this.prevPage);
         break;
       case 'audio':
         this.onGoPage.emit(hash);

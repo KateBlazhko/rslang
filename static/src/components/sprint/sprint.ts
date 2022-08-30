@@ -39,18 +39,18 @@ class Sprint extends Control {
   constructor(
     private parentNode: HTMLElement | null,
     private login: Logging,
-    private onGoBook: Signal<string>,
+    private prevPage: { page: string; },
   ) {
     super(parentNode, 'div', 'sprint');
 
     this.sprintWrap = new Control(this.node, 'div', 'sprint__wrap')
     this.state = new SprintState();
+    this.state.setInitiator(this.prevPage.page) 
     this.state.onPreload.add(this.renderPreloader.bind(this));
-    onGoBook.add(this.state.setInitiator.bind(this.state));
 
     this.preloader = new Control(null, 'span', 'sprint__preloader', TextInner.preloader);
 
-    this.startPage = new StartPage(this.node, this.state);
+    this.startPage = new StartPage(this.sprintWrap.node, this.state);
     this.onFinish.add(this.recordStatToBD.bind(this));
   }
 
@@ -78,7 +78,8 @@ class Sprint extends Control {
 
       this.gamePage = new GamePage(
         this.sprintWrap.node, 
-        this.state, this.words, 
+        this.state, 
+        this.words, 
         this.onFinish,
         this.animationWrap
       );
@@ -86,7 +87,7 @@ class Sprint extends Control {
       this.preloader.node.textContent = TextInner.error;
       setTimeout(() => {
         this.preloader.destroy();
-        this.startPage = new StartPage(this.node, this.state);
+        this.startPage = new StartPage(this.sprintWrap.node, this.state);
       }, 2000);
     }
   }
@@ -112,7 +113,7 @@ class Sprint extends Control {
       this.preloader.node.textContent = TextInner.error;
       setTimeout(() => {
         this.preloader.destroy();
-        this.startPage = new StartPage(this.node, this.state);
+        this.startPage = new StartPage(this.sprintWrap.node, this.state);
       });
       return [];
     }
