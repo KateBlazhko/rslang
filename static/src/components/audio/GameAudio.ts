@@ -180,7 +180,7 @@ class GameAudio extends Control {
   }
 
   buttonNext(card: CardAudio) {
-    const button = new Control(null, 'button', 'button_next', 'NEXT');
+    const button = new Control(null, 'button', 'button_next', 'Next');
     card.node.prepend(button.node);
     button.node.addEventListener('click', () => {
       if (this.value.word < 20) {

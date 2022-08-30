@@ -18,7 +18,7 @@ class StartPageAudio extends Control {
     this.description = new Control(this.node, 'div', 'description__audio');
     this.createDescription();
     this.containerBtn = new Control(this.node, 'div', 'audio_container__btn');
-    this.startBtn = new Control(this.node, 'button', 'start_btn__audio', 'START');
+    this.startBtn = new Control(this.node, 'button', 'start_btn__audio', 'Start');
     this.arrBtn = [];
     this.difficult = 1;
     this.createBtnDifficult();
@@ -27,18 +27,20 @@ class StartPageAudio extends Control {
   createDescription() {
     this.description.node.innerHTML = `
       <div class='preview'>
-        <h2>Audio Call</h2>
-        <p>Captain! You need to guess the word by ear!!!</p>
+        <h3 class="audio__title">Audio Call</h3>
+        <span>Captain! You need to guess the word by ear!!!</span>
       </div>
       <div class='instruction'>
-        <p>You can use a mouse or keyboard</p>
+        <span>You can use a mouse or keyboard</span>
       </div>
       <div class='key-instruction'>
-        <p>To select a word, press:</p>
-        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+        <span>To select a word, press:</span>
+        <div class="key-instruction__button-wrap">
+          <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+        </div>
       </div>
       <div class='key-instruction-two'>
-        <p>To get the next card, press:</p>
+        <span>To get the next card, press:</span>
         <div class='key'><span>Enter</span></div>
       </div>
     `;

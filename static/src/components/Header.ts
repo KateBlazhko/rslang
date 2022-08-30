@@ -1,4 +1,3 @@
-import '../style/header.scss';
 import Burger from './common/BurgerEl.';
 import ButtonHref from './common/ButtonHref';
 import Control from './common/control';
@@ -20,8 +19,7 @@ const enum ButtonHrefContent {
   audio = 'Audio'
 }
 
-class Header {
-  private header: HTMLElement;
+class Header extends Control {
 
   public getAllElementsHeader: Partial<IHeaderEl>;
 
@@ -31,25 +29,31 @@ class Header {
 
   private logging: Logging;
 
-  burger: Burger;
+  private nav: Control;
 
-  nav: Control<HTMLElement>;
+  private burger: Control
 
-  constructor(login: Logging) {
-    this.header = document.createElement('header');
+  constructor(
+    private parent: HTMLElement | null,
+    login: Logging
+  ) {
+    super(parent, 'header', 'header')
     this.location = window.location;
     this.logging = login;
     this.getAllElementsHeader = {};
     this.arrHref = [];
-    this.nav = new Control(this.header, 'nav', 'navbar');
+    const title = new Control(this.node, 'h1', 'header__title', 'RSS Lang')
+    this.nav = new Control(this.node, 'nav', 'navbar');
     this.createHeader();
-    this.burger = new Burger(this.header);
+    this.burger = new Burger(this.node);
     this.addThisActive();
     this.addEventListen();
     this.forwardHistory();
   }
 
   createHeader() {
+    // const nav = new Control(this.node, 'nav', 'navbar');
+
     const home = new ButtonHref(this.nav.node, '#home', ButtonHrefContent.home);
     const about = new ButtonHref(this.nav.node, '#about', ButtonHrefContent.about);
     const book = new ButtonHref(this.nav.node, '#book', ButtonHrefContent.book);
@@ -98,8 +102,8 @@ class Header {
   }
 
   render() {
-    this.header.append(this.logging.node);
-    return this.header;
+    this.node.append(this.logging.node);
+    return this.node;
   }
 }
 

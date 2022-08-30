@@ -8,13 +8,13 @@ class Validator {
     value.label.querySelector('.warning__div')?.remove();
 
     if (patternType === 'email') {
-      warningMessage = 'Ваш Email не коректный, проверьте';
+      warningMessage = `Email is not correct, check please`;
       pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     } else if (patternType === 'password') {
-      warningMessage = 'Ваш пароль не коректен, пароль дожен быть миниму 8 символов и содержать буквы и цифры';
+      warningMessage = 'Your password is not correct, it must be at least 8 characters long and contain letters and numbers';
       pattern = /[0-9a-zA-Z!@#$%^&*]{8,}/;
     } else {
-      warningMessage = 'Вы не указали ваше имя';
+      warningMessage = 'You did not enter your name';
       pattern = /[0-9a-zA-Zа-яА-Я!@#$%^&*]{1,}/;
     }
 
