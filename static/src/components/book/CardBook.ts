@@ -44,9 +44,7 @@ class CardBook extends Control {
       <fieldset>
         <legend>Example</legend>
         ${this.word.textExample}
-      </fieldset>
-      <fieldset>
-        <legend>Translate</legend>
+        <br>
         ${this.word.textExampleTranslate}
       </fieldset>
     `;
@@ -66,11 +64,10 @@ class CardBook extends Control {
       <fieldset>
         <legend>Meaning</legend>
         ${this.word.textMeaning}
-      </fieldset>
-      <fieldset>
-        <legend>Translate</legend>
+        <br>
         ${this.word.textMeaningTranslate}
       </fieldset>
+  
     `;
     const audio = new Audio(`${BASELINK}/${this.word.audioMeaning}`);
     const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
