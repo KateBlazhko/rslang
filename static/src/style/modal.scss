@@ -59,6 +59,7 @@ $warning-background: #f4c0ca;
   }
 
   form {
+    overflow: hidden;
     display: flex;
     justify-content: center;
     width: 320px;
@@ -66,16 +67,20 @@ $warning-background: #f4c0ca;
     row-gap: 10px;
     flex-wrap: wrap;
     background-color: $color-bg;
-    border-radius: 7px;
+    border-radius: 20px;
+    border-bottom: 5px solid $color-scroll;
+    border-top: 5px solid $color-scroll;
     box-shadow: 0 0 3px $color-shadow;
 
     button {
       width: 50%;
       padding: 0px;
-      height: 40px;
+      height: 45px;
+
       font-weight: 700;
       font-size: 18px;
       border: none;
+      
       background-color: $color-bg;
       cursor: pointer;
       box-shadow: 0 0 3px $color-shadow;
@@ -107,12 +112,11 @@ $warning-background: #f4c0ca;
       color: $color-text;
 
       .warning__div {
-        font-size: 9px;
+        font-size: 1.6rem;
         text-align: start;
         width: 100%;
         padding: 5px;
         border-radius: 5px;
-        background-color: $warning-background;
         border: 1px solid $modal-color-red; 
         color: $modal-color-red;
       }
@@ -149,10 +153,13 @@ $warning-background: #f4c0ca;
 
     .button__submit {
       border-radius: 7px;
+      border-bottom: 3px solid $modal-color-green;
+
       box-shadow: 0 0 4px $modal-color-green;
       color: $modal-color-green;
       margin-top: 20px;
       transition: .3s;
+      
    
       &:hover {
         background-color: $modal-color-green;

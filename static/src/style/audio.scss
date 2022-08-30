@@ -7,10 +7,6 @@ $audio_btn_difficult-6: rgb(49, 6, 143);
 $color-button-start: #966AAD;
 $color-button-start-border: #63387C;
 
-$hover-item-background: rgb(112, 112, 198);
-$hover-item-border: rgb(66, 66, 120);
-$color-header-gray: rgb(170, 169, 169);
-
 .audio__title {
   width: 100%;
 
@@ -453,8 +449,8 @@ $color-header-gray: rgb(170, 169, 169);
         transition: .2s;
 
         &:hover {
-          background: $hover-item-background;
-          border-bottom: 3px solid $hover-item-border; 
+          background: $color-button-start;
+          border-bottom: 3px solid $color-button-start-border; 
           color: $color-bg;
         }
       }
