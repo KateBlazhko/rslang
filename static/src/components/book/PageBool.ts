@@ -26,9 +26,13 @@ class PageBook extends Control {
   }
 
   createPage(words: IWord[], page: string) {
+    const paginationTop = new Control(this.node, 'div', 'pagination');
     const main = new Control(this.node, 'div', 'container_card');
-    const pagination = new Control(this.node, 'div', 'pagination');
-    this.createPagination(pagination.node, page);
+    const paginationButton = new Control(this.node, 'div', 'pagination');
+
+    this.createPagination(paginationTop.node, page);
+    this.createPagination(paginationButton.node, page);
+
     this.createCards(main.node, words);
   }
 
@@ -72,8 +76,7 @@ class PageBook extends Control {
     const next = new Control<HTMLAnchorElement>(pagination, 'a', 'arrow');
     prev.node.href = `#book/${this.difficult}/${+page > 0 ? +page - 1 : 0}`;
     next.node.href = `#book/${this.difficult}/${+page < 29 ? +page + 1 : 29}`;
-    // next.node.innerHTML = '&#10159;';
-    // prev.node.innerHTML = '&#10161;';
+
   }
 }
 
