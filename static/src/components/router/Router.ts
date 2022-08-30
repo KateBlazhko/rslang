@@ -3,6 +3,7 @@ import Signal from '../common/signal';
 import Control from '../common/control';
 import Logging from '../Logging';
 import Audio from '../audio/Audio';
+import About from '../about/about';
 
 class Router {
   private location: Location;
@@ -36,7 +37,8 @@ class Router {
         container.innerHTML = '<h1>Home</h1>';
         break;
       case 'about':
-        container.innerHTML = '<h1>About Us</h1>';
+        this.onGoPage.emit(hash);
+        this.currentPage = new About(container, this.login, this.onGoPage);
         break;
       case 'book':
         this.onGoPage.emit(hash);
