@@ -12,8 +12,11 @@ class Router {
 
   private container: Control;
 
+  prevPage: { page: string; };
+
   constructor(private login: Logging) {
     this.container = new Control(document.body, 'main', 'page');
+    this.prevPage = { page: '' };
     this.location = window.location;
     this.setPage(this.location.hash.slice(1));
     this.hashChange();
@@ -25,6 +28,7 @@ class Router {
     window.addEventListener('hashchange', () => {
       if (this.currentPage) this.currentPage.destroy();
       this.setPage(this.location.hash.slice(1));
+      this.prevPage.page = window.location.hash;
     });
   }
 
@@ -54,7 +58,7 @@ class Router {
         break;
       case 'audio':
         this.onGoPage.emit(hash);
-        this.currentPage = new Audio(container, this.login, this.onGoPage);
+        this.currentPage = new Audio(container, this.login, this.prevPage);
         break;
       case 'statistics':
         container.innerHTML = '<h1>statistics</h1>';

@@ -66,17 +66,17 @@ class GameAudio extends Control {
     return shuffleArrayPage(wordsAll.flat());
   }
 
-  async game(difficult: string, initiator: 'book' | 'header') {
-    if (initiator === 'header') {
+  async game(difficult: string, prevPage: { page: string }) {
+    if (!prevPage.page.includes('book')) {
       this.arrWords = await GameAudio.getAllWords(difficult);
     } else {
-      const group = 0;
-      const page = 2;
-      // todo getting group, page from book
+      const el = prevPage.page.split('/');
+      const group = el[1];
+      const page = el[2];
       const stateLog = await this.login.checkStorageLogin();
 
       if (stateLog.state) {
-        this.arrWords = await GameAudio.getAggregatedWords(stateLog, group, page);
+        this.arrWords = await GameAudio.getAggregatedWords(stateLog, +group, +page);
       } else {
         this.arrWords = await GameAudio.getAllWords(group.toString(), page.toString());
       }
