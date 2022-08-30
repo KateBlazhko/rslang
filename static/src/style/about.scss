@@ -59,9 +59,10 @@
   }
 
   &__team {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    @include flexCenter();
+
+    flex-wrap: wrap;
+    gap: 40px;
   }
 
   &__team-member {
@@ -74,6 +75,7 @@
   &__team-member-position {
     text-align: center;
     font-size: 2rem;
+    font-weight: bold;
     color: $color-text-start;
   }
 
