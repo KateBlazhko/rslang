@@ -20,6 +20,8 @@ export interface IWordStat {
 const COUNTPAGE = 30;
 
 class Sprint extends Control {
+  private sprintWrap: Control;
+
   private preloader: Control;
 
   private words: IWord[] = [];
@@ -32,19 +34,23 @@ class Sprint extends Control {
 
   private questions: [IWord, string][] = [];
 
+  private animationWrap: Control | null = null;
+
   constructor(
     private parentNode: HTMLElement | null,
     private login: Logging,
     private onGoBook: Signal<string>,
   ) {
     super(parentNode, 'div', 'sprint');
+
+    this.sprintWrap = new Control(this.node, 'div', 'sprint__wrap')
     this.state = new SprintState();
     this.state.onPreload.add(this.renderPreloader.bind(this));
     onGoBook.add(this.state.setInitiator.bind(this.state));
 
     this.preloader = new Control(null, 'span', 'sprint__preloader', TextInner.preloader);
 
-    this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
+    this.startPage = new StartPage(this.sprintWrap.node, this.state, this.state.getInitiator());
     this.onFinish.add(this.recordStatToBD.bind(this));
   }
 
@@ -68,12 +74,19 @@ class Sprint extends Control {
       }
 
       this.preloader.destroy();
-      this.gamePage = new GamePage(this.node, this.state, this.words, this.onFinish);
+      this.animationWrap = new Control(this.node, 'div', 'sprint__animation-wrap');
+
+      this.gamePage = new GamePage(
+        this.sprintWrap.node, 
+        this.state, this.words, 
+        this.onFinish,
+        this.animationWrap
+      );
     } catch {
       this.preloader.node.textContent = TextInner.error;
       setTimeout(() => {
         this.preloader.destroy();
-        this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
+        this.startPage = new StartPage(this.sprintWrap.node, this.state, this.state.getInitiator());
       }, 2000);
     }
   }
@@ -99,7 +112,7 @@ class Sprint extends Control {
       this.preloader.node.textContent = TextInner.error;
       setTimeout(() => {
         this.preloader.destroy();
-        this.startPage = new StartPage(this.node, this.state, this.state.getInitiator());
+        this.startPage = new StartPage(this.sprintWrap.node, this.state, this.state.getInitiator());
       });
       return [];
     }

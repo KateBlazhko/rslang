@@ -32,6 +32,7 @@ const config = {
             patterns: [
               { from: "./src/assets/sound", to: "./assets/sound" },
               { from: "./src/assets/icons", to: "./assets/icons" },
+              { from: "./src/assets/img", to: "./assets/img" },
             ],
         }),
     ],

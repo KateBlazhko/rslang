@@ -1,13 +1,14 @@
 import Sprint from '../sprint/sprint';
 import Signal from '../common/signal';
 import Control from '../common/control';
+import HomePage from '../home/homePage';
 import Logging from '../Logging';
 import Audio from '../audio/Audio';
 
 class Router {
   private location: Location;
 
-  private currentPage: Control | Sprint | null = null;
+  private currentPage: Control | Sprint | HomePage | null = null;
 
   private container: Control;
 
@@ -30,16 +31,19 @@ class Router {
   private setPage(hash: string) {
     const container = this.container.node;
 
+    if (hash) {
+      this.onGoPage.emit(hash);
+    }
+
     switch (hash) {
       case 'home':
-        this.onGoPage.emit(hash);
-        container.innerHTML = '<h1>Home</h1>';
+        container.innerHTML = '';
+        this.currentPage = new HomePage(container, this.login);
         break;
       case 'about':
         container.innerHTML = '<h1>About Us</h1>';
         break;
       case 'book':
-        this.onGoPage.emit(hash);
         container.innerHTML = '<h1>Book</h1>';
         break;
       case 'sprint':
@@ -54,7 +58,9 @@ class Router {
         container.innerHTML = '<h1>statistics</h1>';
         break;
       default:
-        container.innerHTML = '<h1>Home</h1>';
+        this.onGoPage.emit('home');
+        container.innerHTML = '';
+        this.currentPage = new HomePage(container, this.login);
     }
   }
 

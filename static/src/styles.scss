@@ -1,6 +1,13 @@
 @import '~normalize.css';
+@import './style/variables.scss';
 @import './style/abstract.scss';
 @import './style/base.scss';
+@import './style/header.scss';
+@import './style/logging.scss';
+@import './style/modal.scss';
+@import './style/audio.scss';
 @import './style/start.scss';
 @import './style/sprint.scss';
 @import './style/result.scss';
+@import './style/home.scss';
+@import './style/footer.scss'

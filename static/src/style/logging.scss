@@ -1,7 +1,7 @@
-$button-log-in-color: rgb(3, 161, 3);
-$button-log-in-border: rgb(2, 101, 2);
-$button-log-out-color: crimson;
-$button-log-out-border: rgb(141, 13, 38);
+$button-log-in-color: #79bc90;
+$button-log-in-border: #1f9465;
+$button-log-out-color: #F69EB0;
+$button-log-out-border: #e0677d;
 
 .logging__container {
   width: 160px;
@@ -19,7 +19,7 @@ $button-log-out-border: rgb(141, 13, 38);
     align-items: center;
     justify-content: center;
     font-size: 26px;
-    color: white;
+    color: $color-bg;
     font-weight: 700;
     text-decoration: none;
     background-color: dimgray;
@@ -32,7 +32,7 @@ $button-log-out-border: rgb(141, 13, 38);
     font-size: 20px;
     padding: 4px 0px 6px;
     width: 85px;
-    color: white;
+    color: $color-bg;
     border-radius: 4px;
     cursor: pointer;
   }
