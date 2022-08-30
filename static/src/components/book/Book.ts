@@ -1,6 +1,5 @@
 import Control from '../common/control';
 import Logging, { IStateLog } from '../Logging';
-import '../../style/book.scss';
 import PageBook from './PageBool';
 
 class Book extends Control {

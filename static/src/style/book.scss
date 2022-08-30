@@ -1,26 +1,34 @@
-$color-level-english-1: rgb(245, 5, 5);
-$border-level-english-1: rgb(114, 6, 6);
-$color-level-english-2: rgb(253, 169, 0);
-$border-level-english-2: rgb(169, 128, 6);
-$color-level-english-3: rgb(18, 251, 10);
-$border-level-english-3: rgb(22, 99, 5);
-$color-level-english-4: rgb(13, 246, 242);
-$border-level-english-4: rgb(8, 107, 124);
-$color-level-english-5: rgb(46, 18, 255);
-$border-level-english-5: rgb(20, 7, 90);
-$color-level-english-6: rgb(173, 6, 181);
-$border-level-english-6: rgb(98, 5, 81);
+$color-level-english-1: #e0677d;
+$border-level-english-1: #AF2137;
+$color-level-english-2: #f5a51c;
+$border-level-english-2: #fb8609;
+$color-level-english-3: #fcdd2e;
+$border-level-english-3: #f5a51c;
+$color-level-english-4: #1f9465;
+$border-level-english-4: #017347;
+$color-level-english-5: #068cfa;
+$border-level-english-5: #31068f;
+$color-level-english-6: #9aa2e6;
+$border-level-english-6: #40396e;
+$color-bg: #ffffff;
+$color-shadow: #aaa9a9;
+$color-text: #696969;
+
+$color-bg-page: #9acaab;
+$color-scroll: #dcdcdc;
+$color-bg-button: #9aa2e6;
+$color-bg-button-border: #40396e;
 
 .book_container {
+  @include flexCenter();
+
   width: 100%;
-  height: calc(100vh - 60px);
-  background: url('../assets/img/background-book.png');
-  background-size: cover;
-  background-position: 100%;
-  display: flex;
   min-height: 620px;
-  align-items: center;
-  justify-content: center;
+
+  background: url('./assets/img/book-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 
   .container_difficult {
     display: flex;
@@ -28,20 +36,17 @@ $border-level-english-6: rgb(98, 5, 81);
     row-gap: 20px;
 
     a {
-      padding: 10px 0;
-      font-size: 20px;
       width: 280px;
-      text-align: center;
-      font-weight: 900;
-      text-decoration: none;
-      background: rgb(13, 203, 35);
-      color: white;
-      text-shadow: 0 0 3px dimgray;
+      padding: 10px 0;
       border-radius: 7px;
-      border-bottom: 3px solid green;
-      border-right: 3px solid green;
+
+      font-size: 2.5rem;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+      color: $color-bg;
+
       transition: .4s;
-      text-shadow: 0 0 3px dimgray;
 
       &:hover {
         transform: scale(1.1);
@@ -50,133 +55,153 @@ $border-level-english-6: rgb(98, 5, 81);
       &:nth-child(1) {
         background: $color-level-english-1;
         border-bottom: 3px solid $border-level-english-1;
-        border-right: 3px solid $border-level-english-1;
       }
       &:nth-child(2) {
         background: $color-level-english-2;
         border-bottom: 3px solid $border-level-english-2;
-        border-right: 3px solid $border-level-english-2;
       }
       &:nth-child(3) {
         background: $color-level-english-3;
         border-bottom: 3px solid $border-level-english-3;
-        border-right: 3px solid $border-level-english-3;
       }
       &:nth-child(4) {
         background: $color-level-english-4;
         border-bottom: 3px solid $border-level-english-4;
-        border-right: 3px solid $border-level-english-4;
       }
       &:nth-child(5) {
         background: $color-level-english-5;
         border-bottom: 3px solid $border-level-english-5;
-        border-right: 3px solid $border-level-english-5;
       }
       &:nth-child(6) {
         background: $color-level-english-6;
         border-bottom: 3px solid $border-level-english-6;
-        border-right: 3px solid $border-level-english-6;
       }
     }
   }
 
   .page_book_container {
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
     align-items: center;
 
-    .container_card {
-      width: 90%;
-      height: 80%;
-      margin-top: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      overflow-y: scroll;
-      row-gap: 20px;
-      column-gap: 20px;
-      background-color:rgba(37, 35, 37, 0.572);
-      border-radius: 10px;
-      padding: 10px;
+    width: 100%;
+    padding: 2rem;
 
-      &::-webkit-scrollbar {
-        width: 8px;               /* ширина scrollbar */
-      }
-      &::-webkit-scrollbar-track {
-        background: transparent;
-        border-radius: 10px;
-        border: 1px solid rgb(83, 79, 79);        /* цвет дорожки */
-      }
-      &::-webkit-scrollbar-thumb {
-        background-color: rgb(43, 43, 43);    /* цвет плашки */
-        border-radius: 20px;       /* закругления плашки */
-      }
+    background-color: $color-bg-page;
+
+    .container_card {
+      @include flexCenter();
+      flex-wrap: wrap;
+      // overflow-y: scroll;
+      gap: 3rem;
+
+      width: 90%;
+      padding: 2rem;
+
+      border-radius: 20px;
+      border-bottom: 5px solid $color-scroll;
+      border-top: 5px solid $color-scroll;
+      
+      background-color: $color-bg;
+
+      // &::-webkit-scrollbar {
+      //   width: 8px;               /* ширина scrollbar */
+      // }
+      // &::-webkit-scrollbar-track {
+      //   background: transparent;
+      //   // border-radius: 10px;
+      //   // border: 1px solid rgb(83, 79, 79);        /* цвет дорожки */
+      // }
+      // &::-webkit-scrollbar-thumb {
+      //   background-color: $color-scroll;    /* цвет плашки */
+      //   border-radius: 20px;       /* закругления плашки */
+      // }
 
       .card_item {
-        width: 370px;
-        height: 450px;
-        background: white;
-        border-radius: 7px;
         position: relative;
         display: flex;
         align-items: flex-end;
+
+        width: 50rem;
+        height: 70rem;
+        background: $color-bg;
+        border-radius: 7px;
+
+        box-shadow: 0 0 5px $color-shadow;
+
         img {
-          width: 100%;
           position: absolute;
-          border-radius: 7px;
           top: 0;
+
+          width: 100%;
+          border-radius: 7px;
+
+        }
+
+        .img__word {
+          height: 40%;
         }
 
         .description {
-          background: white;
           position: relative;
+
+          @include flexCenter();
+          justify-content: flex-start;
+          flex-direction: column;
+          row-gap: 2rem;
+
           width: 100%;
-          height: 230px;
+          height: 60%;
           margin-top: auto;
           border-radius: 7px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          flex-direction: column;
-          row-gap: 5px;
-          
+          padding: 0 2rem;
+
+          background: $color-bg;          
 
           .example {
+            position: relative;
+
             display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+
             width: 97%;
             margin: 0 auto;
-            flex-wrap: wrap;
-            position: relative;
 
             fieldset {
               width: 90%;
               border: none;
               box-shadow: 0 0 5px gainsboro;
               border-radius: 4px;
-              font-weight: 700;
-              color: dimgray;
+
+              color: $color-text;
+              font-size: 1.6rem;
 
               legend {
-                background: white;
                 padding: 0 5px;
+
                 font-weight: 600;
-                color: dimgray;
+                color: $color-text;
                 font-style: italic;
+
+                background: $color-bg;
+
               }
             }
 
             .volume {
-              width: 30px;
               position: absolute;
-              right: 3px;
-              top: 30%;
-              cursor: pointer;
+              top: 40%;
+              right: -5px;
+
+              width: 30px;
               border-radius: 50%;
-              box-shadow: 0 0 4px dimgrey;
+              box-shadow: 0 0 4px $color-shadow;
+
+              cursor: pointer;
+
             }
           }
           
@@ -186,18 +211,19 @@ $border-level-english-6: rgb(98, 5, 81);
             content: '';
             width: 100%;
             height: 80px;
-            background: linear-gradient(to top, white 30%, transparent);
+            background: linear-gradient(to top, $color-bg 30%, transparent);
             top: -73px;
           }
 
           .title {
-            margin-top: 10px;
+            position: relative;
+
+            @include flexCenter();
+            justify-content: space-between;
+
             width: 95%;
             height: 33px;
-            font-size: 12px;
-            display: flex;
-            position: relative;
-            justify-content: space-between;
+            margin-top: 1rem;
 
             .volume {
               width: 50px;
@@ -207,9 +233,14 @@ $border-level-english-6: rgb(98, 5, 81);
             }
 
             h3 {
-              box-shadow: 0 0 4px dimgray;
-              padding: 5px;
+              @include flexCenter();
+
+              padding: 1rem;
               border-radius: 5px;
+
+              font-size: 2rem;
+              box-shadow: 0 0 4px $color-shadow;
+
             }
             
           }
@@ -218,56 +249,68 @@ $border-level-english-6: rgb(98, 5, 81);
     }
 
     .pagination {
-      width: 90%;
-      height: 65px;
-      margin-top: 15px;
-      border-radius: 10px;
-      background: white;
-      border-bottom: 3px solid darkgray;
       display: flex;
       align-items: center;
       justify-content: center;
       column-gap: 20px;
 
+      width: 90%;
+      height: 65px;
+      margin-top: 15px;
+      border-radius: 10px;
+
       a {
+        @include flexCenter();
+
+        width: 4rem;
+        height: 4rem;
+        border-radius: 4px;
+        border-bottom: 3px solid $color-shadow;
+        box-shadow: 0 0 3px $color-shadow;
+
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        line-height: 4rem;
+        color: $color-text;
         text-decoration: none;
-        font-size: 20px;
-        font-weight: 700;
-        color: dimgray;
-        border-radius: 5px;
-        box-shadow: 0 0 4px dimgray;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+
+
+        background-color: $color-bg;
+
+        cursor: pointer;
+        
+        transition: background-color .4s;
 
         &.active {
-          background: rgb(0, 255, 255);
-          color: azure;
-          text-shadow: 0 0 4px dimgray;
-          box-shadow: 0 0 4px rgb(0, 255, 255);
+          border-bottom: none;
+          color: $color-bg;
+
+          background: $color-bg-button;
+          border-bottom: 3px solid $color-bg-button-border;
+
         }
       }
 
       .arrow {
-        font-size: 30px;
-        font-weight: 700;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flexCenter();
+
         width: 40px;
         height: 40px;
-        box-shadow: 0 0 3px dimgray;
+        box-shadow: 0 0 3px $color-shadow;
         border-radius: 5px;
-        text-decoration: none;
-        color: dimgray;
+        border: none;
+
+        background-color: $color-bg;
+        background-repeat: no-repeat;
+        background-size: 80%;
+        background-position: center;
 
         &:first-child {
-          transform: rotate(180deg);
+          background-image: url('./assets/icons/arrowLeft.png');
         }
         &:last-child {
-          padding-bottom: 5px;
+          background-image: url('./assets/icons/arrowRight.png');
         }
       }
     }

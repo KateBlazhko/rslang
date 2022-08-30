@@ -17,7 +17,7 @@ class CardBook extends Control {
   }
 
   createCard() {
-    const img = new Control<HTMLImageElement>(this.node, 'img');
+    const img = new Control<HTMLImageElement>(this.node, 'img', 'img__word');
     img.node.src = `${BASELINK}/${this.word.image}`;
     const description = new Control(this.node, 'div', 'description');
     this.createTitle(description.node);

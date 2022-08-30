@@ -72,8 +72,8 @@ class PageBook extends Control {
     const next = new Control<HTMLAnchorElement>(pagination, 'a', 'arrow');
     prev.node.href = `#book/${this.difficult}/${+page > 0 ? +page - 1 : 0}`;
     next.node.href = `#book/${this.difficult}/${+page < 29 ? +page + 1 : 29}`;
-    next.node.innerHTML = '&#10159;';
-    prev.node.innerHTML = '&#10161;';
+    // next.node.innerHTML = '&#10159;';
+    // prev.node.innerHTML = '&#10161;';
   }
 }
 

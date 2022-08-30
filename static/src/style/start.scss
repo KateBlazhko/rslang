@@ -1,14 +1,21 @@
-$color-bg-start: #ffffff;
-$color-button-start: #ffffff;
+$color-bg: #ffffff;
 
 $color-text-start: #696969;
 $color-border: #00c3ff;
 $color-shadow: #aaa9a9;
 
-$color1: #ffffcb;
-$color2: #a67d49;
-$color3: #f5a51c;
-$color4: #fcdd2e;
+$color-level-english-1: #e0677d;
+$border-level-english-1: #AF2137;
+$color-level-english-2: #f5a51c;
+$border-level-english-2: #fb8609;
+$color-level-english-3: #fcdd2e;
+$border-level-english-3: #f5a51c;
+$color-level-english-4: #1f9465;
+$border-level-english-4: #017347;
+$color-level-english-5: #068cfa;
+$border-level-english-5: #31068f;
+$color-level-english-6: #9aa2e6;
+$border-level-english-6: #40396e;
 
 .start {
   @include flexCenter();
@@ -45,7 +52,7 @@ $color4: #fcdd2e;
     color: $color-text-start;
 
     box-shadow: 0 0 3px $color-shadow;
-    background-color: $color-bg-start;
+    background-color: $color-bg;
 
     &_odd {
       align-self: start;
@@ -91,29 +98,106 @@ $color4: #fcdd2e;
     width: 4rem;
     height: 4rem;
     border-radius: 4px;
-    border-bottom: 3px solid $color-shadow;
     box-shadow: 0 0 3px $color-shadow;
 
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
     line-height: 4rem;
-    color: $color-text-start;
-
-    background-color: $color-button-start;
+    color: $color-bg;
 
     cursor: pointer;
     
-    transition: background-color .4s;
+    transition: all .4s;
+
+    &:nth-child(1) {
+      background: $color-level-english-1;
+      border-bottom: 3px solid $border-level-english-1;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-1;
+      }
+    }
+    &:nth-child(2) {
+      background: $color-level-english-2;
+      border-bottom: 3px solid $border-level-english-2;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-2;
+      }
+    }
+    &:nth-child(3) {
+      background: $color-level-english-3;
+      border-bottom: 3px solid $border-level-english-3;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-3;
+      }
+    }
+    &:nth-child(4) {
+      background: $color-level-english-4;
+      border-bottom: 3px solid $border-level-english-4;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-4;
+      }
+    }
+    &:nth-child(5) {
+      background: $color-level-english-5;
+      border-bottom: 3px solid $border-level-english-5;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-5;
+      }
+    }
+    &:nth-child(6) {
+      background: $color-level-english-6;
+      border-bottom: 3px solid $border-level-english-6;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-6;
+      }
+    }
     
-    &:hover {
-      color: $color-button-start;
-
-      background-color: $color-shadow;
-    }
-
     &_pseudo {
-      cursor: default;
+      color: $color-text-start;
+
+      &:nth-child(1) {
+        background-color: $color-bg;
+        border-bottom: 3px solid $color-shadow;
+  
+        cursor: default;
+
+        &:hover {
+          background-color: $color-bg;
+          border-bottom: 3px solid $color-shadow;
+        }
+      }
+  
+      &:nth-child(2) {
+        background-color: $color-bg;
+        border-bottom: 3px solid $color-shadow;
+  
+        cursor: default;
+
+        &:hover {
+          background-color: $color-bg;
+          border-bottom: 3px solid $color-shadow;
+        }
+      }
     }
+    
   }
 }
