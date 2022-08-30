@@ -1,41 +1,147 @@
-$header-button-shadow: gainsboro;
-$hover-item-background: rgb(112, 112, 198);
-$hover-item-border: rgb(66, 66, 120);
-$color-header-gray: rgb(170, 169, 169);
+$color-button-start: #966AAD;
+$color-button-start-border: #63387C;
 
-header {
-  height: 60px;
+.header {
+  height: 70px;
+  position: relative;
   width: 100%;
-  box-shadow: 0 2px 5px $header-button-shadow;
+  box-shadow: 0 2px 5px $color-shadow;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   padding: 0 20px;
+  z-index: 100;
+  background-color: $color-bg;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    right: 0;
+    width: 100%;
+    height: 3px;
+    background:linear-gradient(to bottom, rgba(5, 5, 5, 0.1), transparent);
+  }
+
+  &__title {
+    color: $color-text;
+    font-size: 3rem;
+
+    @media (max-width: 1024px) {
+      position: absolute;
+      left: 2%;
+    }
+  }
+
+  &__burger_menu {
+    width: 50px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: .4s;
+    order: 2;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+    display: none;
+    z-index: 10;
+
+    &:hover {
+      box-shadow: 0 0 5px $color-shadow;
+      border-radius: 7px;
+    }
+
+    @media (max-width: 1024px) {
+      display: flex;
+    }
+
+    span {
+      transition: .4s;
+    }
+
+    &.active {
+      span:nth-child(1) {
+        transform: rotate(34deg) translate(7px, 10px);
+        width: 120%;
+      }
+      span:nth-child(2) {
+        width: 0;
+      }
+      span:nth-child(3) {
+        transform: rotate(-34deg) translate(7px, -10px);
+        width: 120%;
+      }
+    }
+
+    span {
+      height: 5px;
+      width: 100%;
+      border-radius: 5px;
+      background-color: $color-shadow;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    justify-content: flex-end;
+  }
   
   nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     column-gap: 20px;
+
+    margin-left: 0;
+    margin-right: auto;
+
+    @media (max-width: 1024px) {
+      position: absolute;
+      width: 300px;
+      top: 60px;
+      right: 0px;
+      height: 350px;
+      justify-content: center;
+      row-gap: 20px;
+      flex-direction: column;
+      background-color: $color-bg;
+      border-bottom-left-radius: 10px;
+      box-shadow: 5px 4px 1px $color-shadow;
+      transition: .3s;
+      display: none;
+
+      
+      &.active {
+        display: flex;
+      }
+      
+      a {
+        width: 150px;
+      }
+    }
   
     a {
       text-decoration: none;
       font-size: 20px;
       font-weight: 700;
-      color: #696969;
+      color: $color-text;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 3px $color-header-gray;
+      box-shadow: 0 0 3px $color-shadow;
       border-radius: 4px;
       padding: 5px 10px;
-      border-bottom: 3px solid $color-header-gray;
+
+      border-bottom: 3px solid $color-shadow;
+
       transition: background-color .4s;
   
       &:hover {
-        background-color: $hover-item-background;
-        color: white;
-        border-bottom: 3px solid $hover-item-border;
+        background-color: $color-button-start;
+        color: $color-bg;
+        border-bottom: 3px solid $color-button-start-border;
       }
 
       &.active {
@@ -56,7 +162,7 @@ header {
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      color: white;
+      color: $color-bg;
       width: 50px;
       height: 50px;
       font-size: 30px;
@@ -72,7 +178,7 @@ header {
       font-size: 18px;
       border-radius: 5px;
       border: none;
-      color: white;
+      color: $color-bg;
       cursor: pointer;
     
       &:hover {

@@ -18,7 +18,7 @@ enum TextInner {
   buttonFalse = 'False ←'
 }
 
-const TIME = 10;
+const TIME = 60;
 
 class GamePage extends Control {
   private seriesRightAnswer: number = 0;
@@ -27,8 +27,6 @@ class GamePage extends Control {
   private settingsSoundWrap: Control;
 
   private soundSettings: Control<HTMLImageElement> | null = null;
-
-  private animationWrap: Control | null = null;
 
   private pointsView: Control;
 
@@ -68,6 +66,7 @@ class GamePage extends Control {
     private state: SprintState,
     private words: IWord[],
     private onFinish: Signal<Stat>,
+    private animationWrap: Control
   ) {
     super(parentNode, 'div', 'sprint__game');
     this.onGetAnswer = () => {};
@@ -76,7 +75,7 @@ class GamePage extends Control {
     this.questions = this.createQuestions();
     this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
-      const startPage = new StartPage(parentNode, this.state, this.state.getInitiator());
+      const startPage = new StartPage(parentNode, this.state);
       this.destroy();
     };
 
@@ -123,8 +122,6 @@ class GamePage extends Control {
       if (e.code === 'ArrowLeft') this.onGetAnswer(false);
       if (e.code === 'ArrowRight') this.onGetAnswer(true);
     };
-
-    this.animationWrap = new Control(this.parentNode, 'div', 'sprint__animation-wrap');
 
     this.timer.start(TIME);
     this.timer.onTimeFinishing = () => {
@@ -303,7 +300,7 @@ class GamePage extends Control {
   }
 
   public destroy() {
-    if (this.animationWrap) this.animationWrap.destroy();
+    this.animationWrap.destroy();
     this.timer.stop();
     soundManager.stopPlayTimer();
     super.destroy();

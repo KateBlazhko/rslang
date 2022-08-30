@@ -38,7 +38,7 @@ class ResultPage extends Control {
 
     this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
-      const page = new StartPage(parentNode, this.state, this.state.getInitiator());
+      const page = new StartPage(parentNode, this.state);
       this.destroy();
     };
 

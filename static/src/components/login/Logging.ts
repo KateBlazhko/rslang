@@ -7,6 +7,7 @@ import { User, IAuth } from '../api/User';
 import StatisticPage from '../stat/statistic';
 import Stats from '../api/Stats';
 import { adapterDate } from '../utils/functions';
+import Signal from '../common/signal';
 
 export interface IStateLog {
   state: boolean;
@@ -37,6 +38,8 @@ class Logging {
     this.outModalBtnListen();
     this.listenSubmit();
   }
+
+  public onLogin = new Signal<boolean>();
 
   listenSubmit() {
     this.modal.formElements.form.node.addEventListener('click', (e) => {
@@ -71,6 +74,7 @@ class Logging {
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
         this.saveState(user);
+        this.onLogin.emit(true);
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -96,8 +100,6 @@ class Logging {
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
         this.saveState(user);
-        this.createStats()
-        
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -177,6 +179,7 @@ class Logging {
       this.accessStatistics();
       localStorage.removeItem('user');
       this.modal.formElements.background.destroy();
+      this.onLogin.emit(false);
     });
     this.modal.noBtn.node.addEventListener('click', () => this.modal.formElements.background.destroy());
   }

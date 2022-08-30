@@ -23,4 +23,8 @@ export function adapterDate (date: Date) {
   return `${day}, ${month} ${year}`
 }
 
+export function getPercent(value: number, sum: number) {
+  return (value * 100) / sum
+}
+
 export default randomSort;

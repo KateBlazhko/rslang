@@ -1,3 +1,4 @@
+import Burger from '../common/BurgerEl.';
 import ButtonHref from '../common/ButtonHref';
 import Control from '../common/control';
 import Logging from '../login/Logging';
@@ -18,8 +19,7 @@ const enum ButtonHrefContent {
   audio = 'Audio'
 }
 
-class Header {
-  private header: HTMLElement;
+class Header extends Control {
 
   public getAllElementsHeader: Partial<IHeaderEl>;
 
@@ -29,26 +29,36 @@ class Header {
 
   private logging: Logging;
 
-  constructor(login: Logging) {
-    this.header = document.createElement('header');
+  private nav: Control;
+
+  private burger: Control
+
+  constructor(
+    private parent: HTMLElement | null,
+    login: Logging
+  ) {
+    super(parent, 'header', 'header')
     this.location = window.location;
     this.logging = login;
     this.getAllElementsHeader = {};
     this.arrHref = [];
+    const title = new Control(this.node, 'h1', 'header__title', 'RSS Lang')
+    this.nav = new Control(this.node, 'nav', 'navbar');
     this.createHeader();
+    this.burger = new Burger(this.node);
     this.addThisActive();
     this.addEventListen();
     this.forwardHistory();
   }
 
   createHeader() {
-    const nav = new Control(this.header, 'nav', 'navbar');
+    // const nav = new Control(this.node, 'nav', 'navbar');
 
-    const home = new ButtonHref(nav.node, '#home', ButtonHrefContent.home);
-    const about = new ButtonHref(nav.node, '#about', ButtonHrefContent.about);
-    const book = new ButtonHref(nav.node, '#book', ButtonHrefContent.book);
-    const sprint = new ButtonHref(nav.node, '#sprint', ButtonHrefContent.sprint);
-    const audio = new ButtonHref(nav.node, '#audio', ButtonHrefContent.audio);
+    const home = new ButtonHref(this.nav.node, '#home', ButtonHrefContent.home);
+    const about = new ButtonHref(this.nav.node, '#about', ButtonHrefContent.about);
+    const book = new ButtonHref(this.nav.node, '#book', ButtonHrefContent.book);
+    const sprint = new ButtonHref(this.nav.node, '#sprint', ButtonHrefContent.sprint);
+    const audio = new ButtonHref(this.nav.node, '#audio', ButtonHrefContent.audio);
 
     this.getAllElementsHeader = {
       home, about, book, sprint, audio,
@@ -62,7 +72,19 @@ class Header {
       item.node.addEventListener('click', () => {
         this.arrHref.forEach((el) => el.removeActiveState());
         item.addActiveState();
+        this.nav.node.classList.toggle('active');
+        this.burger.node.classList.toggle('active');
       });
+    });
+    document.addEventListener('click', (event) => {
+      const t = event.target as HTMLElement;
+      if (!t.className.includes('navbar') && !t.className.includes('burger')) {
+        this.nav.node.classList.remove('active');
+        this.burger.node.classList.remove('active');
+      }
+    });
+    this.burger.node.addEventListener('click', () => {
+      this.nav.node.classList.toggle('active');
     });
   }
 
@@ -80,8 +102,8 @@ class Header {
   }
 
   render() {
-    this.header.append(this.logging.node);
-    return this.header;
+    this.node.append(this.logging.node);
+    return this.node;
   }
 }
 

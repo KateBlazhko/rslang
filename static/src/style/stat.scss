@@ -10,7 +10,7 @@ $color-text: #696969;
   gap: 10rem;
 
   width: 100%;
-  padding: 2rem;
+  padding: 2rem 2rem 4rem 2rem;
 
   &__button-wrap {
     @include flexCenter();
@@ -20,11 +20,11 @@ $color-text: #696969;
   }
 
   &__button {
-    width: 20rem;
+    width: 17rem;
     height: 5rem;
 
-    box-shadow: 0 0 3px $color-shadow;
-    border-bottom: 3px solid $color-shadow;
+    box-shadow: 0 0 3px $color-button-true;
+    border-bottom: 4px solid $color-button-true-hover;
     border-radius: 4px;
 
     text-align: center;
@@ -35,25 +35,23 @@ $color-text: #696969;
 
     cursor: pointer;
 
+    background-color: $color-bg;
     transition: all 0.4s;
 
     &:hover {
       color: $color-bg;
 
-      background-color: $color-shadow;
+      background-color: $color-button-true-hover;
+
     }
 
     &.active {
       color: $color-bg;
 
-      background-color: $color-shadow;
+      background-color: $color-button-true-hover;
     }
  
   }
-
-  // &__inner {
-  //   width: 100%;
-  // }
 }
 
 .daily {
@@ -112,7 +110,7 @@ $color-text: #696969;
 
   &__text {  
     position: absolute;
-    top: -55%;
+    top: -60%;
     left: -70%;
  
     @include flexCenter();
@@ -129,6 +127,10 @@ $color-text: #696969;
     box-shadow: 0 0 3px $color-shadow;
     background-color: $color-bg;
 
+    @media (max-width: 600px) {
+      left: 0%;
+    }
+
     span {
       text-align: center;
       font-weight: bold;
@@ -136,13 +138,34 @@ $color-text: #696969;
   }
 
   &__stat-wrap {
-    box-shadow: 0 0 3px $color-shadow;
+    @include flexCenter();
+    flex-wrap: wrap;
     height: 100%;
+    padding: 1rem;
+    border-radius: 5rem;
+    border-bottom: 5px solid $color-scroll;
+    border-top: 5px solid $color-scroll;
+
+    box-shadow: 0 0 3px $color-shadow;
+
+    background-color: $color-bg;
+  }
+
+  &__item {
+    @include flexCenter();
+    width: 100%;
+
+    font-size: 2rem;
+    text-align: center;
+    color: $color-text-start;
   }
 
   &__name {
+    width: 100%;
     font-size: 3rem;
     text-align: center;
     color: $color-text-start;
   }
+
+
 }

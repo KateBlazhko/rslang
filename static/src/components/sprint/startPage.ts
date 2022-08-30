@@ -31,7 +31,6 @@ class StartPage extends Control {
   constructor(
     private parentNode: HTMLElement | null,
     private state: SprintState,
-    private initiator: 'book' | 'header',
   ) {
     super(parentNode, 'div', 'sprint__start start');
 
@@ -55,7 +54,7 @@ class StartPage extends Control {
     </div>
     `;
 
-    if (this.initiator === 'header') {
+    if (this.state.getInitiator() === 'header') {
       const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromHeader);
       const buttonWrap = new Control(fourth.node, 'div', 'start__button-wrap');
 

@@ -9,12 +9,14 @@ export const BASELINK = 'http://localhost:3000';
 
 export interface IStat {
   learnedWords: number,
-  optional: {
-    dateReg: string,
-    dateCurrent: string,
-    sprint: IGameStat,
-    audio: IGameStat,
-  }
+  optional: IStatOptional
+}
+
+export interface IStatOptional {
+  dateReg: string,
+  dateCurrent: string,
+  sprint: IGameStat,
+  audio: IGameStat,
 }
 
 

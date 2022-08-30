@@ -1,4 +1,4 @@
-$color-bg-start: #ffffff;
+$color-bg: #ffffff;
 $color-button-start: #ffffff;
 $color-shadow: #aaa9a9;
 
@@ -45,7 +45,7 @@ $color4: #fcdd2e;
     color: $color-text-start;
 
     box-shadow: 0 0 3px $color-shadow;
-    background-color: $color-bg-start;
+    background-color: $color-bg;
 
     &_odd {
       align-self: start;

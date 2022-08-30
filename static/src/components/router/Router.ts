@@ -2,12 +2,14 @@ import Sprint from '../sprint/sprint';
 import Statistic from '../stat/statistic';
 import Signal from '../common/signal';
 import Control from '../common/control';
+import HomePage from '../home/homePage';
 import Logging from '../login/Logging';
+import Audio from '../audio/Audio';
 
 class Router {
   private location: Location;
 
-  private currentPage: Control | Sprint | null = null;
+  private currentPage: Control | Sprint | HomePage | null = null;
 
   private container: Control;
 
@@ -30,31 +32,37 @@ class Router {
   private setPage(hash: string) {
     const container = this.container.node;
 
+    if (hash) {
+      this.onGoPage.emit(hash);
+    }
+
     switch (hash) {
       case 'home':
-        this.onGoPage.emit(hash);
-        container.innerHTML = '<h1>Home</h1>';
+        container.innerHTML = '';
+        this.currentPage = new HomePage(container, this.login);
         break;
       case 'about':
         container.innerHTML = '<h1>About Us</h1>';
         break;
       case 'book':
-        this.onGoPage.emit(hash);
         container.innerHTML = '<h1>Book</h1>';
         break;
       case 'sprint':
-        container.innerHTML = '';
+        this.onGoPage.emit(hash);
         this.currentPage = new Sprint(container, this.login, this.onGoPage);
         break;
       case 'audio':
-        container.innerHTML = '<h1>Audio</h1>';
+        this.onGoPage.emit(hash);
+        this.currentPage = new Audio(container, this.login, this.onGoPage);
         break;
       case 'statistics':
         container.innerHTML = '';
         this.currentPage = new Statistic(container, this.login);
         break;
       default:
-        container.innerHTML = '<h1>Home</h1>';
+        this.onGoPage.emit('home');
+        container.innerHTML = '';
+        this.currentPage = new HomePage(container, this.login);
     }
   }
 
