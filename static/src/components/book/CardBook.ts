@@ -27,7 +27,7 @@ class CardBook extends Control {
 
   createTitle(node: HTMLElement) {
     const container = new Control(node, 'div', 'title');
-    container.node.innerHTML = `<h3>${this.word.word}</h3><h3>${this.word.transcription}</h3><h3>${this.word.wordTranslate}</h3>`;
+    container.node.innerHTML = `<h3 class="en">${this.word.word}</h3><h3>${this.word.transcription}</h3><h3>${this.word.wordTranslate}</h3>`;
     const audio = new Audio(`${BASELINK}/${this.word.audio}`);
     const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
     volume.node.src = '../../assets/icons/volume.png';

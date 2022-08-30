@@ -194,7 +194,7 @@ $color-bg-button-border: #40396e;
             .volume {
               position: absolute;
               top: -6%;
-              left: 23%;
+              left: 24%;
 
               width: 30px;
               border-radius: 50%;
@@ -219,11 +219,12 @@ $color-bg-button-border: #40396e;
             position: relative;
 
             @include flexCenter();
-            justify-content: space-between;
+            flex-wrap: wrap;
+            // justify-content: space-between;
+            gap: 0.3rem;
 
             width: 100%;
-            height: 33px;
-            margin-top: 1rem;
+            margin-top: -2rem;
 
             .volume {
               width: 50px;
@@ -231,18 +232,23 @@ $color-bg-button-border: #40396e;
               top: -60px;
               cursor: pointer;
             }
-
+            
             h3 {
               @include flexCenter();
 
-              padding: 1rem;
-              border-radius: 5px;
+              // padding: 1rem;
+              // border-radius: 5px;
 
               font-size: 1.8rem;
-              box-shadow: 0 0 4px $color-shadow;
-
+              // box-shadow: 0 0 4px $color-shadow;
             }
-            
+
+            .en {
+              width: 100%;
+
+              font-size: 3rem;
+              font-weight: bold;
+            }
           }
         }
       }
