@@ -60,13 +60,13 @@ class AboutPage extends Control {
       new Control(
         teamMemberWrap.node,
         "p",
-        "about__team-member-name",
+        "about__team-member-text",
         teamMemberItem.name
       );
       new Control(
         teamMemberWrap.node,
         "p",
-        "about__team-member-name",
+        "about__team-member-text",
         teamMemberItem.position
       );
     });
