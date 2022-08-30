@@ -59,23 +59,32 @@
   }
 
   &__team {
-    @include flexCenter();
-
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 40px;
+
+    @media (max-width: 1450px) {
+      grid-template-columns: repeat(auto-fill, 1fr);
+    }
   }
 
   &__team-member {
     display: flex;
+    max-width: 240px;
     gap: 10px;
     flex-direction: column;
-  }
+    align-items: center;
 
-  &__team-member-text {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    color: $color-text-start;
+    &-text {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: $color-text-start;
+    }
+
+    &-resp {
+      font-size: 1.5rem;
+    }
   }
 
   &__avatar-wrap {

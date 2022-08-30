@@ -14,6 +14,7 @@ interface ITeamMember {
   link: string;
   position: string;
   avatar: string;
+  responsibilities: string;
 }
 
 class AboutPage extends Control {
@@ -68,6 +69,12 @@ class AboutPage extends Control {
         "p",
         "about__team-member-text",
         teamMemberItem.position
+      );
+      new Control(
+        teamMemberWrap.node,
+        "p",
+        "about__team-member-text about__team-member-resp",
+        teamMemberItem.responsibilities
       );
     });
   }
