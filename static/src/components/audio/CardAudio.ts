@@ -28,7 +28,7 @@ class CardAudio extends Control {
     this.arrWord = arrWord;
     this.arrReqWord = arrReqWord;
     this.words = this.createWords();
-    this.createCard(value, arrWord);
+    this.createCard(value);
   }
 
   viewCard() {
@@ -61,10 +61,14 @@ class CardAudio extends Control {
         res.push(item);
       }
     }
-    return { successWord: res[Math.floor(Math.random() * res.length)], allWords: randomWord(res) };
+    const resObj = {
+      successWord: res[Math.floor(Math.random() * res.length)], allWords: randomWord(res),
+    };
+    console.log(resObj.successWord)
+    return resObj;
   }
 
-  createCard(value: { word: number }, arrWord: Array<IWord>) {
+  createCard(value: { word: number }) {
     this.createWords();
     const volume = new Audio(`${BASELINK}/${this.words.successWord.audio}`);
     volume.play();

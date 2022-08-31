@@ -76,13 +76,38 @@ class GameAudio extends Control {
       const stateLog = await this.login.checkStorageLogin();
 
       if (stateLog.state) {
-        this.arrWords = await GameAudio.getAggregatedWords(stateLog, +group, +page);
+        this.arrWords = await GameAudio.getAggWords(stateLog, +group, +page);
       } else {
-        this.arrWords = await GameAudio.getAllWords(group.toString(), page.toString());
+        this.arrWords = await GameAudio.pageWords(group.toString(), page.toString());
       }
     }
 
+    const words = [...new Set(this.arrWords.map((id) => id.id))];
+    console.log(words);
+
     this.createCard();
+  }
+
+  static async pageWords(difficult: string, page: string) {
+    let thisPage = page;
+    const words = [];
+    words.push(...await GameAudio.getAllWords(difficult, thisPage));
+    if (words.length < 27) {
+      thisPage += 1;
+      words.push(...await GameAudio.getAllWords(difficult, thisPage));
+    }
+    return words;
+  }
+
+  static async getAggWords(stateLog: IStateLog, group: number, page: number) {
+    let thisPage = page;
+    const words = [];
+    words.push(...await GameAudio.getAggregatedWords(stateLog, +group, thisPage));
+    if (words.length < 27) {
+      thisPage += 1;
+      words.push(...await GameAudio.getAggregatedWords(stateLog, +group, thisPage));
+    }
+    return words;
   }
 
   private static async getAggregatedWords(stateLog: IStateLog, group: number, page: number) {
