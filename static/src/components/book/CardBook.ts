@@ -1,5 +1,6 @@
-import { BASELINK, IWord } from '../api/Words';
+import Words, { BASELINK, IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
+import { IStateLog } from '../Logging';
 
 class CardBook extends Control {
   word: IWord;
@@ -8,18 +9,29 @@ class CardBook extends Control {
 
   allAudio: HTMLAudioElement[];
 
-  constructor(parentNode: HTMLElement | null, word: IWord, allAudio: HTMLAudioElement[]) {
+  description: Control<HTMLElement>;
+
+  user: IStateLog;
+
+  constructor(
+    parentNode: HTMLElement | null,
+    word: IWord,
+    allAudio: HTMLAudioElement[],
+    user: IStateLog,
+  ) {
     super(parentNode, 'div', 'card_item');
+    this.user = user;
     this.allAudio = allAudio;
     this.word = word;
     this.audio = [];
+    this.description = new Control(this.node, 'div', 'description');
     this.createCard();
   }
 
   createCard() {
     const img = new Control<HTMLImageElement>(this.node, 'img', 'img__word');
     img.node.src = `${BASELINK}/${this.word.image}`;
-    const description = new Control(this.node, 'div', 'description');
+    const { description } = this;
     this.createTitle(description.node);
     this.createExample(description.node);
     this.createMeaning(description.node);
@@ -37,6 +49,39 @@ class CardBook extends Control {
     });
     this.audio.push(audio);
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  createDifficultBtn(node: HTMLElement, userWord?: IUserWord) {
+    const button = new Control(node, 'button', 'button_difficult', 'Difficult');
+    if (userWord && userWord.difficulty === 'hard') {
+      button.node.textContent = 'Delete';
+    }
+    button.node.addEventListener('click', () => {
+      if (userWord) {
+        if (userWord.difficulty === 'easy') {
+          button.node.textContent = 'Delete';
+          const word = userWord;
+          word.difficulty = 'hard';
+          Words.updateUserWord(this.user.userId, this.user.token, userWord.optional.wordId, word);
+        }
+      }
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  createStudiedBtn(node: HTMLElement, userWord?: IUserWord) {
+    const button = new Control(node, 'button', 'button_studied', 'Studied');
+    button.node.addEventListener('click', () => {
+
+    });
+  }
+
+  addUserFunctional(userWord?: IUserWord) {
+    const containerBtn = new Control(this.description.node, 'div', 'container-btn');
+    this.createDifficultBtn(containerBtn.node, userWord);
+    this.createStudiedBtn(containerBtn.node, userWord);
+  }
+  // studied
 
   createExample(node: HTMLElement) {
     const container = new Control(node, 'div', 'example');

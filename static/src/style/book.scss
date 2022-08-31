@@ -124,7 +124,7 @@ $color-bg-button-border: #40396e;
         align-items: flex-end;
 
         width: 40rem;
-        height: 54rem;
+        height: 60rem;
         background: $color-bg;
         border-radius: 7px;
 
@@ -146,16 +146,43 @@ $color-bg-button-border: #40396e;
         .description {
           position: relative;
 
+          .container-btn {
+            display: flex;
+            column-gap: 20px;
+
+            button {
+              width: 120px;
+              font-size: 20px;
+              font-weight: 700;
+              color:  $color-shadow;
+              border: none;
+              padding: 5px 0px;
+              color: white;
+              border-radius: 5px;
+              cursor: pointer;
+            }
+            
+            .button_difficult {
+              background: $color-level-english-1;
+              border-bottom: 3px solid $border-level-english-1;
+            }
+
+            .button_studied {
+              background: $color-level-english-6;
+              border-bottom: 3px solid $border-level-english-6;
+            }
+          }
+
           @include flexCenter();
           justify-content: flex-start;
           flex-direction: column;
           row-gap: 1.1rem;
 
           width: 100%;
-          height: 60%;
+          height:55%;
           margin-top: auto;
           border-radius: 7px;
-          padding: 0 1rem;
+          padding: 0 1rem 0;
 
           background: $color-bg;          
 

@@ -1,4 +1,4 @@
-import Words, { IWord } from '../api/Words';
+import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
 import { IStateLog } from '../Logging';
 import CardBook from './CardBook';
@@ -8,6 +8,8 @@ class PageBook extends Control {
 
   difficult: string;
 
+  user: IStateLog;
+
   constructor(
     parentNode: HTMLElement | null,
     difficult: string,
@@ -16,16 +18,22 @@ class PageBook extends Control {
   ) {
     super(parentNode, 'div', 'page_book_container');
     this.page = page;
+    this.user = user;
     this.difficult = difficult;
     this.getWordsDb(difficult, page);
   }
 
   async getWordsDb(difficult: string, page: string) {
     const words = await Words.getWords({ group: difficult, page });
-    this.createPage(words, page);
+    if (this.user.state) {
+      const userWords = await Words.getUserWords(this.user.userId, this.user.token);
+      this.createPage(words, page, userWords);
+    } else {
+      this.createPage(words, page);
+    }
   }
 
-  createPage(words: IWord[], page: string) {
+  createPage(words: IWord[], page: string, userWords?: IUserWord[]) {
     const paginationTop = new Control(this.node, 'div', 'pagination');
     const main = new Control(this.node, 'div', 'container_card');
     const paginationButton = new Control(this.node, 'div', 'pagination');
@@ -33,15 +41,19 @@ class PageBook extends Control {
     this.createPagination(paginationTop.node, page);
     this.createPagination(paginationButton.node, page);
 
-    this.createCards(main.node, words);
+    this.createCards(main.node, words, userWords);
   }
 
   // eslint-disable-next-line class-methods-use-this
-  createCards(main: HTMLElement, words: IWord[]) {
+  createCards(main: HTMLElement, words: IWord[], userWords?: IUserWord[]) {
     const allAudio: HTMLAudioElement[] = [];
     words.forEach((word) => {
-      const card = new CardBook(main, word, allAudio);
+      const card = new CardBook(main, word, allAudio, this.user);
       allAudio.push(...card.audio);
+      if (userWords) {
+        const userWord = userWords.find((el) => el.optional.wordId === word.id);
+        card.addUserFunctional(userWord);
+      }
     });
   }
 
