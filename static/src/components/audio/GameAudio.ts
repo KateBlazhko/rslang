@@ -143,14 +143,14 @@ class GameAudio extends Control {
       if (successWord?.value === +key) {
         this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
         successWord.node.classList.add('success');
-        this.arrWordsStatus.push({ word: successWord.word, status: true });
+        this.arrWordsStatus.push({ word: card.words.successWord, status: true });
         success.play();
       } else if (thisCard) {
         successWord?.node.classList.toggle('success');
         this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
         thisCard.node.classList.add('failed');
         fail.play();
-        this.arrWordsStatus.push({ word: thisCard.word, status: false });
+        this.arrWordsStatus.push({ word: card.words.successWord, status: false });
       }
 
       card.allWords.forEach((node) => { node.node.disabled = true; });
@@ -172,7 +172,7 @@ class GameAudio extends Control {
     } else {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
       item.node.classList.add('failed');
-      this.arrWordsStatus.push({ word: item.word, status: false });
+      this.arrWordsStatus.push({ word: card.words.successWord, status: false });
       fail.play();
       successWord?.node.classList.toggle('success');
     }

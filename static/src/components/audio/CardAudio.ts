@@ -64,12 +64,11 @@ class CardAudio extends Control {
     const resObj = {
       successWord: res[Math.floor(Math.random() * res.length)], allWords: randomWord(res),
     };
-    console.log(resObj.successWord)
+
     return resObj;
   }
 
   createCard(value: { word: number }) {
-    this.createWords();
     const volume = new Audio(`${BASELINK}/${this.words.successWord.audio}`);
     volume.play();
     const img = new Control<HTMLImageElement>(this.volumeContainer.node, 'button', 'volume_button__audio');
