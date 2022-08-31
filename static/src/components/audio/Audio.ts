@@ -13,24 +13,25 @@ class Audio extends Control {
 
   game: GameAudio;
 
-  prevPage: { page: string; };
+  prevPage: string;
 
   constructor(
     parentNode: HTMLElement | null,
     login: Logging,
-    page: { page: string; },
+    page: string,
   ) {
     super(parentNode, 'div', 'audio__container', '');
     this.login = login;
-    this.startPage = new StartPageAudio(null);
+    this.startPage = new StartPageAudio(null, !!(page.includes('book') && page.split('/').length === 3));
     this.prevPage = page;
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
-    if (this.prevPage.page.includes('book') && this.prevPage.page.split('/').length === 3) {
-      this.renderPage('game');
-      this.game.game(`${this.startPage.difficult}`, this.prevPage);
-    } else {
-      this.renderPage('start');
-    }
+    // if (this.prevPage.includes('book') && this.prevPage.split('/').length === 3) {
+    //   this.renderPage('game');
+    //   this.game.game(`${this.startPage.difficult}`, this.prevPage);
+    // } else {
+    //   this.renderPage('start');
+    // }
+    this.renderPage('start');
     this.startGame();
   }
 

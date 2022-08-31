@@ -34,12 +34,13 @@ class Router {
   }
 
   private setPage(hash: string) {
+    const { page } = this.prevPage;
     const container = this.container.node;
 
     if (hash) {
       this.onGoPage.emit(hash);
     }
-    
+
     if (hash.includes('book')) {
       this.onGoPage.emit(hash);
       this.currentPage = new Book(container, this.login, hash);
@@ -63,7 +64,7 @@ class Router {
         break;
       case 'audio':
         this.onGoPage.emit(hash);
-        this.currentPage = new Audio(container, this.login, this.prevPage);
+        this.currentPage = new Audio(container, this.login, page);
         break;
       case 'statistics':
         container.innerHTML = '<h1>statistics</h1>';

@@ -66,15 +66,14 @@ class GameAudio extends Control {
     return shuffleArrayPage(wordsAll.flat());
   }
 
-  async game(difficult: string, prevPage: { page: string }) {
-    if (!prevPage.page.includes('book')) {
+  async game(difficult: string, prevPage: string) {
+    if (!prevPage.includes('book')) {
       this.arrWords = await GameAudio.getAllWords(difficult);
     } else {
-      const el = prevPage.page.split('/');
+      const el = prevPage.split('/');
       const group = el[1];
       const page = el[2];
       const stateLog = await this.login.checkStorageLogin();
-
       if (stateLog.state) {
         this.arrWords = await GameAudio.getAggWords(stateLog, +group, +page);
       } else {
@@ -167,7 +166,7 @@ class GameAudio extends Control {
     if (item.word.id === card.words.successWord.id) {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
       item.node.classList.add('success');
-      this.arrWordsStatus.push({ word: item.word, status: true });
+      this.arrWordsStatus.push({ word: card.words.successWord, status: true });
       success.play();
     } else {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
