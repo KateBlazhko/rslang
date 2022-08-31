@@ -51,18 +51,39 @@ class CardBook extends Control {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  createDifficultBtn(node: HTMLElement, userWord?: IUserWord) {
+  async createDifficultBtn(node: HTMLElement, userWord?: IUserWord) {
     const button = new Control(node, 'button', 'button_difficult', 'Difficult');
     if (userWord && userWord.difficulty === 'hard') {
       button.node.textContent = 'Delete';
     }
-    button.node.addEventListener('click', () => {
+    button.node.addEventListener('click', async () => {
+      // const wordForId = await Words.getWordByID(userWord!.optional.wordId);
+      // console.log(wordForId);
       if (userWord) {
         if (userWord.difficulty === 'easy') {
           button.node.textContent = 'Delete';
           const word = userWord;
-          word.difficulty = 'hard';
-          Words.updateUserWord(this.user.userId, this.user.token, userWord.optional.wordId, word);
+          word.difficulty = 'easy';
+          const result = await Words.updateUserWord(
+            this.user.userId,
+            this.user.token,
+            userWord.optional.wordId,
+            {
+              difficulty: 'hard',
+              optional: {
+                wordId: word.optional.wordId,
+                сountRightAnswer: word.optional.сountRightAnswer,
+                countError: word.optional.countError,
+                seriesRightAnswer: word.optional.seriesRightAnswer,
+                isLearn: word.optional.isLearn,
+                dataGetNew: word.optional.dataGetNew,
+                dataLearn: (
+                  word.optional.isLearn
+                  && word.optional.isLearn !== userWord.optional.isLearn)
+                  ? new Date() : undefined,
+              },
+            },
+          );
         }
       }
     });
