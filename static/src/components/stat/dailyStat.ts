@@ -4,10 +4,9 @@ import Control from '../common/control';
 import Logging, { IStateLog } from '../login/Logging';
 import { adapterDate, getPercent } from '../utils/functions';
 import ButtonStat from './buttonStat';
-
+import { IGameStat } from '../sprint/sprint';
 
 import { Chart, registerables } from 'chart.js';
-import { IGameStat } from '../sprint/sprint';
 Chart.register(...registerables);
 
 enum TextInner {
@@ -70,7 +69,7 @@ class DailyStat extends Control {
   private async checkStat(dataCurrent: string, stateLog: IStateLog) {
     const userStat = await Stats.getStats(stateLog.userId, stateLog.token)  
 
-    const isSameDate = userStat.optional.dateCurrent = dataCurrent
+    const isSameDate = userStat.optional.dateCurrent === dataCurrent
     if (isSameDate) {
       return userStat
     } else {

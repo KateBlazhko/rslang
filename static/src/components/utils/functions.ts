@@ -20,7 +20,7 @@ export function adapterDate (date: Date) {
   const month = new Date(Date.parse(date.toString())).getMonth()
   const day = new Date(Date.parse(date.toString())).getDate()
 
-  return `${day}, ${month} ${year}`
+  return `${year}-${month + 1}-${day}`
 }
 
 export function getPercent(value: number, sum: number) {

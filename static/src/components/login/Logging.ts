@@ -128,7 +128,14 @@ class Logging {
           countError: 0, 
           maxSeriesRightAnswer: 0
         },
-        newWordsByDate: {}
+        general: {
+          newWords: {
+            [date]: 0
+          },
+          learnedWords: {
+            [date]: 0
+          }
+        }
       }
     })
   }

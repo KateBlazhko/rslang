@@ -12,14 +12,18 @@ export interface IStat {
   optional: IStatOptional
 }
 
+export type GeneralItem = Record<string, number>
+export interface IGeneral {
+  newWords: GeneralItem,
+  learnedWords: GeneralItem
+}
+
 export interface IStatOptional {
   dateReg: string,
   dateCurrent: string,
   sprint: IGameStat,
   audio: IGameStat,
-  newWordsByDate: {
-    [key: string]: number
-  }
+  general: IGeneral
 }
 
 
@@ -83,17 +87,28 @@ class Stats {
     }
   }
 
-  // public static checkDate(dateCurrentLast: Date, dateCurrent: Date) {
-  //   const lastYear = new Date(Date.parse(dateCurrentLast.toString())).getFullYear()
-  //   const lastMonth = new Date(Date.parse(dateCurrentLast.toString())).getMonth()
-  //   const lastDay = new Date(Date.parse(dateCurrentLast.toString())).getDate()
+  public static async recordGeneralStats(stateLog: IStateLog, newGeneralStats: IGeneral) {
+    const userStat = await Stats.getStats(stateLog.userId, stateLog.token)
 
-  //   if (dateCurrent.getFullYear() !== lastYear) return false
-  //   if (dateCurrent.getMonth() !== lastMonth) return false
-  //   if (dateCurrent.getDate() !== lastDay) return false
+    const { learnedWords, optional: { dateReg, dateCurrent, sprint, audio, general }} = userStat
 
-  //   return true
-  // }
+    const newGeneral = {
+      ...general,
+      ...newGeneralStats
+    }
+
+    Stats.updateStat(stateLog.userId, stateLog.token, {
+      learnedWords,
+      optional: {
+        dateReg, 
+        dateCurrent, 
+        sprint, 
+        audio, 
+        general: newGeneral
+      }
+    })
+
+  }
 
   public static async addToStat(
     stateLog: IStateLog, 
@@ -159,7 +174,7 @@ class Stats {
     dateCurrent: string
   ) {
 
-    const { optional: { dateReg, newWordsByDate } } = userStat
+    const { optional: { dateReg, general } } = userStat
   
     const recordStat = await Stats.updateStat(stateLog.userId, stateLog.token, {
       learnedWords: 0,
@@ -178,7 +193,7 @@ class Stats {
           countError: 0, 
           maxSeriesRightAnswer: 0
         },
-        newWordsByDate
+        general
       }
     })
   }

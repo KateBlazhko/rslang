@@ -39,25 +39,26 @@
   }
 
   &__button {
-    width: 17rem;
-    height: 5rem;
+    @include flexCenter();
 
-    border-radius: 4px;
+    width: 17rem;
+    height: 4.8rem;
+
+    border-radius: $button-border-radius;
 
     text-align: center;
-    color: $color-text;
     font-size: 2.5rem;
-    line-height: 5rem;
     font-weight: bold;
 
     cursor: pointer;
-    box-shadow: $element-shadow;
 
     transition: all 0.4s;
 
     &:nth-child(2) {
-      border-bottom: 4px solid $color-button-true-hover;
+      color: $color-button-true-hover;
 
+      border-bottom: 4px solid $color-button-true-hover;
+      box-shadow: 0 0 3px $color-button-true-hover;
       background-color: $color-bg;
 
       &:hover {
@@ -74,8 +75,10 @@
     }
 
     &:nth-child(3) {
-      border-bottom: 4px solid $color-button-false-hover;
+      color: $color-button-false-hover;
 
+      border-bottom: 4px solid $color-button-false-hover;
+      box-shadow: 0 0 3px $color-button-false-hover;
       background-color: $color-bg;
 
       &:hover {
@@ -224,7 +227,6 @@
     padding: 1rem;
     border-radius: 5rem;
     border-bottom: 5px solid $color-scroll;
-    border-top: 5px solid $color-scroll;
 
     box-shadow: $element-shadow;
 
