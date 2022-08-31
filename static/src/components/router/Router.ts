@@ -4,6 +4,7 @@ import Control from '../common/control';
 import HomePage from '../home/homePage';
 import Logging from '../Logging';
 import Audio from '../audio/Audio';
+import AboutPage from '../about/aboutPage';
 
 class Router {
   private location: Location;
@@ -41,7 +42,8 @@ class Router {
         this.currentPage = new HomePage(container, this.login);
         break;
       case 'about':
-        container.innerHTML = '<h1>About Us</h1>';
+        this.onGoPage.emit(hash);
+        this.currentPage = new AboutPage(container);
         break;
       case 'book':
         container.innerHTML = '<h1>Book</h1>';
