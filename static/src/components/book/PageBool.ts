@@ -51,8 +51,9 @@ class PageBook extends Control {
       const card = new CardBook(main, word, allAudio, this.user);
       allAudio.push(...card.audio);
       if (userWords) {
-        const userWord = userWords.find((el) => el.optional.wordId === word.id);
-        card.addUserFunctional(userWord);
+        card.addUserFunctional(word, userWords);
+      } else {
+        card.addUserFunctional(word);
       }
     });
   }

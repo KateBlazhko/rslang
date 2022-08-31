@@ -13,6 +13,8 @@ class CardBook extends Control {
 
   user: IStateLog;
 
+  UserWord: IUserWord | undefined;
+
   constructor(
     parentNode: HTMLElement | null,
     word: IWord,
@@ -24,6 +26,7 @@ class CardBook extends Control {
     this.allAudio = allAudio;
     this.word = word;
     this.audio = [];
+    this.UserWord = undefined;
     this.description = new Control(this.node, 'div', 'description');
     this.createCard();
   }
@@ -50,57 +53,129 @@ class CardBook extends Control {
     this.audio.push(audio);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async createDifficultBtn(node: HTMLElement, userWord?: IUserWord) {
-    const button = new Control(node, 'button', 'button_difficult', 'Difficult');
-    if (userWord && userWord.difficulty === 'hard') {
-      button.node.textContent = 'Delete';
-    }
-    button.node.addEventListener('click', async () => {
-      // const wordForId = await Words.getWordByID(userWord!.optional.wordId);
-      // console.log(wordForId);
-      if (userWord) {
-        if (userWord.difficulty === 'easy') {
-          button.node.textContent = 'Delete';
-          const word = userWord;
-          word.difficulty = 'easy';
-          const result = await Words.updateUserWord(
-            this.user.userId,
-            this.user.token,
-            userWord.optional.wordId,
-            {
-              difficulty: 'hard',
-              optional: {
-                wordId: word.optional.wordId,
-                сountRightAnswer: word.optional.сountRightAnswer,
-                countError: word.optional.countError,
-                seriesRightAnswer: word.optional.seriesRightAnswer,
-                isLearn: word.optional.isLearn,
-                dataGetNew: word.optional.dataGetNew,
-                dataLearn: (
-                  word.optional.isLearn
+  async checkDifficult(userWord: IUserWord, difficult: 'easy' | 'hard') {
+    const word = userWord;
+    await Words.updateUserWord(
+      this.user.userId,
+      this.user.token,
+      userWord.optional.wordId,
+      {
+        difficulty: difficult,
+        optional: {
+          wordId: word.optional.wordId,
+          сountRightAnswer: word.optional.сountRightAnswer,
+          countError: word.optional.countError,
+          seriesRightAnswer: word.optional.seriesRightAnswer,
+          isLearn: word.optional.isLearn,
+          dataGetNew: word.optional.dataGetNew,
+          dataLearn: (
+            word.optional.isLearn
                   && word.optional.isLearn !== userWord.optional.isLearn)
-                  ? new Date() : undefined,
-              },
-            },
-          );
-        }
+            ? new Date() : undefined,
+        },
+      },
+    );
+  }
+
+  async checkStudy(userWord: IUserWord, learn: boolean) {
+    const word = userWord;
+    await Words.updateUserWord(
+      this.user.userId,
+      this.user.token,
+      userWord.optional.wordId,
+      {
+        difficulty: word.difficulty,
+        optional: {
+          wordId: word.optional.wordId,
+          сountRightAnswer: word.optional.сountRightAnswer,
+          countError: word.optional.countError,
+          seriesRightAnswer: word.optional.seriesRightAnswer,
+          isLearn: learn,
+          dataGetNew: word.optional.dataGetNew,
+          dataLearn: (
+            word.optional.isLearn
+                  && word.optional.isLearn !== userWord.optional.isLearn)
+            ? new Date() : undefined,
+        },
+      },
+    );
+  }
+
+  async createWord(word: IWord) {
+    const wordNew = await Words.createUserWord(this.user.userId, this.user.token, word.id, {
+      difficulty: 'easy',
+      optional: {
+        wordId: word.id,
+        сountRightAnswer: 1,
+        countError: 0,
+        seriesRightAnswer: 0,
+        isLearn: false,
+        dataGetNew: new Date(),
+      },
+    });
+    const userWord = await Words.getUserWordByID(this.user.userId, this.user.token, word.id);
+
+    return userWord;
+  }
+
+  createBtnDifficultAndStudy(node: HTMLElement, word: IWord, userWord?: IUserWord) {
+    const difficultBtn = new Control(node, 'button', 'button_difficult', 'Difficult');
+    const studyBtn = new Control(node, 'button', 'button_studied', 'Study');
+
+    if (userWord?.difficulty === 'hard') {
+      difficultBtn.node.textContent = 'Delete';
+      this.node.classList.add('difficult');
+    }
+
+    if (userWord?.optional.isLearn) {
+      studyBtn.node.textContent = 'Studied';
+      this.node.classList.add('learn');
+    }
+
+    if (userWord) {
+      this.UserWord = userWord;
+    }
+
+    let difficult = this.UserWord?.difficulty;
+    let learn = this.UserWord?.optional.isLearn;
+
+    difficultBtn.node.addEventListener('click', async () => {
+      if (!this.UserWord) {
+        this.UserWord = await this.createWord(word);
+      }
+      if (difficult === 'easy') {
+        difficult = 'hard';
+        difficultBtn.node.textContent = 'Delete';
+        await this.checkDifficult(this.UserWord, 'hard');
+      } else {
+        difficult = 'easy';
+        difficultBtn.node.textContent = 'Difficult';
+        await this.checkDifficult(this.UserWord!, 'easy');
+      }
+    });
+    studyBtn.node.addEventListener('click', async () => {
+      if (!this.UserWord) {
+        this.UserWord = await this.createWord(word);
+      }
+
+      if (learn) {
+        learn = false;
+        studyBtn.node.textContent = 'Study';
+        await this.checkStudy(this.UserWord!, false);
+      } else {
+        learn = true;
+        studyBtn.node.textContent = 'Studied';
+        await this.checkStudy(this.UserWord!, true);
       }
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  createStudiedBtn(node: HTMLElement, userWord?: IUserWord) {
-    const button = new Control(node, 'button', 'button_studied', 'Studied');
-    button.node.addEventListener('click', () => {
-
-    });
-  }
-
-  addUserFunctional(userWord?: IUserWord) {
+  addUserFunctional(word: IWord, userWords?: IUserWord[]) {
+    const userWord = userWords!.find((el) => el.optional.wordId === word.id);
     const containerBtn = new Control(this.description.node, 'div', 'container-btn');
-    this.createDifficultBtn(containerBtn.node, userWord);
-    this.createStudiedBtn(containerBtn.node, userWord);
+    // this.createDifficultBtn(containerBtn.node, word, userWord);
+    // this.createStudiedBtn(containerBtn.node, word, userWord);
+    this.createBtnDifficultAndStudy(containerBtn.node, word, userWord);
   }
   // studied
 

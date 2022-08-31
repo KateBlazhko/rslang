@@ -98,6 +98,13 @@ class GameAudio extends Control {
     return words;
   }
 
+  // IGameStat {
+  //   newWords: number, (тех, которых не было в пользовательских)
+  //   сountRightAnswer: number, (количество правильных ответов за игру)
+  //   countError: number, (количество ошибок за игру)
+  //   maxSeriesRightAnswer: number (максимальная серия правильных ответов за игру)
+  // }
+
   static async getAggWords(stateLog: IStateLog, group: number, page: number) {
     let thisPage = page;
     const words = [];
