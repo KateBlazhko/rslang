@@ -5,26 +5,42 @@ $color-text: #696969;
 
 .stat {
   @include flexCenter();
-  flex-wrap: wrap;
-  align-items: start;
-  gap: 10rem;
+  flex-direction: column;
+  gap: 7rem;
 
   width: 100%;
-  padding: 2rem 2rem 4rem 2rem;
+  padding: 3rem 3rem 5rem 2rem;
 
   &__button-wrap {
+    align-self: end;
     @include flexCenter();
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 2rem;
 
-    width: 100%;
+    width: 50%;
+    padding: 2rem;
+    border-radius:  2rem 0 2rem 2rem;
+
+    box-shadow: 0 0 3px $color-shadow;
+    background-color: $color-bg;
+
+    @media (max-width: 600px) {
+      width: 70%;
+
+    }
+    
+  }
+
+  &__description {
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text-start;
   }
 
   &__button {
     width: 17rem;
     height: 5rem;
 
-    box-shadow: 0 0 3px $color-button-true;
-    border-bottom: 4px solid $color-button-true-hover;
     border-radius: 4px;
 
     text-align: center;
@@ -34,21 +50,44 @@ $color-text: #696969;
     font-weight: bold;
 
     cursor: pointer;
+    box-shadow: 0 0 3px $color-shadow;
 
-    background-color: $color-bg;
     transition: all 0.4s;
 
-    &:hover {
-      color: $color-bg;
+    &:nth-child(2) {
+      border-bottom: 4px solid $color-button-true-hover;
 
-      background-color: $color-button-true-hover;
+      background-color: $color-bg;
 
+      &:hover {
+        color: $color-bg;
+  
+        background-color: $color-button-true;
+      }
+  
+      &.active {
+        color: $color-bg;
+  
+        background-color: $color-button-true-hover;
+      }
     }
 
-    &.active {
-      color: $color-bg;
+    &:nth-child(3) {
+      border-bottom: 4px solid $color-button-false-hover;
 
-      background-color: $color-button-true-hover;
+      background-color: $color-bg;
+
+      &:hover {
+        color: $color-bg;
+  
+        background-color: $color-button-false;
+      }
+  
+      &.active {
+        color: $color-bg;
+  
+        background-color: $color-button-false-hover;
+      }
     }
  
   }
@@ -64,7 +103,6 @@ $color-text: #696969;
   &__button-wrap {
     @include flexCenter();
     flex-direction: column;
-
     gap: 7rem;
 
     width: 100%;

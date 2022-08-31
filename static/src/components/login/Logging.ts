@@ -100,16 +100,18 @@ class Logging {
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
         this.saveState(user);
+        await this.createStats()
+
       } else {
         this.modal.callErrorWindow(res.status);
       }
     }
   }
 
-  createStats() {
+  async createStats() {
     const date = adapterDate( new Date() )
 
-    Stats.updateStat(this.stateLog.userId, this.stateLog.token, {
+    await Stats.updateStat(this.stateLog.userId, this.stateLog.token, {
       learnedWords: 0,
       optional: {
         dateReg: date,

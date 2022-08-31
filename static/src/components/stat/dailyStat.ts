@@ -1,7 +1,7 @@
 import Stats, { IStatOptional } from '../api/Stats';
 import Words from '../api/Words';
 import Control from '../common/control';
-import Logging from '../login/Logging';
+import Logging, { IStateLog } from '../login/Logging';
 import { adapterDate, getPercent } from '../utils/functions';
 import ButtonStat from './buttonStat';
 
@@ -32,7 +32,6 @@ class DailyStat extends Control {
     const buttonName = ['sprint', 'audio', 'book']
     const buttonList = buttonName.map(name => {
       return this.drawButton(name)
-    
     })
 
     const [ firstButton ] = buttonList
@@ -48,6 +47,8 @@ class DailyStat extends Control {
           .forEach((item) => {
             item.node.classList.remove('active')
         })
+
+
         this.getStat(button.name)
       }
       return button
@@ -66,13 +67,32 @@ class DailyStat extends Control {
     return icon;
   }
 
+  private async checkStat(dataCurrent: string, stateLog: IStateLog) {
+    const userStat = await Stats.getStats(stateLog.userId, stateLog.token)
+console.log(dataCurrent)
+console.log(userStat.optional.dateCurrent)
+
+    const isSameDate = userStat.optional.dateCurrent = dataCurrent
+    if (isSameDate) {
+      return userStat
+    } else {
+      const resultResetStat= await Stats.resetStat(stateLog, userStat, dataCurrent)
+      const userStatNew = await Stats.getStats(stateLog.userId, stateLog.token)
+      return userStatNew
+    }
+  }
+
   private async getStat(name: string) {
     const stateLog = await this.login.checkStorageLogin()
     const date = adapterDate(new Date)
 
-    const stat = await Stats.getStats(stateLog.userId, stateLog.token)
+    this.checkStat(date, stateLog)
+
+    const stat = await this.checkStat(date, stateLog)
     const learnedWords = await Words.getLearnedWordsByDate(stateLog, date)
     const newWordsAll = await Words.getNewWordsByDate(stateLog, date)
+
+
 
     this.drawStat(name)
 

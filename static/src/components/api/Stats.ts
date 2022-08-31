@@ -62,10 +62,10 @@ class Stats {
 
   public static async recordGameStats(stateLog: IStateLog, gameStat: IGameStat, game: 'sprint' | 'audio') {
     const userStat = await Stats.getStats(stateLog.userId, stateLog.token)
-    const dataCarrentAdapt = adapterDate(new Date)
+    const dataCurrentAdapt = adapterDate(new Date)
 
-    const isSameDate = userStat.optional.dateCurrent = dataCarrentAdapt
-    const learnedWords = await Words.getLearnedWordsByDate(stateLog, dataCarrentAdapt)
+    const isSameDate = userStat.optional.dateCurrent = dataCurrentAdapt
+    const learnedWords = await Words.getLearnedWordsByDate(stateLog, dataCurrentAdapt)
     if (Array.isArray(learnedWords)) {
       const countLearnedWords = learnedWords
         .map((learnedWord) => learnedWord.paginatedResults)
@@ -75,7 +75,7 @@ class Stats {
       if (isSameDate) {
         Stats.addToStat(stateLog, userStat, gameStat, game)
       } else {
-        Stats.resetStat(stateLog, userStat, gameStat, game, dataCarrentAdapt)
+        Stats.recordStat(stateLog, userStat, gameStat, game, dataCurrentAdapt)
       }
     }
 
@@ -83,17 +83,17 @@ class Stats {
     
   }
 
-  public static checkDate(dateCurrentLast: Date, dateCurrent: Date) {
-    const lastYear = new Date(Date.parse(dateCurrentLast.toString())).getFullYear()
-    const lastMonth = new Date(Date.parse(dateCurrentLast.toString())).getMonth()
-    const lastDay = new Date(Date.parse(dateCurrentLast.toString())).getDate()
+  // public static checkDate(dateCurrentLast: Date, dateCurrent: Date) {
+  //   const lastYear = new Date(Date.parse(dateCurrentLast.toString())).getFullYear()
+  //   const lastMonth = new Date(Date.parse(dateCurrentLast.toString())).getMonth()
+  //   const lastDay = new Date(Date.parse(dateCurrentLast.toString())).getDate()
 
-    if (dateCurrent.getFullYear() !== lastYear) return false
-    if (dateCurrent.getMonth() !== lastMonth) return false
-    if (dateCurrent.getDate() !== lastDay) return false
+  //   if (dateCurrent.getFullYear() !== lastYear) return false
+  //   if (dateCurrent.getMonth() !== lastMonth) return false
+  //   if (dateCurrent.getDate() !== lastDay) return false
 
-    return true
-  }
+  //   return true
+  // }
 
   public static async addToStat(
     stateLog: IStateLog, 
@@ -129,7 +129,7 @@ class Stats {
     })
   }
 
-  public static async resetStat(
+  public static async recordStat(
     stateLog: IStateLog, 
     userStat: IStat, 
     gameStat: IGameStat, 
@@ -148,6 +148,40 @@ class Stats {
           сountRightAnswer: сountRightAnswer,
           countError: countError,
           maxSeriesRightAnswer: maxSeriesRightAnswer
+        },
+      }
+    })
+  }
+
+  public static async resetStat(
+    stateLog: IStateLog, 
+    userStat: IStat | string, 
+    dateCurrent: string
+  ) {
+
+    let dateReg = ''
+    if (typeof userStat === 'string') {
+      dateReg = userStat
+    } else {
+      dateReg = userStat.optional.dateReg
+    }
+  
+    const recordStat = await Stats.updateStat(stateLog.userId, stateLog.token, {
+      learnedWords: 0,
+      optional: {
+        dateReg,
+        dateCurrent,
+        sprint: {
+          newWords: 0, 
+          сountRightAnswer: 0, 
+          countError: 0, 
+          maxSeriesRightAnswer: 0
+        },
+        audio: {
+          newWords: 0, 
+          сountRightAnswer: 0, 
+          countError: 0, 
+          maxSeriesRightAnswer: 0
         },
       }
     })

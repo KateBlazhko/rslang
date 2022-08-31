@@ -5,7 +5,8 @@ import GeneralStat from './generalStat';
 
 enum TextInner {
   daily = 'Daily stats',
-  general = 'General stats'
+  general = 'General stats',
+  description = 'Hello, Captain! Here you can find out your learning progress'
 }
 
 class StatisticPage extends Control {
@@ -24,6 +25,9 @@ class StatisticPage extends Control {
     super(parentNode, 'div', 'stat');
 
     const buttonWrap = new Control(this.node, 'div', 'stat__button-wrap');
+
+    const description = new Control(buttonWrap.node, 'span', 'stat__description', TextInner.description);
+
     this.statWrap = new Control(this.node, 'div', 'stat__inner');
 
     this.dailyStat = new DailyStat(null, login);
