@@ -68,9 +68,7 @@ class DailyStat extends Control {
   }
 
   private async checkStat(dataCurrent: string, stateLog: IStateLog) {
-    const userStat = await Stats.getStats(stateLog.userId, stateLog.token)
-console.log(dataCurrent)
-console.log(userStat.optional.dateCurrent)
+    const userStat = await Stats.getStats(stateLog.userId, stateLog.token)  
 
     const isSameDate = userStat.optional.dateCurrent = dataCurrent
     if (isSameDate) {

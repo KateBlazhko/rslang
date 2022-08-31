@@ -14,15 +14,15 @@ $color-button-start-border: #63387C;
   z-index: 100;
   background-color: $color-bg;
 
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    right: 0;
-    width: 100%;
-    height: 3px;
-    background:linear-gradient(to bottom, rgba(5, 5, 5, 0.1), transparent);
-  }
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   bottom: -3px;
+  //   right: 0;
+  //   width: 100%;
+  //   height: 3px;
+  //   background:linear-gradient(to bottom, rgba(5, 5, 5, 0.1), transparent);
+  // }
 
   &__title {
     color: $color-text;
@@ -50,7 +50,7 @@ $color-button-start-border: #63387C;
     z-index: 10;
 
     &:hover {
-      box-shadow: 0 0 5px $color-shadow;
+      box-shadow: $element-shadow;
       border-radius: 7px;
     }
 
@@ -107,8 +107,10 @@ $color-button-start-border: #63387C;
       row-gap: 20px;
       flex-direction: column;
       background-color: $color-bg;
-      border-bottom-left-radius: 10px;
-      box-shadow: 5px 4px 1px $color-shadow;
+      border-bottom-left-radius: 2rem;
+      border-bottom: 5px solid $color-scroll;
+  
+      box-shadow: $element-shadow;
       transition: .3s;
       display: none;
 
@@ -130,11 +132,11 @@ $color-button-start-border: #63387C;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 3px $color-shadow;
-      border-radius: 4px;
-      padding: 5px 10px;
+      box-shadow: $element-shadow;
+      border-radius: $button-border-radius;
+      padding: 8px 12px;
 
-      border-bottom: 3px solid $color-shadow;
+      border-bottom: $button-border-bottom solid $color-shadow;
 
       transition: background-color .4s;
   

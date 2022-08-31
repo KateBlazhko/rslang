@@ -1,15 +1,3 @@
-$color-bg: #ffffff;
-$color-button-start: #ffffff;
-$color-shadow: #aaa9a9;
-
-$color-text-start: #696969;
-$color-border: #00c3ff;
-
-$color1: #ffffcb;
-$color2: #a67d49;
-$color3: #f5a51c;
-$color4: #fcdd2e;
-
 .start {
   @include flexCenter();
   flex-direction: column;
@@ -26,7 +14,7 @@ $color4: #fcdd2e;
     align-self: start;
     font-size: 3rem;
     text-align: start;
-    color: $color-text-start;
+    color: $color-text;
   }
 
   &__desription {
@@ -42,9 +30,9 @@ $color4: #fcdd2e;
 
     font-size: 3rem;
     text-align: start;
-    color: $color-text-start;
+    color: $color-text;
 
-    box-shadow: 0 0 3px $color-shadow;
+    box-shadow: $element-shadow;
     background-color: $color-bg;
 
     &_odd {
@@ -88,26 +76,26 @@ $color4: #fcdd2e;
   &__button {
     @include flexCenter();
 
-    width: 4rem;
-    height: 4rem;
-    border-radius: 4px;
-    border-bottom: 3px solid $color-shadow;
-    box-shadow: 0 0 3px $color-shadow;
+    width: 6rem;
+    height: 6rem;
+    border-radius: $button-border-radius;
+    border-bottom: $button-border-bottom solid $color-shadow;
+    box-shadow: $element-shadow;
 
     text-align: center;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
     line-height: 4rem;
-    color: $color-text-start;
+    color: $color-text;
 
-    background-color: $color-button-start;
+    background-color: $color-bg;
 
     cursor: pointer;
     
     transition: background-color .4s;
     
     &:hover {
-      color: $color-button-start;
+      color: $color-bg;
 
       background-color: $color-shadow;
     }

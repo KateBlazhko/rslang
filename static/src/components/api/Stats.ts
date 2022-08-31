@@ -17,6 +17,9 @@ export interface IStatOptional {
   dateCurrent: string,
   sprint: IGameStat,
   audio: IGameStat,
+  newWordsByDate: {
+    [key: string]: number
+  }
 }
 
 
@@ -78,9 +81,6 @@ class Stats {
         Stats.recordStat(stateLog, userStat, gameStat, game, dataCurrentAdapt)
       }
     }
-
-    
-    
   }
 
   // public static checkDate(dateCurrentLast: Date, dateCurrent: Date) {
@@ -155,16 +155,11 @@ class Stats {
 
   public static async resetStat(
     stateLog: IStateLog, 
-    userStat: IStat | string, 
+    userStat: IStat, 
     dateCurrent: string
   ) {
 
-    let dateReg = ''
-    if (typeof userStat === 'string') {
-      dateReg = userStat
-    } else {
-      dateReg = userStat.optional.dateReg
-    }
+    const { optional: { dateReg, newWordsByDate } } = userStat
   
     const recordStat = await Stats.updateStat(stateLog.userId, stateLog.token, {
       learnedWords: 0,
@@ -183,6 +178,7 @@ class Stats {
           countError: 0, 
           maxSeriesRightAnswer: 0
         },
+        newWordsByDate
       }
     })
   }

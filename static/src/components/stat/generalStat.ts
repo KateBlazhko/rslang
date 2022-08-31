@@ -11,9 +11,11 @@ class GeneralStat extends Control {
     public parentNode: HTMLElement | null,
     private login: Logging
   ) {
-    super(parentNode, 'div', 'stat__general');
+    super(parentNode, 'div', 'stat__general general');
 
-    const buttonWrap = new Control(this.node, 'div', 'stat__button-wrap');
+    const chartNewWords = new Control(this.node, 'div', 'general__chart-wrap');
+    const chartProgress = new Control(this.node, 'div', 'general__chart-wrap');
+
   }
 }
 

@@ -23,22 +23,22 @@ $warning-background: #f4c0ca;
     row-gap: 30px;
     column-gap: 20px;
     border-radius: 7px;
-    box-shadow: 0 0 3px $color-shadow;
+    box-shadow: $element-shadow;
 
     button {
       width: 40%;
       border: none;
       font-size: 20px;
       font-weight: 700;
-      padding: 3px;
+      padding: 6px;
       background: $color-bg;
-      border-radius: 4px;
+      border-radius: $button-border-radius;
       cursor: pointer;
     }
 
     .button__out_no {
-      box-shadow: 0 0 4px $modal-color-green;
-      border-bottom: 4px solid $modal-color-green;
+      box-shadow: 0 0 3px $modal-color-green;
+      border-bottom: $button-border-bottom  solid $modal-color-green;
 
       color: $modal-color-green;
 
@@ -49,8 +49,8 @@ $warning-background: #f4c0ca;
     }
 
     .button__out_yes {
-      box-shadow: 0 0 4px $modal-color-red;
-      border-bottom: 4px solid $modal-color-red;
+      box-shadow: 0 0 3px $modal-color-red;
+      border-bottom: $button-border-bottom  solid $modal-color-red;
 
       color: $modal-color-red;
 
@@ -73,13 +73,12 @@ $warning-background: #f4c0ca;
     background-color: $color-bg;
     border-radius: 20px;
     border-bottom: 5px solid $color-scroll;
-    border-top: 5px solid $color-scroll;
-    box-shadow: 0 0 3px $color-shadow;
+    box-shadow: $element-shadow;
 
     button {
       width: 50%;
       padding: 0px;
-      height: 45px;
+      height: 40px;
 
       font-weight: 700;
       font-size: 18px;
@@ -87,7 +86,7 @@ $warning-background: #f4c0ca;
       
       background-color: $color-bg;
       cursor: pointer;
-      box-shadow: 0 0 3px $color-shadow;
+      box-shadow: $element-shadow;
       z-index: 3;
     }
 
@@ -98,11 +97,11 @@ $warning-background: #f4c0ca;
     }
 
     button:nth-child(1) {
-      border-top-left-radius: 7px;
+      border-top-left-radius: $button-border-radius;
     }
 
     button:nth-child(2) {
-      border-top-right-radius: 7px;
+      border-top-right-radius: $button-border-radius;
     }
 
     label {
@@ -129,8 +128,8 @@ $warning-background: #f4c0ca;
     input {
       width: 100%;
       border: none;
-      border-radius: 4px;
-      box-shadow: 0 0 3px $color-shadow;
+      border-radius: 5px;
+      box-shadow: $element-shadow;
       font-size: 20px;
       height: 30px;
       padding: 0px 6px;
@@ -156,10 +155,10 @@ $warning-background: #f4c0ca;
     }
 
     .button__submit {
-      border-radius: 7px;
-      border-bottom: 3px solid $modal-color-green;
+      border-radius: $button-border-radius;
+      border-bottom: $button-border-bottom solid $modal-color-green;
 
-      box-shadow: 0 0 4px $modal-color-green;
+      box-shadow: 0 0 3px $modal-color-green;
       color: $modal-color-green;
       margin-top: 20px;
       transition: .3s;
@@ -168,7 +167,7 @@ $warning-background: #f4c0ca;
       &:hover {
         background-color: $modal-color-green;
         color: $color-bg;
-        box-shadow: 0 0 2px $modal-color-green;;
+        box-shadow: 0 0 3px $modal-color-green;;
       }
     }
   }

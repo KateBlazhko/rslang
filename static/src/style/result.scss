@@ -16,7 +16,6 @@ $color-table: #f5a51c;
   padding: 2rem;
   border-radius: 5rem;
   border-bottom: 5px solid $color-scroll;
-  border-top: 5px solid $color-scroll;
 
   background-color: $color-bg;
 
@@ -47,8 +46,7 @@ $color-table: #f5a51c;
     width: 100%;
     padding: 0.1rem;
     max-height: 70vh;
-    box-shadow: 0 0 4px $color-scroll;
-    // background-color: $color-shadow;
+    box-shadow: 0 0 3px $color-scroll;
 
     &::-webkit-scrollbar {
       width: 8px;               /* ширина scrollbar */
@@ -71,7 +69,7 @@ $color-table: #f5a51c;
 
     width: 100%;
     padding: 0.5rem 1rem 0.5rem 3rem;
-    box-shadow: 0 0 4px $color-scroll;
+    box-shadow: 0 0 3px $color-scroll;
 
     background-color: $color-bg;
 

@@ -128,6 +128,7 @@ class Logging {
           countError: 0, 
           maxSeriesRightAnswer: 0
         },
+        newWordsByDate: {}
       }
     })
   }

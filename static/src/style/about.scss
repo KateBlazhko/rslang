@@ -24,8 +24,8 @@
     font-size: 3rem;
     text-align: start;
 
-    color: $color-text-start;
-    box-shadow: 0 0 3px $color-shadow;
+    color: $color-text;
+    box-shadow: $element-shadow;
     background-color: $color-bg;
 
     width: 50%;
@@ -79,7 +79,7 @@
       text-align: center;
       font-size: 2rem;
       font-weight: bold;
-      color: $color-text-start;
+      color: $color-text;
     }
 
     &-resp {
@@ -92,7 +92,7 @@
     width: 15rem;
     height: 15rem;
 
-    box-shadow: 0 0 3px $color-shadow;
+    box-shadow: $element-shadow;
     border-radius: 50%;
     background-color: $color-bg;
 
