@@ -190,9 +190,12 @@ class CardBook extends Control {
     const study = document.querySelectorAll('.study');
     const difficult = document.querySelectorAll('.difficult');
     const page = document.querySelector('.page_book_container');
+    const allCard = document.querySelectorAll('.card_item');
 
     if (study.length + difficult.length === 20) page?.classList.add('all-check');
     else page?.classList.remove('all-check');
+
+    if (allCard.length === 0 && page) page.innerHTML = '<h1 class="no_cards">Вы еще не добавили сложные слова!!!</h1>';
   }
 
   addUserFunctional(word: IWord, userWords?: IUserWord[]) {
