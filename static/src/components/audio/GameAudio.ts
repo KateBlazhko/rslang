@@ -88,12 +88,12 @@ class GameAudio extends Control {
   }
 
   static async pageWords(difficult: string, page: string) {
-    let thisPage = page;
+    let thisPage = +page;
     const words = [];
-    words.push(...await GameAudio.getAllWords(difficult, thisPage));
+    words.push(...await GameAudio.getAllWords(difficult, `${thisPage}`));
     if (words.length < 27) {
-      thisPage += 1;
-      words.push(...await GameAudio.getAllWords(difficult, thisPage));
+      thisPage = thisPage > 0 ? thisPage - 1 : thisPage = 29;
+      words.push(...await GameAudio.getAllWords(difficult, `${thisPage}`));
     }
     return words;
   }
@@ -110,7 +110,7 @@ class GameAudio extends Control {
     const words = [];
     words.push(...await GameAudio.getAggregatedWords(stateLog, +group, thisPage));
     if (words.length < 27) {
-      thisPage += 1;
+      thisPage = thisPage > 0 ? thisPage - 1 : thisPage = 29;
       words.push(...await GameAudio.getAggregatedWords(stateLog, +group, thisPage));
     }
     return words;

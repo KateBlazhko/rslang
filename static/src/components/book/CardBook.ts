@@ -53,7 +53,7 @@ class CardBook extends Control {
     this.audio.push(audio);
   }
 
-  async checkDifficult(userWord: IUserWord, difficult: 'easy' | 'hard') {
+  async checkDifficult(userWord: IUserWord, difficult: 'easy' | 'hard', learn?: boolean) {
     const word = userWord;
     await Words.updateUserWord(
       this.user.userId,
@@ -66,7 +66,7 @@ class CardBook extends Control {
           сountRightAnswer: word.optional.сountRightAnswer,
           countError: word.optional.countError,
           seriesRightAnswer: word.optional.seriesRightAnswer,
-          isLearn: word.optional.isLearn,
+          isLearn: learn || word.optional.isLearn,
           dataGetNew: word.optional.dataGetNew,
           dataLearn: (
             word.optional.isLearn
@@ -77,14 +77,14 @@ class CardBook extends Control {
     );
   }
 
-  async checkStudy(userWord: IUserWord, learn: boolean) {
+  async checkStudy(userWord: IUserWord, learn: boolean, difficult?: 'easy' | 'hard') {
     const word = userWord;
     await Words.updateUserWord(
       this.user.userId,
       this.user.token,
       userWord.optional.wordId,
       {
-        difficulty: word.difficulty,
+        difficulty: difficult || 'easy',
         optional: {
           wordId: word.optional.wordId,
           сountRightAnswer: word.optional.сountRightAnswer,
@@ -125,11 +125,13 @@ class CardBook extends Control {
     if (userWord?.difficulty === 'hard') {
       difficultBtn.node.textContent = 'Delete';
       this.node.classList.add('difficult');
+      this.node.classList.remove('study');
     }
 
     if (userWord?.optional.isLearn) {
       studyBtn.node.textContent = 'Studied';
-      this.node.classList.add('learn');
+      this.node.classList.add('study');
+      this.node.classList.remove('difficult');
     }
 
     if (userWord) {
@@ -143,14 +145,19 @@ class CardBook extends Control {
       if (!this.UserWord) {
         this.UserWord = await this.createWord(word);
       }
-      if (difficult === 'easy') {
-        difficult = 'hard';
-        difficultBtn.node.textContent = 'Delete';
-        await this.checkDifficult(this.UserWord, 'hard');
-      } else {
+      if (difficult === 'hard') {
         difficult = 'easy';
         difficultBtn.node.textContent = 'Difficult';
+        this.node.classList.remove('difficult');
         await this.checkDifficult(this.UserWord!, 'easy');
+      } else {
+        difficult = 'hard';
+        learn = false;
+        difficultBtn.node.textContent = 'Delete';
+        studyBtn.node.textContent = 'Study';
+        this.node.classList.add('difficult');
+        this.node.classList.remove('study');
+        await this.checkDifficult(this.UserWord, 'hard', false);
       }
     });
     studyBtn.node.addEventListener('click', async () => {
@@ -161,11 +168,16 @@ class CardBook extends Control {
       if (learn) {
         learn = false;
         studyBtn.node.textContent = 'Study';
+        this.node.classList.remove('study');
         await this.checkStudy(this.UserWord!, false);
       } else {
         learn = true;
+        difficult = 'easy';
         studyBtn.node.textContent = 'Studied';
-        await this.checkStudy(this.UserWord!, true);
+        difficultBtn.node.textContent = 'Difficult';
+        this.node.classList.add('study');
+        this.node.classList.remove('difficult');
+        await this.checkStudy(this.UserWord!, true, 'easy');
       }
     });
   }

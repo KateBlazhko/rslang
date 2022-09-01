@@ -29,10 +29,10 @@ class StatisticAudio extends Control {
     const Translate = new Control(el.node, 'span', '', word.wordTranslate);
 
     if (status) {
-      const svg = new SVG(img.node, 'icon__true', `${icons}#true`)
+      const svg = new SVG(img.node, 'icon__true', `${icons}#true`);
       el.node.classList.add('success');
     } else {
-      const svg = new SVG(img.node, 'icon__false', `${icons}#false`)
+      const svg = new SVG(img.node, 'icon__false', `${icons}#false`);
       el.node.classList.add('failed');
     }
     audioIcon.node.src = '../../assets/icons/volume.png';

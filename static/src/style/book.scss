@@ -130,6 +130,14 @@ $color-bg-button-border: #40396e;
 
         box-shadow: 0 0 5px $color-shadow;
 
+        &.difficult {
+          box-shadow: 0 0 10px crimson;
+        }
+
+        &.study {
+          box-shadow: 0 0 10px darkmagenta;
+        }
+
         img {
           position: absolute;
           top: 0;
