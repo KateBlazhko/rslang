@@ -66,7 +66,7 @@ class CardBook extends Control {
           сountRightAnswer: word.optional.сountRightAnswer,
           countError: word.optional.countError,
           seriesRightAnswer: word.optional.seriesRightAnswer,
-          isLearn: learn || word.optional.isLearn,
+          isLearn: learn ?? word.optional.isLearn,
           dataGetNew: word.optional.dataGetNew,
           dataLearn: (
             word.optional.isLearn
@@ -149,7 +149,7 @@ class CardBook extends Control {
         difficult = 'easy';
         difficultBtn.node.textContent = 'Difficult';
         this.node.classList.remove('difficult');
-        await this.checkDifficult(this.UserWord!, 'easy');
+        await this.checkDifficult(this.UserWord!, 'easy', false);
       } else {
         difficult = 'hard';
         learn = false;
@@ -169,7 +169,7 @@ class CardBook extends Control {
         learn = false;
         studyBtn.node.textContent = 'Study';
         this.node.classList.remove('study');
-        await this.checkStudy(this.UserWord!, false);
+        await this.checkStudy(this.UserWord!, false, 'easy');
       } else {
         learn = true;
         difficult = 'easy';
