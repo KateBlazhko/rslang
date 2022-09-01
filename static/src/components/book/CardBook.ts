@@ -1,13 +1,14 @@
-import Words, { BASELINK, IUserWord, IWord } from '../api/Words';
+import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
+import Signal from '../common/signal';
+import BASELINK from '../constants/url';
 import { IStateLog } from '../Logging';
+import stopPlayAudio from '../utils/stopPlayAudio';
 
 class CardBook extends Control {
   word: IWord;
 
-  audio: HTMLAudioElement[];
-
-  allAudio: HTMLAudioElement[];
+  audio: HTMLImageElement[]
 
   description: Control<HTMLElement>;
 
@@ -18,12 +19,13 @@ class CardBook extends Control {
   constructor(
     parentNode: HTMLElement | null,
     word: IWord,
-    allAudio: HTMLAudioElement[],
+    private sounds: string[],
     user: IStateLog,
+    public onAudioPlay: Signal<boolean>
   ) {
     super(parentNode, 'div', 'card_item');
     this.user = user;
-    this.allAudio = allAudio;
+    this.sounds = sounds;
     this.word = word;
     this.audio = [];
     this.UserWord = undefined;
@@ -43,14 +45,32 @@ class CardBook extends Control {
   createTitle(node: HTMLElement) {
     const container = new Control(node, 'div', 'title');
     container.node.innerHTML = `<h3 class="en">${this.word.word}</h3><h3>${this.word.transcription}</h3><h3>${this.word.wordTranslate}</h3>`;
-    const audio = new Audio(`${BASELINK}/${this.word.audio}`);
     const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
     volume.node.src = '../../assets/icons/volume.png';
-    volume.node.addEventListener('click', () => {
-      this.allAudio.forEach((el) => el.pause());
-      audio.play();
+    volume.node.addEventListener('click', async () => {
+      this.onAudioPlay.emit(true)
+
+      const firstSound = new Audio(this.sounds[0]);
+      const secondSound = new Audio(this.sounds[1]);
+      const thirdSound = new Audio(this.sounds[2]);
+
+      await firstSound.play();
+
+      setTimeout(async () => {
+        await secondSound.play();
+
+        setTimeout(async () => {
+          await thirdSound.play();
+
+          setTimeout(() => {
+            this.onAudioPlay.emit(false)
+          }, thirdSound.duration * 1000);
+        }, (firstSound.duration + secondSound.duration) * 1000);
+      }, firstSound.duration * 1000);
+
     });
-    this.audio.push(audio);
+    this.audio.push(volume.node);
+
   }
 
   async checkDifficult(userWord: IUserWord, difficult: 'easy' | 'hard', learn?: boolean) {
@@ -213,14 +233,14 @@ class CardBook extends Control {
         ${this.word.textExampleTranslate}
       </fieldset>
     `;
-    const audio = new Audio(`${BASELINK}/${this.word.audioExample}`);
-    const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
-    volume.node.src = '../../assets/icons/volume.png';
-    volume.node.addEventListener('click', () => {
-      this.allAudio.forEach((el) => el.pause());
-      audio.play();
-    });
-    this.audio.push(audio);
+    // const audio = new Audio(`${BASELINK}/${this.word.audioExample}`);
+    // const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
+    // volume.node.src = '../../assets/icons/volume.png';
+    // volume.node.addEventListener('click', () => {
+    //   this.allAudio.forEach((el) => el.pause());
+    //   audio.play();
+    // });
+    // this.audio.push(audio);
   }
 
   createMeaning(node: HTMLElement) {
@@ -234,14 +254,14 @@ class CardBook extends Control {
       </fieldset>
   
     `;
-    const audio = new Audio(`${BASELINK}/${this.word.audioMeaning}`);
-    const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
-    volume.node.src = '../../assets/icons/volume.png';
-    volume.node.addEventListener('click', () => {
-      this.allAudio.forEach((el) => el.pause());
-      audio.play();
-    });
-    this.audio.push(audio);
+    // const audio = new Audio(`${BASELINK}/${this.word.audioMeaning}`);
+    // const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
+    // volume.node.src = '../../assets/icons/volume.png';
+    // volume.node.addEventListener('click', () => {
+    //   this.allAudio.forEach((el) => el.pause());
+    //   audio.play();
+    // });
+    // this.audio.push(audio);
   }
 
   // eslint-disable-next-line class-methods-use-this

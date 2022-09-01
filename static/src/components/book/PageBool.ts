@@ -1,6 +1,10 @@
 import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
+import Signal from '../common/signal';
+import BASELINK from '../constants/url';
+import API_URL from '../constants/url';
 import { IStateLog } from '../Logging';
+import stopPlayAudio from '../utils/stopPlayAudio';
 import CardBook from './CardBook';
 import Loader from './Loader';
 
@@ -11,17 +15,22 @@ class PageBook extends Control {
 
   user: IStateLog;
 
+  audioIcons: HTMLImageElement[] = [];
+
+
   constructor(
     parentNode: HTMLElement | null,
     difficult: string,
     page: string,
     user: IStateLog,
+    public onAudioPlay: Signal<boolean>
   ) {
     super(parentNode, 'div', 'page_book_container');
     this.page = page;
     this.user = user;
     this.difficult = difficult;
     this.getWordsDb(difficult, page);
+    this.onAudioPlay.add(this.disabeAudioIcons.bind(this))
   }
 
   async getWordsDb(difficult: string, page: string) {
@@ -52,16 +61,32 @@ class PageBook extends Control {
   }
 
   createCards(main: HTMLElement, words: IWord[], userWords?: IUserWord[]) {
-    const allAudio: HTMLAudioElement[] = [];
+
     words.forEach((word) => {
-      const card = new CardBook(main, word, allAudio, this.user);
-      allAudio.push(...card.audio);
+
+      const sounds = [
+        `${BASELINK}/${word.audio}`,
+        `${BASELINK}/${word.audioMeaning}`,
+        `${BASELINK}/${word.audioExample}`,
+      ];
+      const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay);
+
+      this.audioIcons.push(...card.audio);
+
       if (userWords) {
         card.addUserFunctional(word, userWords);
       } else {
         card.addUserFunctional(word);
       }
     });
+  }
+
+  disabeAudioIcons(onAudioPlay: boolean) {
+    if (onAudioPlay) {
+      stopPlayAudio(this.audioIcons, "none");
+    } else {
+      stopPlayAudio(this.audioIcons, "auto");
+    }
   }
 
   createPagination(pagination: HTMLElement, page: string) {

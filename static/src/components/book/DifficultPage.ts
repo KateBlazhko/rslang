@@ -1,6 +1,9 @@
 import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
+import Signal from '../common/signal';
+import BASELINK from '../constants/url';
 import { IStateLog } from '../Logging';
+import stopPlayAudio from '../utils/stopPlayAudio';
 import CardBook from './CardBook';
 import Loader from './Loader';
 
@@ -13,21 +16,36 @@ class DifficultPage extends Control {
 
   allCards: ICardDifficult[];
 
-  constructor(parentNode: HTMLElement | null, user: IStateLog) {
+  audioIcons: HTMLImageElement[] = [];
+
+
+  constructor(
+    parentNode: HTMLElement | null, 
+    user: IStateLog,
+    public onAudioPlay: Signal<boolean>
+  ) {
     super(parentNode, 'div', 'page_book_container');
     this.user = user;
     this.allCards = [];
     this.createPage(user);
+    this.onAudioPlay.add(this.disabeAudioIcons.bind(this))
   }
 
   async createCards(main: HTMLElement, words: IWord[]) {
-    const allAudio: HTMLAudioElement[] = [];
+
     const userWords = await Words.getUserWords(this.user.userId, this.user.token);
     words.forEach((word) => {
-      const card = new CardBook(main, word, allAudio, this.user);
+
+      const sounds = [
+        `${BASELINK}/${word.audio}`,
+        `${BASELINK}/${word.audioMeaning}`,
+        `${BASELINK}/${word.audioExample}`,
+      ];
+
+      const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay);
       card.difficultListen();
       this.allCards.push({ node: card, item: word });
-      allAudio.push(...card.audio);
+      this.audioIcons.push(...card.audio);
       card.addUserFunctional(word, userWords);
     });
   }
@@ -56,6 +74,14 @@ class DifficultPage extends Control {
       return item;
     });
     return newArr;
+  }
+
+  disabeAudioIcons(onAudioPlay: boolean) {
+    if (onAudioPlay) {
+      stopPlayAudio(this.audioIcons, "none");
+    } else {
+      stopPlayAudio(this.audioIcons, "auto");
+    }
   }
 }
 

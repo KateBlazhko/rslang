@@ -1,6 +1,7 @@
-import { BASELINK, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import Control from '../common/control';
 import { randomWord } from '../common/shufflePage';
+import BASELINK from '../constants/url';
 
 class CardAudio extends Control {
   private containerBtn: Control<HTMLElement>;

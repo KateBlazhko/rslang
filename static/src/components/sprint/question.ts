@@ -1,8 +1,7 @@
 import Control from '../common/control';
-import SVG from '../common/svgElement';
-import icons from '../../assets/icons/sprite.svg';
-import { BASELINK, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import SprintState from './sprintState';
+import BASELINK from '../constants/url';
 
 class Question extends Control {
   // private wordAudio: string;

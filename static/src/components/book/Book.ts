@@ -1,4 +1,5 @@
 import Control from '../common/control';
+import Signal from '../common/signal';
 import Logging, { IStateLog } from '../Logging';
 import addClassOnPage from '../utils/freeClass';
 import DifficultPage from './DifficultPage';
@@ -20,6 +21,8 @@ class Book extends Control {
     this.createPage(hash);
   }
 
+  public onAudioPlay = new Signal<boolean>()
+
   createHrefBtn(user: IStateLog) {
     const container = new Control(this.node, 'div', 'container_difficult');
     container.node.innerHTML = `
@@ -40,10 +43,10 @@ class Book extends Control {
     const difficult = /^[0-5]+$/;
     const page = /^[0-29]+$/;
     if (itemHash[1] && itemHash[2]) {
-      const newPage = new PageBook(this.node, itemHash[1], itemHash[2], user);
+      const newPage = new PageBook(this.node, itemHash[1], itemHash[2], user, this.onAudioPlay);
       addClassOnPage(newPage.node, +itemHash[1]);
     } else if (itemHash[1] === 'difficult') {
-      const newPage = new DifficultPage(this.node, user);
+      const newPage = new DifficultPage(this.node, user, this.onAudioPlay);
     } else {
       this.createHrefBtn(user);
     }

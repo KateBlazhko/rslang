@@ -1,9 +1,10 @@
 import Control from '../common/control';
-import { BASELINK, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import SprintState from './sprintState';
 import SVG from '../common/svgElement';
 import icons from '../../assets/icons/sprite.svg';
 import StartPage from './startPage';
+import BASELINK from '../constants/url';
 
 // enum TextInner {
 //   titleResult = 'Йо-хо-хо! Вот это результат!',

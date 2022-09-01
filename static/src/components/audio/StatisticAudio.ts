@@ -1,8 +1,9 @@
-import { BASELINK, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import Control from '../common/control';
 import icons from '../../assets/icons/sprite.svg';
 
 import SVG from '../common/svgElement';
+import BASELINK from '../constants/url';
 
 class StatisticAudio extends Control {
   container: Control<HTMLElement>;
