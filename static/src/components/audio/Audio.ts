@@ -15,6 +15,8 @@ class Audio extends Control {
 
   prevPage: string;
 
+  bookPage: boolean;
+
   constructor(
     parentNode: HTMLElement | null,
     login: Logging,
@@ -22,15 +24,10 @@ class Audio extends Control {
   ) {
     super(parentNode, 'div', 'audio__container', '');
     this.login = login;
-    this.startPage = new StartPageAudio(null, !!(page.includes('book') && page.split('/').length === 3));
+    this.bookPage = (page.includes('book') && page.split('/').length === 3) || (page.includes('difficult'));
+    this.startPage = new StartPageAudio(null, this.bookPage);
     this.prevPage = page;
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
-    // if (this.prevPage.includes('book') && this.prevPage.split('/').length === 3) {
-    //   this.renderPage('game');
-    //   this.game.game(`${this.startPage.difficult}`, this.prevPage);
-    // } else {
-    //   this.renderPage('start');
-    // }
     this.renderPage('start');
     this.startGame();
   }
@@ -39,6 +36,7 @@ class Audio extends Control {
     this.node.innerHTML = '';
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
     this.renderPage('start');
+    this.startPage.createBtnDifficult(false);
   }
 
   startGame() {

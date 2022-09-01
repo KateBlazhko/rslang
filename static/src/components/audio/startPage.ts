@@ -50,8 +50,8 @@ class StartPageAudio extends Control {
     `;
   }
 
-  private createBtnDifficult(draw: boolean): void {
-    if (!draw && this.draw) {
+  createBtnDifficult(draw: boolean): void {
+    if (!draw) {
       for (let i = 1; i <= 6; i += 1) {
         const btn = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', '', `${i}`);
         this.arrBtn.push({
@@ -67,7 +67,7 @@ class StartPageAudio extends Control {
           this.addActive(item.node);
         });
       });
-      this.draw = false;
+      this.draw = true;
     }
   }
 

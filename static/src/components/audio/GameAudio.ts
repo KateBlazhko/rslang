@@ -66,14 +66,34 @@ class GameAudio extends Control {
     return shuffleArrayPage(wordsAll.flat());
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  async getDifficultWord(user: IStateLog) {
+    const words: IWord[] = [];
+    const res = (await Words.getDifficultyWords(user)).map((el) => {
+      Object.defineProperty(el, 'id', {
+        value: el._id, configurable: true, enumerable: true, writable: true,
+      });
+      return el;
+    });
+    words.push(...res as unknown as IWord[]);
+    if (words.length < 27) {
+      words.push(...await GameAudio.getAggWords(user, 5, 1));
+    }
+
+    return words.slice(0, 27);
+  }
+
   async game(difficult: string, prevPage: string) {
+    const stateLog = await this.login.checkStorageLogin();
     if (!prevPage.includes('book')) {
       this.arrWords = await GameAudio.getAllWords(difficult);
+    } else if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
+      this.arrWords = await this.getDifficultWord(stateLog);
+      console.log(this.arrWords);
     } else {
       const el = prevPage.split('/');
       const group = el[1];
       const page = el[2];
-      const stateLog = await this.login.checkStorageLogin();
       if (stateLog.state) {
         this.arrWords = await GameAudio.getAggWords(stateLog, +group, +page);
       } else {
