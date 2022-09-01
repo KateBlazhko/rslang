@@ -2,6 +2,7 @@ import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
 import { IStateLog } from '../Logging';
 import CardBook from './CardBook';
+import Loader from './Loader';
 
 class PageBook extends Control {
   page: string;
@@ -24,6 +25,7 @@ class PageBook extends Control {
   }
 
   async getWordsDb(difficult: string, page: string) {
+    const loader = new Loader(this.node);
     const words = await Words.getWords({ group: difficult, page });
     if (this.user.state) {
       const userWords = await Words.getUserWords(this.user.userId, this.user.token);
@@ -31,6 +33,7 @@ class PageBook extends Control {
     } else {
       this.createPage(words, page);
     }
+    loader.destroy();
   }
 
   createPage(words: IWord[], page: string, userWords?: IUserWord[]) {

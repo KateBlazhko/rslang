@@ -2,6 +2,7 @@ import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import { IStateLog } from '../Logging';
 import CardBook from './CardBook';
+import Loader from './Loader';
 
 interface ICardDifficult {
   node: CardBook,
@@ -38,9 +39,11 @@ class DifficultPage extends Control {
   // }
 
   async createPage(user: IStateLog) {
+    const loader = new Loader(this.node);
     const main = new Control(this.node, 'div', 'container_card');
     const arr = await this.getWords(user);
     this.createCards(main.node, arr as unknown as IWord[]);
+    loader.destroy();
   }
 
   // eslint-disable-next-line class-methods-use-this
