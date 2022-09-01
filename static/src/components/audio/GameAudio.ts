@@ -1,7 +1,7 @@
 import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
 import randomSort from '../common/functions';
-import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
+import { shufflePage, shuffleArrayPage, seriesSuccess } from '../common/shufflePage';
 import Logging, { IStateLog } from '../Logging';
 import CardAudio from './CardAudio';
 import StatisticAudio from './StatisticAudio';
@@ -81,9 +81,6 @@ class GameAudio extends Control {
       }
     }
 
-    const words = [...new Set(this.arrWords.map((id) => id.id))];
-    console.log(words);
-
     this.createCard();
   }
 
@@ -97,13 +94,6 @@ class GameAudio extends Control {
     }
     return words;
   }
-
-  // IGameStat {
-  //   newWords: number, (тех, которых не было в пользовательских)
-  //   сountRightAnswer: number, (количество правильных ответов за игру)
-  //   countError: number, (количество ошибок за игру)
-  //   maxSeriesRightAnswer: number (максимальная серия правильных ответов за игру)
-  // }
 
   static async getAggWords(stateLog: IStateLog, group: number, page: number) {
     let thisPage = page;
@@ -199,6 +189,8 @@ class GameAudio extends Control {
         }
         return Words.createUserStat(stateLog, { wordId: word.word.id, answer: word.status });
       }));
+
+      console.log(this.gameStatistic(this.arrWordsStatus, userWordsAll));
     }
   }
 
@@ -209,6 +201,24 @@ class GameAudio extends Control {
     const statistic = new StatisticAudio(this.node, this.arrWordsStatus);
     document.onkeydown = () => {};
   }
+
+  gameStatistic(arrWord: { word: IWord, status: boolean }[], userWords: IUserWord[]) {
+    const map = userWords.map((el) => el.optional.wordId);
+    const res = arrWord.filter((el) => map.includes(el.word.id));
+    return {
+      newWords: res,
+      сountRightAnswer: arrWord.filter((el) => el.status === true),
+      countError: arrWord.filter((el) => el.status === false),
+      maxSeriesRightAnswer: seriesSuccess(this.arrWordsStatus),
+    };
+  }
+
+  // IGameStat {
+  //   newWords: number, (тех, которых не было в пользовательских)
+  //   сountRightAnswer: number, (количество правильных ответов за игру)
+  //   countError: number, (количество ошибок за игру)
+  //   maxSeriesRightAnswer: number (максимальная серия правильных ответов за игру)
+  // }
 
   buttonNext(card: CardAudio) {
     const button = new Control(null, 'button', 'button_next', 'Next');

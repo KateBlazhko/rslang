@@ -27,7 +27,7 @@ class Book extends Control {
       <a href="#book/3/0">Intermidiate B2</a>
       <a href="#book/4/0">Pre-Advanced C1</a>
       <a href="#book/5/0">Advanced C2</a>
-      ${user.state ? '<a href="#book/6/0">difficult words</a>' : ''}
+      ${user.state ? '<a href="#difficult">difficult words</a>' : ''}
     `;
   }
 

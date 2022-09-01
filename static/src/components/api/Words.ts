@@ -398,6 +398,29 @@ class Words {
     return words;
   }
 
+  public static async getDifficultyWords(stateLog: IStateLog) {
+    const aggregatedWords = await Words.getAggregatedWords(
+      stateLog.userId,
+      stateLog.token,
+      {
+        page: '0',
+        wordsPerPage: '600',
+        filter: encodeURIComponent(JSON.stringify({
+          'userWord.difficulty': 'hard',
+        })),
+        group: '',
+      },
+    );
+
+    if (Array.isArray(aggregatedWords)) {
+      return aggregatedWords
+        .map((words) => words.paginatedResults)
+        .flat();
+    }
+
+    return [];
+  }
+
   public static async addWordsFromOtherPages(
     currentCount: number,
     pageList: number[],
