@@ -1,5 +1,6 @@
 import Control from '../common/control';
 import Logging, { IStateLog } from '../Logging';
+import DifficultPage from './DifficultPage';
 import PageBook from './PageBool';
 
 class Book extends Control {
@@ -27,7 +28,7 @@ class Book extends Control {
       <a href="#book/3/0">Intermidiate B2</a>
       <a href="#book/4/0">Pre-Advanced C1</a>
       <a href="#book/5/0">Advanced C2</a>
-      ${user.state ? '<a href="#difficult">difficult words</a>' : ''}
+      ${user.state ? '<a href="#book/difficult">difficult words</a>' : ''}
     `;
   }
 
@@ -39,6 +40,8 @@ class Book extends Control {
     const page = /^[0-29]+$/;
     if (itemHash[1] && itemHash[2]) {
       const newPage = new PageBook(this.node, itemHash[1], itemHash[2], user);
+    } else if (itemHash[1] === 'difficult') {
+      const newPage = new DifficultPage(this.node, user);
     } else {
       this.createHrefBtn(user);
     }

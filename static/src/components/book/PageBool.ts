@@ -44,7 +44,6 @@ class PageBook extends Control {
     this.createCards(main.node, words, userWords);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   createCards(main: HTMLElement, words: IWord[], userWords?: IUserWord[]) {
     const allAudio: HTMLAudioElement[] = [];
     words.forEach((word) => {

@@ -204,11 +204,11 @@ class GameAudio extends Control {
 
   gameStatistic(arrWord: { word: IWord, status: boolean }[], userWords: IUserWord[]) {
     const map = userWords.map((el) => el.optional.wordId);
-    const res = arrWord.filter((el) => map.includes(el.word.id));
+    const res = arrWord.filter((el) => !map.includes(el.word.id));
     return {
       newWords: res,
-      сountRightAnswer: arrWord.filter((el) => el.status === true),
-      countError: arrWord.filter((el) => el.status === false),
+      сountRightAnswer: arrWord.filter((el) => el.status === true).length,
+      countError: arrWord.filter((el) => el.status === false).length,
       maxSeriesRightAnswer: seriesSuccess(this.arrWordsStatus),
     };
   }
