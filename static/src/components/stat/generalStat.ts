@@ -5,14 +5,9 @@ import Logging, { IStateLog } from '../login/Logging';
 import { adapterDate } from '../utils/functions';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
-// enum TextInner {
-//   daily = 'Daily stats',
-//   general = 'General stats'
-// }
 
 class GeneralStat extends Control {
-  private chartNewWords: Control
-  private chartProgress: Control
+  private chart: Control
 
   constructor(
     public parentNode: HTMLElement | null,
@@ -20,8 +15,7 @@ class GeneralStat extends Control {
   ) {
     super(parentNode, 'div', 'stat__general general');
 
-    this.chartNewWords = new Control(this.node, 'div', 'general__chart-wrap');
-    this.chartProgress = new Control(this.node, 'div', 'general__chart-wrap');
+    this.chart = new Control(this.node, 'div', 'general__chart-wrap');
     this.updateStat()
 
   }
@@ -117,7 +111,7 @@ class GeneralStat extends Control {
   }
 
   private drawСhartNewWords(general: IGeneral) {
-    const canvas = new Control<HTMLCanvasElement>(this.chartNewWords.node, 'canvas', 'stat__canvas');
+    const canvas = new Control<HTMLCanvasElement>(this.chart.node, 'canvas', 'stat__canvas');
     const ctx = canvas.node.getContext('2d');
 
     const { newWords, learnedWords } = general
