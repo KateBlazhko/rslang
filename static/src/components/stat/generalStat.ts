@@ -140,14 +140,14 @@ class GeneralStat extends Control {
       labels: labels,
       datasets: [
         {
-        label: 'The number of new words by day',
+        label: 'The number of new words',
         data: Object.values(newWords),
         fill: false,
         borderColor: '#1f9465',
         tension: 0.1
        },
        {
-        label: 'The increase of total number of learned words',
+        label: 'The increase in the total number of learned words',
         data: learnedWordsData,
         fill: false,
         borderColor: '#e0677d',
@@ -162,7 +162,7 @@ class GeneralStat extends Control {
         plugins: {
           title: {
               display: true,
-              text: 'General stats by new words ',
+              text: 'General stats by new words by da ',
               font: {
                 size: 16,
                 family: "'Nunito', sans-serif"

@@ -5,7 +5,7 @@ const TEAM_DATA = [
     position: "Mentor",
     avatar: "./assets/img/nikita.jpeg",
     responsibilities:
-      "Text text text text text text text text text text Text text text text text text text text text text Text text text text text text text text text text",
+      "Our wonderful curator. We took him captive and he had to review our code. Gave valuable advice for features and their implementation",
   },
   {
     name: "Kate",
@@ -13,7 +13,7 @@ const TEAM_DATA = [
     position: "Team Lead",
     avatar: "./assets/img/kate.jpeg",
     responsibilities:
-      "Text text text text text text text text text text Text text text text text text text text text text Text text text text text text text text text text",
+      "Handed out tasks and got nervous. Also did the Sprint game, the stats section, and was responsible for the styles you see. "
   },
   {
     name: "Aleksander",
@@ -21,7 +21,7 @@ const TEAM_DATA = [
     position: "Developer",
     avatar: "./assets/img/alex.jpeg",
     responsibilities:
-      "Text text text text text text text text text text Text text text text text text text text text text Text text text text text text text text text text",
+      "Chief codemaker of the team. Made router for whole app, login and registration. Also he made Audio Call game, text-book"
   },
   {
     name: "Yury",
@@ -29,7 +29,7 @@ const TEAM_DATA = [
     position: "Developer",
     avatar: "./assets/img/yury.jpeg",
     responsibilities:
-      "Text text text text text text text text text text Text text text text text text text text text text Text text text text text text text text text text",
+      "Chief backend specialist. Gave us the opportunity to learn 3,000 words, and if not enough - add your own! Made block About"
   },
 ];
 

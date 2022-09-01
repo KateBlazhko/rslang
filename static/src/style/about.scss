@@ -7,7 +7,7 @@
   align-items: center;
   gap: 40px;
   width: 100%;
-  padding: 2rem;
+  padding: 4rem;
 
   background-image: url("./assets/img/about-bg.jpg");
   background-size: cover;
@@ -19,20 +19,16 @@
     gap: 2rem;
     flex-wrap: wrap;
 
+    width: 60%;
     padding: 2rem;
-    border-radius: 2rem 2rem 2rem 0;
+
     font-size: 3rem;
     text-align: start;
-
     color: $color-text;
+
     box-shadow: $element-shadow;
     background-color: $color-bg;
 
-    width: 50%;
-
-    @media (max-width: 1024px) {
-      width: 60%;
-    }
 
     @media (max-width: 768px) {
       width: 80%;
@@ -41,6 +37,14 @@
     span {
       text-align: start;
       font-weight: normal;
+    }
+
+    &:nth-child(1) {
+      border-radius: 0 2rem 2rem 2rem;
+    }
+
+    &:nth-child(2) {
+      border-radius: 2rem 0 2rem 2rem;
     }
   }
 
@@ -61,7 +65,7 @@
   &__team {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    gap: 4rem;
 
     @media (max-width: 1140px) {
       grid-template-columns: 1fr;
@@ -75,6 +79,13 @@
     flex-direction: column;
     align-items: center;
 
+    padding: 2rem;
+    border-radius: 2rem;
+    border-bottom: 5px solid $color-scroll;
+    
+    box-shadow: $element-shadow;
+    background-color: $color-bg;
+    
     &-text {
       text-align: center;
       font-size: 2rem;
@@ -82,7 +93,7 @@
       color: $color-text;
     }
 
-    &-resp {
+    &-resp {  
       font-size: 1.5rem;
     }
   }
