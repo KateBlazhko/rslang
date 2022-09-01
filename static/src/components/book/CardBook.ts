@@ -145,6 +145,7 @@ class CardBook extends Control {
       if (!this.UserWord) {
         this.UserWord = await this.createWord(word);
       }
+
       if (difficult === 'hard') {
         difficult = 'easy';
         difficultBtn.node.textContent = 'Difficult';
@@ -159,6 +160,7 @@ class CardBook extends Control {
         this.node.classList.remove('study');
         await this.checkDifficult(this.UserWord, 'hard', false);
       }
+      this.checkAllCards();
     });
     studyBtn.node.addEventListener('click', async () => {
       if (!this.UserWord) {
@@ -179,14 +181,24 @@ class CardBook extends Control {
         this.node.classList.remove('difficult');
         await this.checkStudy(this.UserWord!, true, 'easy');
       }
+      this.checkAllCards();
     });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  checkAllCards() {
+    const study = document.querySelectorAll('.study');
+    const difficult = document.querySelectorAll('.difficult');
+    const page = document.querySelector('.page_book_container');
+
+    if (study.length + difficult.length === 20) page?.classList.add('all-check');
+    else page?.classList.remove('all-check');
   }
 
   addUserFunctional(word: IWord, userWords?: IUserWord[]) {
     const userWord = userWords!.find((el) => el.optional.wordId === word.id);
     const containerBtn = new Control(this.description.node, 'div', 'container-btn');
-    // this.createDifficultBtn(containerBtn.node, word, userWord);
-    // this.createStudiedBtn(containerBtn.node, word, userWord);
+
     this.createBtnDifficultAndStudy(containerBtn.node, word, userWord);
   }
   // studied

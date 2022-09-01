@@ -1,5 +1,6 @@
 import Control from '../common/control';
 import Logging, { IStateLog } from '../Logging';
+import addClassOnPage from '../utils/freeClass';
 import DifficultPage from './DifficultPage';
 import PageBook from './PageBool';
 
@@ -40,6 +41,7 @@ class Book extends Control {
     const page = /^[0-29]+$/;
     if (itemHash[1] && itemHash[2]) {
       const newPage = new PageBook(this.node, itemHash[1], itemHash[2], user);
+      addClassOnPage(newPage.node, +itemHash[1]);
     } else if (itemHash[1] === 'difficult') {
       const newPage = new DifficultPage(this.node, user);
     } else {

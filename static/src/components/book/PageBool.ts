@@ -37,6 +37,10 @@ class PageBook extends Control {
   }
 
   createPage(words: IWord[], page: string, userWords?: IUserWord[]) {
+    if (userWords) {
+      const resWords = userWords.filter((el) => el.difficulty === 'hard' || el.optional.isLearn);
+      if (resWords.length === 20) this.node.classList.add('all-check');
+    }
     const paginationTop = new Control(this.node, 'div', 'pagination');
     const main = new Control(this.node, 'div', 'container_card');
     const paginationButton = new Control(this.node, 'div', 'pagination');
