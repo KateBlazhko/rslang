@@ -3,27 +3,44 @@ import Control from '../common/control';
 import { IStateLog } from '../Logging';
 import CardBook from './CardBook';
 
+interface ICardDifficult {
+  node: CardBook,
+  item: IWord
+}
 class DifficultPage extends Control {
   user: IStateLog;
 
+  allCards: ICardDifficult[];
+
   constructor(parentNode: HTMLElement | null, user: IStateLog) {
-    super(parentNode, 'div', 'difficult-page');
+    super(parentNode, 'div', 'page_book_container');
     this.user = user;
-    // this.createPage(user);
+    this.allCards = [];
+    this.createPage(user);
   }
 
-  createCards(main: HTMLElement, words: IWord[]) {
+  async createCards(main: HTMLElement, words: IWord[]) {
     const allAudio: HTMLAudioElement[] = [];
+    const userWords = await Words.getUserWords(this.user.userId, this.user.token);
     words.forEach((word) => {
       const card = new CardBook(main, word, allAudio, this.user);
+      card.difficultListen();
+      this.allCards.push({ node: card, item: word });
       allAudio.push(...card.audio);
-      card.addUserFunctional(word);
+      card.addUserFunctional(word, userWords);
     });
   }
 
+  // listenMain(event: HTMLElement, arr: ICardDifficult[]) {
+  //   if (event.tagName === 'BUTTON') {
+  //     console.log(event)
+  //   }
+  // }
+
   async createPage(user: IStateLog) {
+    const main = new Control(this.node, 'div', 'container_card');
     const arr = await this.getWords(user);
-    this.createCards(this.node, arr as unknown as IWord[]);
+    this.createCards(main.node, arr as unknown as IWord[]);
   }
 
   // eslint-disable-next-line class-methods-use-this

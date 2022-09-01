@@ -231,6 +231,16 @@ class CardBook extends Control {
     });
     this.audio.push(audio);
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  difficultListen() {
+    this.node.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'BUTTON') {
+        this.destroy();
+      }
+    });
+  }
 }
 
 export default CardBook;
