@@ -317,7 +317,35 @@ class Words {
       },
     );
 
-    return aggregatedWords;
+    if (Array.isArray(aggregatedWords)) {
+      return aggregatedWords
+        .map(words => words.paginatedResults)
+        .flat()
+    }
+
+    return [];
+  }
+
+  public static async getDifficultyWords(stateLog: IStateLog) {
+    const aggregatedWords = await Words.getAggregatedWords(
+      stateLog.userId,
+      stateLog.token,
+      {
+        page: '0',
+        wordsPerPage: '600',
+        filter: encodeURIComponent(JSON.stringify({ 
+          'userWord.difficulty': 'hard' 
+        })),
+      },
+    );
+
+    if (Array.isArray(aggregatedWords)) {
+      return aggregatedWords
+        .map(words => words.paginatedResults)
+        .flat()
+    }
+
+    return [];
   }
 
   public static async getNewWordsByDate(stateLog: IStateLog, date: string) {
@@ -328,14 +356,18 @@ class Words {
         page: '0',
         wordsPerPage: '600',
         filter: encodeURIComponent(JSON.stringify({ 
-          $and: [
-            { 'userWord.optional.dataGetNew': date }, 
-          ] 
+          'userWord.optional.dataGetNew': date 
         })),
       },
     );
 
-    return aggregatedWords;
+    if (Array.isArray(aggregatedWords)) {
+      return aggregatedWords
+        .map(words => words.paginatedResults)
+        .flat()
+    }
+
+    return [];
   }
 
   public static async checkAggregatedWords(

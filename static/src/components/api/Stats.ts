@@ -1,5 +1,4 @@
 import { IStateLog } from '../login/Logging';
-import { IGameStat } from '../sprint/sprint';
 import ErrorUser from '../utils/ErrorUser';
 import { adapterDate } from '../utils/functions';
 import Words from './Words';
@@ -10,6 +9,13 @@ export const BASELINK = 'http://localhost:3000';
 export interface IStat {
   learnedWords: number,
   optional: IStatOptional
+}
+
+export interface IGameStat {
+  newWords: number,
+  сountRightAnswer: number,
+  countError: number,
+  maxSeriesRightAnswer: number
 }
 
 export type GeneralItem = Record<string, number>
@@ -73,18 +79,15 @@ class Stats {
 
     const isSameDate = userStat.optional.dateCurrent = dataCurrentAdapt
     const learnedWords = await Words.getLearnedWordsByDate(stateLog, dataCurrentAdapt)
-    if (Array.isArray(learnedWords)) {
-      const countLearnedWords = learnedWords
-        .map((learnedWord) => learnedWord.paginatedResults)
-        .flat()
-        .length
+
+      const countLearnedWords = learnedWords.length
 
       if (isSameDate) {
         Stats.addToStat(stateLog, userStat, gameStat, game)
       } else {
         Stats.recordStat(stateLog, userStat, gameStat, game, dataCurrentAdapt)
       }
-    }
+
   }
 
   public static async recordGeneralStats(stateLog: IStateLog, newGeneralStats: IGeneral) {

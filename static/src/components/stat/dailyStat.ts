@@ -1,10 +1,9 @@
-import Stats, { IStatOptional } from '../api/Stats';
+import Stats, { IGameStat, IStatOptional } from '../api/Stats';
 import Words from '../api/Words';
 import Control from '../common/control';
 import Logging, { IStateLog } from '../login/Logging';
 import { adapterDate, getPercent } from '../utils/functions';
 import ButtonStat from './buttonStat';
-import { IGameStat } from '../sprint/sprint';
 
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
@@ -89,8 +88,6 @@ class DailyStat extends Control {
     const learnedWords = await Words.getLearnedWordsByDate(stateLog, date)
     const newWordsAll = await Words.getNewWordsByDate(stateLog, date)
 
-
-
     this.drawStat(name)
 
     if (name === 'book') {
@@ -99,17 +96,9 @@ class DailyStat extends Control {
       const gameStatAudio = stat.optional.audio
       const { countError: errorAudio, сountRightAnswer: rightAudio } = gameStatAudio
 
-      const countlearnedWords = Array.isArray(learnedWords) ? 
-        learnedWords
-          .map(word => word.paginatedResults)
-          .flat()
-          .length : 0
+      const countlearnedWords = learnedWords.length
 
-      const countNewWords = Array.isArray(newWordsAll) ? 
-        newWordsAll
-          .map(word => word.paginatedResults)
-          .flat()
-          .length : 0
+      const countNewWords = newWordsAll.length
 
       this.drawStatWords(
         countlearnedWords, 

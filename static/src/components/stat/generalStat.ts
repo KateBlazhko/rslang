@@ -87,27 +87,13 @@ class GeneralStat extends Control {
   private async getCountNewWordsByDate(date: string, stateLog: IStateLog) {
     const words = await Words.getNewWordsByDate(stateLog, date)
 
-    if (Array.isArray(words)) {
-      return words
-        .map(word => word.paginatedResults)
-        .flat()
-        .length
-    }
-
-    return 0
+    return words.length
   }
 
   private async getCountLearnedWordsByDate(date: string, stateLog: IStateLog) {
     const words = await Words.getLearnedWordsByDate(stateLog, date)
 
-    if (Array.isArray(words)) {
-      return words
-        .map(word => word.paginatedResults)
-        .flat()
-        .length
-    }
-
-    return 0
+    return words.length
   }
 
   private drawСhartNewWords(general: IGeneral) {

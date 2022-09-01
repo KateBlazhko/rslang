@@ -6,7 +6,7 @@ import SprintState from './sprintState';
 import StartPage from './startPage';
 import randomSort from '../utils/functions';
 import Logging from '../login/Logging';
-import Stats from '../api/Stats';
+import Stats, { IGameStat } from '../api/Stats';
 
 enum TextInner {
   preloader = 'We\'re getting closer, get ready...',
@@ -16,13 +16,6 @@ enum TextInner {
 export interface IWordStat {
   wordId: string,
   answer: boolean
-}
-
-export interface IGameStat {
-  newWords: number,
-  сountRightAnswer: number,
-  countError: number,
-  maxSeriesRightAnswer: number
 }
 
 export type Stat = [IWordStat[], IGameStat]

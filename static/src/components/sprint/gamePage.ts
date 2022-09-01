@@ -9,8 +9,9 @@ import ButtonAnswer from './buttonAnswer';
 import soundManager from '../utils/soundManager';
 import StartPage from './startPage';
 import ResultPage from './resultPage';
-import { IGameStat, IWordStat, Stat } from './sprint';
+import { IWordStat, Stat } from './sprint';
 import Signal from '../common/signal';
+import { IGameStat } from '../api/Stats';
 
 enum TextInner {
   points = '0',
@@ -58,7 +59,6 @@ class GamePage extends Control {
 
   private wordsStat: IWordStat[] = [];
   private gameStat: IGameStat
-
   private onGetAnswer: (answer: boolean) => void;
 
   constructor(
