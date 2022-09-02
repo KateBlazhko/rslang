@@ -219,7 +219,7 @@ class CardBook extends Control {
   }
 
   addUserFunctional(word: IWord, userWords?: IUserWord[]) {
-    const userWord = userWords!.find((el) => el.optional.wordId === word.id);
+    const userWord = userWords?.find((el) => el.optional.wordId === word.id);
     const containerBtn = new Control(this.description.node, 'div', 'container-btn');
 
     this.createBtnDifficultAndStudy(containerBtn.node, word, userWord);
