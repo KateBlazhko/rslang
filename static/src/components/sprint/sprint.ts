@@ -61,12 +61,12 @@ class Sprint extends Control {
   private async renderPreloader(words: number[]) {
     const [group, page] = words;
     this.node.append(this.preloader.node);
-
     try {
-      if (this.state.getInitiator() === 'header') {
+      if (!this.state.getInitiator().includes('book')) {
         this.words = await this.getWords(group);
       } else {
         const stateLog = await this.login.checkStorageLogin();
+        console.log(this.words)
 
         if (stateLog.state) {
           if (group === bookConfig.numberDifficultGroup) {
@@ -105,6 +105,8 @@ class Sprint extends Control {
   }
 
   private async getWords(group: number, page?: number) {
+    console.log('this.words')
+
     try {
       if (page) {
         const words = await Words.getWords({
@@ -114,6 +116,7 @@ class Sprint extends Control {
 
         return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
+
       const randomPage = randomSort([...Array(bookConfig.maxPage).keys()]).slice(0, 5) as number[];
       const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
         group: group.toString(),

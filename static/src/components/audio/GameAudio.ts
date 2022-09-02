@@ -5,6 +5,7 @@ import { shufflePage, shuffleArrayPage, seriesSuccess } from '../common/shuffleP
 import Logging, { IStateLog } from '../login/Logging';
 import CardAudio from './CardAudio';
 import StatisticAudio from './StatisticAudio';
+import Stats from '../api/Stats';
 
 interface ICardAudio {
     value: number;
@@ -205,7 +206,8 @@ class GameAudio extends Control {
         return Words.createWordStat(stateLog, { wordId: word.word.id, answer: word.status });
       }));
 
-      console.log(this.gameStatistic(this.arrWordsStatus, userWordsAll));
+      const gameStat = this.gameStatistic(this.arrWordsStatus, userWordsAll)
+      const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'audio')
     }
   }
 
@@ -221,7 +223,7 @@ class GameAudio extends Control {
     const map = userWords.map((el) => el.optional.wordId);
     const res = arrWord.filter((el) => !map.includes(el.word.id));
     return {
-      newWords: res,
+      newWords: res.length,
       сountRightAnswer: arrWord.filter((el) => el.status === true).length,
       countError: arrWord.filter((el) => el.status === false).length,
       maxSeriesRightAnswer: seriesSuccess(this.arrWordsStatus),

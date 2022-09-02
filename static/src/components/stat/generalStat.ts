@@ -117,21 +117,21 @@ class GeneralStat extends Control {
   }
 
   private drawLineChart(ctx: CanvasRenderingContext2D, newWords: GeneralItem, learnedWordsData: number[]) {
-    const labels = Object.keys(newWords).reverse()
-
+    const labels = Object.keys(newWords)
+console.log(labels)
     const data = {
       labels: labels,
       datasets: [
         {
         label: 'The number of new words',
-        data: Object.values(newWords).reverse(),
+        data: Object.values(newWords),
         fill: false,
         borderColor: '#1f9465',
         tension: 0.1
        },
        {
         label: 'The increase in the total number of learned words',
-        data: learnedWordsData.reverse(),
+        data: learnedWordsData,
         fill: false,
         borderColor: '#e0677d',
         tension: 0.1
