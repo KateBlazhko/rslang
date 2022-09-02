@@ -57,7 +57,8 @@ class Router {
         this.currentPage = new HomePage(container, this.login);
         break;
       case 'about':
-        container.innerHTML = '<h1>About Us</h1>';
+        this.currentPage = new AboutPage(container);
+        ;
         break;
       case 'sprint':
         this.onGoPage.emit(hash);

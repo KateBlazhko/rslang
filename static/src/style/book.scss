@@ -85,14 +85,13 @@ $color-bg-button-border: #40396e;
       // overflow-y: scroll;
       gap: 3rem;
 
-      width: 90%;
+      width: 100%;
       padding: 2rem;
 
-      border-radius: 20px;
-      border-bottom: 5px solid $color-scroll;
-      border-top: 5px solid $color-scroll;
+      // border-radius: 20px;
+      // border-bottom: 5px solid $color-scroll;
       
-      background-color: $color-bg;
+      // background-color: $color-bg;
 
       // &::-webkit-scrollbar {
       //   width: 8px;               /* ширина scrollbar */
@@ -109,15 +108,17 @@ $color-bg-button-border: #40396e;
 
       .card_item {
         position: relative;
-        display: flex;
-        align-items: flex-end;
+        @include flexCenter();
+        flex-direction: column;
 
         width: 40rem;
         height: 60rem;
+        padding: 2rem;
         background: $color-bg;
-        border-radius: 7px;
+        border-radius: 4rem;
+        border-bottom: 5px solid $color-scroll;
 
-        box-shadow: 0 0 5px $color-shadow;
+        box-shadow: $element-shadow;
 
         &.difficult {
           box-shadow: 0 0 10px crimson;
@@ -127,48 +128,82 @@ $color-bg-button-border: #40396e;
           box-shadow: 0 0 10px darkmagenta;
         }
 
-        img {
-          position: absolute;
-          top: 0;
+        .img-wrap {
+          @include flexCenter();
+          width: 15rem;
+          height: 15rem;
 
-          width: 100%;
-          border-radius: 7px;
-
+          box-shadow: $element-shadow;
+          border-radius: 50%;
+          background-color: $color-bg;
         }
 
         .img__word {
-          height: 30%;
+          display: block;
+          width: 80%;
+          height: 80%;
+          border-radius: 50%;
+
+          object-fit: cover;
+
+          transition: all 0.5s linear;
+
+          &:hover {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .button-wrap {
+          @include flexCenter();
+          gap: 1rem;
+
+          .img__button {
+            width: 6rem;
+          }
+
+          .button {
+            width: 6rem;
+            height: 6rem;
+            font-size: 20px;
+            font-weight: 700;
+            color:  $color-shadow;
+            border: none;
+            padding: 5px 0px;
+            color: $color-bg;
+            border-radius: 5px;
+            cursor: pointer;
+
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+
+            filter: $filter-color;
+            -webkit-filter: grayscale(1);
+            transition: all 0.5s ease-in-out; 
+
+            &.active {
+              filter: none;
+              -webkit-filter: grayscale(0);
+            }
+          }
+          
+          .button_difficult {
+            // background: $color-level-english-1;
+            // border-bottom: 3px solid $border-level-english-1;
+            background-image: url('./assets/icons/difficult.svg');
+
+          }
+
+          .button_studied {
+            // background: $color-level-english-6;
+            // border-bottom: 3px solid $border-level-english-6;
+            background-image: url('./assets/icons/studied.svg');
+          }
         }
 
         .description {
           position: relative;
-
-          .container-btn {
-            display: flex;
-            column-gap: 20px;
-
-            button {
-              width: 120px;
-              font-size: 20px;
-              font-weight: 700;
-              color:  $color-shadow;
-              border: none;
-              padding: 5px 0px;
-              color: white;
-              border-radius: 5px;
-              cursor: pointer;
-            }
-            
-            .button_difficult {
-              background: $color-level-english-1;
-              border-bottom: 3px solid $border-level-english-1;
-            }
-
-            .button_studied {
-              background: $color-level-english-6;
-              border-bottom: 3px solid $border-level-english-6;
-            }
-          }
 
           @include flexCenter();
           justify-content: flex-start;
@@ -181,8 +216,8 @@ $color-bg-button-border: #40396e;
           border-radius: 7px;
           padding: 0 1rem 0;
 
-          background: $color-bg;          
-
+          background: $color-bg;  
+          
           .example {
             position: relative;
 
@@ -230,14 +265,14 @@ $color-bg-button-border: #40396e;
           }
           
 
-          &::before {
-            position: absolute;
-            content: '';
-            width: 100%;
-            height: 80px;
-            background: linear-gradient(to top, $color-bg 30%, transparent);
-            top: -73px;
-          }
+          // &::before {
+          //   position: absolute;
+          //   content: '';
+          //   width: 100%;
+          //   height: 80px;
+          //   background: linear-gradient(to top, $color-bg 30%, transparent);
+          //   top: -73px;
+          // }
 
           .title {
             position: relative;

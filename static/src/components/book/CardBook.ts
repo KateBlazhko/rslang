@@ -11,7 +11,9 @@ class CardBook extends Control {
 
   audio: HTMLImageElement[]
 
-  description: Control<HTMLElement>;
+  description: Control;
+  imageWrap: Control;
+  buttonWrap: Control;
 
   user: IStateLog;
 
@@ -30,23 +32,25 @@ class CardBook extends Control {
     this.word = word;
     this.audio = [];
     this.UserWord = undefined;
+    this.imageWrap = new Control(this.node, 'div', 'img-wrap');
+    this.buttonWrap = new Control(this.node, 'div', 'button-wrap');
     this.description = new Control(this.node, 'div', 'description');
     this.createCard();
   }
 
   createCard() {
-    const img = new Control<HTMLImageElement>(this.node, 'img', 'img__word');
+    const img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
     img.node.src = `${BASELINK}/${this.word.image}`;
+    this.createButtons()
+
     const { description } = this;
     this.createTitle(description.node);
     this.createExample(description.node);
     this.createMeaning(description.node);
   }
 
-  createTitle(node: HTMLElement) {
-    const container = new Control(node, 'div', 'title');
-    container.node.innerHTML = `<h3 class="en">${this.word.word}</h3><h3>${this.word.transcription}</h3><h3>${this.word.wordTranslate}</h3>`;
-    const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
+  createButtons() {
+    const volume = new Control<HTMLImageElement>(this.buttonWrap.node, 'img', 'img__button');
     volume.node.src = '../../assets/icons/volume.png';
     volume.node.addEventListener('click', async () => {
       this.onAudioPlay.emit(true)
@@ -71,7 +75,12 @@ class CardBook extends Control {
 
     });
     this.audio.push(volume.node);
+  }
 
+
+  createTitle(node: HTMLElement) {
+    const container = new Control(node, 'div', 'title');
+    container.node.innerHTML = `<h3 class="en">${this.word.word}</h3><h3>${this.word.transcription}</h3><h3>${this.word.wordTranslate}</h3>`;
   }
 
   async checkDifficult(userWord: IUserWord, difficult: 'easy' | 'hard', isLearn?: boolean) {
@@ -145,17 +154,23 @@ class CardBook extends Control {
   }
 
   createBtnDifficultAndStudy(node: HTMLElement, word: IWord, userWord?: IUserWord) {
-    const difficultBtn = new Control(node, 'button', 'button_difficult', 'Difficult');
-    const studyBtn = new Control(node, 'button', 'button_studied', 'Study');
+    const difficultBtn = new Control(node, 'div', 'button button_difficult');
+    difficultBtn.node.title = 'Mark difficult'
+    const studyBtn = new Control(node, 'div', 'button button_studied');
+    studyBtn.node.title = 'Mark studied'
 
     if (userWord?.difficulty === 'hard') {
-      difficultBtn.node.textContent = 'Delete';
+      // difficultBtn.node.textContent = 'Delete';
+      difficultBtn.node.classList.add('active');
+
       this.node.classList.add('difficult');
       this.node.classList.remove('study');
     }
 
     if (userWord?.optional.isLearn) {
-      studyBtn.node.textContent = 'Studied';
+      // studyBtn.node.textContent = 'Studied';
+      studyBtn.node.classList.add('active');
+
       this.node.classList.add('study');
       this.node.classList.remove('difficult');
     }
@@ -174,14 +189,18 @@ class CardBook extends Control {
 
       if (difficult === 'hard') {
         difficult = 'easy';
-        difficultBtn.node.textContent = 'Difficult';
+        // difficultBtn.node.textContent = 'Difficult';
+        difficultBtn.node.classList.remove('active');
         this.node.classList.remove('difficult');
         await this.checkDifficult(this.UserWord!, 'easy', false);
       } else {
         difficult = 'hard';
         learn = false;
-        difficultBtn.node.textContent = 'Delete';
-        studyBtn.node.textContent = 'Study';
+        // difficultBtn.node.textContent = 'Delete';
+        // studyBtn.node.textContent = 'Study';
+        difficultBtn.node.classList.add('active');
+        studyBtn.node.classList.remove('active');
+
         this.node.classList.add('difficult');
         this.node.classList.remove('study');
         await this.checkDifficult(this.UserWord, 'hard', false);
@@ -195,14 +214,19 @@ class CardBook extends Control {
 
       if (learn) {
         learn = false;
-        studyBtn.node.textContent = 'Study';
+        // studyBtn.node.textContent = 'Study';
+        studyBtn.node.classList.remove('active');
         this.node.classList.remove('study');
         await this.checkStudy(this.UserWord!, false, 'easy');
       } else {
         learn = true;
         difficult = 'easy';
-        studyBtn.node.textContent = 'Studied';
-        difficultBtn.node.textContent = 'Difficult';
+        // studyBtn.node.textContent = 'Studied';
+        // difficultBtn.node.textContent =  'Difficult';
+
+        studyBtn.node.classList.add('active');
+        difficultBtn.node.classList.remove('active');
+
         this.node.classList.add('study');
         this.node.classList.remove('difficult');
         await this.checkStudy(this.UserWord!, true, 'easy');
@@ -221,16 +245,22 @@ class CardBook extends Control {
     if (study.length + difficult.length === 20) page?.classList.add('all-check');
     else page?.classList.remove('all-check');
 
-    if (allCard.length === 0 && page) page.innerHTML = '<h1 class="no_cards">Вы еще не добавили сложные слова!!!</h1>';
+    if (allCard.length === 0 && page) page.innerHTML = `<h1 class="no_cards">You haven't added difficult words yet!!!</h1>`;
   }
 
   addUserFunctional(word: IWord, userWords?: IUserWord[]) {
     const userWord = userWords?.find((el) => el.optional.wordId === word.id);
-    const containerBtn = new Control(this.description.node, 'div', 'container-btn');
-
-    this.createBtnDifficultAndStudy(containerBtn.node, word, userWord);
+    // const containerBtn = new Control(this.description.node, 'div', 'container-btn');
+    this.createBtnDifficultAndStudy(this.buttonWrap.node, word, userWord);
+    this.createUserButton(this.buttonWrap.node, word, userWord);
   }
   // studied
+
+  createUserButton(node: HTMLElement, word: IWord, userWord?: IUserWord) {
+    const user = new Control<HTMLImageElement>(node, 'div', 'button button_userWords');
+
+  };
+
 
   createExample(node: HTMLElement) {
     const container = new Control(node, 'div', 'example');
