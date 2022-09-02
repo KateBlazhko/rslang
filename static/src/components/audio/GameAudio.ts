@@ -1,8 +1,8 @@
 import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
-import randomSort from '../common/functions';
+import randomSort from '../utils/functions';
 import { shufflePage, shuffleArrayPage, seriesSuccess } from '../common/shufflePage';
-import Logging, { IStateLog } from '../Logging';
+import Logging, { IStateLog } from '../login/Logging';
 import CardAudio from './CardAudio';
 import StatisticAudio from './StatisticAudio';
 
@@ -200,9 +200,9 @@ class GameAudio extends Control {
       await Promise.all(this.arrWordsStatus.map((word) => {
         const userWord = userWordsAll.find((item) => item.optional.wordId === word.word.id);
         if (userWord) {
-          return Words.updateUserStat(stateLog, userWord, word.status);
+          return Words.updateWordStat(stateLog, userWord, word.status);
         }
-        return Words.createUserStat(stateLog, { wordId: word.word.id, answer: word.status });
+        return Words.createWordStat(stateLog, { wordId: word.word.id, answer: word.status });
       }));
 
       console.log(this.gameStatistic(this.arrWordsStatus, userWordsAll));

@@ -1,7 +1,7 @@
-import Burger from './common/BurgerEl.';
-import ButtonHref from './common/ButtonHref';
-import Control from './common/control';
-import Logging from './Logging';
+import Burger from '../common/BurgerEl.';
+import ButtonHref from '../common/ButtonHref';
+import Control from '../common/control';
+import Logging from '../login/Logging';
 
 interface IHeaderEl {
   home: ButtonHref,

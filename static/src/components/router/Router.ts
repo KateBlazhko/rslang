@@ -1,9 +1,11 @@
 import Sprint from '../sprint/sprint';
+import Statistic from '../stat/statistic';
 import Signal from '../common/signal';
 import Control from '../common/control';
 import HomePage from '../home/homePage';
-import Logging from '../Logging';
+import Logging from '../login/Logging';
 import Audio from '../audio/Audio';
+import AboutPage from '../about/aboutPage';
 import Book from '../book/Book';
 
 class Router {
@@ -52,7 +54,6 @@ class Router {
 
     switch (hash) {
       case 'home':
-        container.innerHTML = '';
         this.currentPage = new HomePage(container, this.login);
         break;
       case 'about':
@@ -67,10 +68,9 @@ class Router {
         this.currentPage = new Audio(container, this.login, page);
         break;
       case 'statistics':
-        container.innerHTML = '<h1>statistics</h1>';
+        this.currentPage = new Statistic(container, this.login);
         break;
       default:
-        // container.innerHTML = '<h1>Home</h1>';
     }
   }
 

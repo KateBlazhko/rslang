@@ -13,7 +13,10 @@ class StatisticAudio extends Control {
     arr: Array<{word: IWord, status: boolean}>,
   ) {
     super(parentNode, 'div', 'statistic__audio');
+    const title = new Control(this.node, 'h2', 'result__title', "Look! It's your results");
+
     this.container = new Control(this.node, 'div', 'list_statistic');
+
     this.createStatistic(arr);
   }
 

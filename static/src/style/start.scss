@@ -1,22 +1,3 @@
-$color-bg: #ffffff;
-
-$color-text-start: #696969;
-$color-border: #00c3ff;
-$color-shadow: #aaa9a9;
-
-$color-level-english-1: #e0677d;
-$border-level-english-1: #AF2137;
-$color-level-english-2: #f5a51c;
-$border-level-english-2: #fb8609;
-$color-level-english-3: #fcdd2e;
-$border-level-english-3: #f5a51c;
-$color-level-english-4: #1f9465;
-$border-level-english-4: #017347;
-$color-level-english-5: #068cfa;
-$border-level-english-5: #162fbd;
-$color-level-english-6: #966AAD;
-$border-level-english-6: #63387C;
-
 .start {
   @include flexCenter();
   flex-direction: column;
@@ -33,7 +14,7 @@ $border-level-english-6: #63387C;
     align-self: start;
     font-size: 3rem;
     text-align: start;
-    color: $color-text-start;
+    color: $color-text;
   }
 
   &__desription {
@@ -49,9 +30,9 @@ $border-level-english-6: #63387C;
 
     font-size: 3rem;
     text-align: start;
-    color: $color-text-start;
+    color: $color-text;
 
-    box-shadow: 0 0 3px $color-shadow;
+    box-shadow: $element-shadow;
     background-color: $color-bg;
 
     &_odd {
@@ -99,13 +80,14 @@ $border-level-english-6: #63387C;
   &__button {
     @include flexCenter();
 
-    width: 4rem;
-    height: 4rem;
-    border-radius: 4px;
-    box-shadow: 0 0 3px $color-shadow;
+    width: 6rem;
+    height: 6rem;
+    border-radius: $button-border-radius;
+    border-bottom: $button-border-bottom solid $color-shadow;
+    box-shadow: $element-shadow;
 
     text-align: center;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
     line-height: 4rem;
     color: $color-bg;

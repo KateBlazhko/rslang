@@ -39,6 +39,7 @@
     "webpack-dev-server": "^4.10.0"
   },
   "dependencies": {
+    "chart.js": "^3.9.1",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "normalize.css": "^8.0.1"

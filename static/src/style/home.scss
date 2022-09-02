@@ -15,7 +15,7 @@
 
     border-radius:  2rem 2rem 2rem 0;
 
-    box-shadow: 0 0 3px $color-shadow;
+    box-shadow: $element-shadow;
     background-color: $color-bg;
 
     @media (max-width: 768px) {
@@ -66,7 +66,7 @@
     width: 15rem;
     height: 15rem;
 
-    box-shadow: 0 0 3px $color-shadow;
+    box-shadow: $element-shadow;
 
     border-radius: 50%;
   
@@ -165,9 +165,9 @@
 
     font-size: 3rem;
     text-align: start;
-    color: $color-text-start;
+    color: $color-text;
 
-    box-shadow: 0 0 3px $color-shadow;
+    box-shadow: $element-shadow;
     background-color: $color-bg;
 
     span {

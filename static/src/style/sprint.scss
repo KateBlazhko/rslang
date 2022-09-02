@@ -2,33 +2,27 @@ $color-points: #966AAD;
 $color-word: #000000;
 $filter-color: #808080;
 
-$color-bg: #ffffff;
-$color-border: #f5a51c;
 
-$color-shadow: #aaa9a9;
-$color-text-start: #696969;
-$color-water: #8ae4ff80;
+// $color-border-svg: #AF2137;
+// // $color-main-svg: #EF4B6D;
+// $color-average: #e0677d;
+// // $color-average: #EF4055;
+// $color-average: #F69EB0;
 
-$color-border-svg: #AF2137;
-// $color-main-svg: #EF4B6D;
-$color-average: #e0677d;
-// $color-average: #EF4055;
-$color-average: #F69EB0;
+// $color-border-svg: #63387C;
+// // $color-main-svg: #B08DC1;
+// $color-average: #C5A3CD;
+// $color-average: #966AAD;
+// // $color-average: #8857A4;
 
-$color-border-svg: #63387C;
-// $color-main-svg: #B08DC1;
-$color-average: #C5A3CD;
-$color-average: #966AAD;
-// $color-average: #8857A4;
-
-$color-border-svg: #017347;
-// $color-main-svg: #98D2AE;
-// $color-average: #5DBF89;
-$color-average: #1f9465;
-$color-average: #79bc90;
-// $color-average: #80C999;
-// $color-average: #27B67C;
-// $color-border-svg: #007E4E;
+// $color-border-svg: #017347;
+// // $color-main-svg: #98D2AE;
+// // $color-average: #5DBF89;
+// $color-average: #1f9465;
+// $color-average: #79bc90;
+// // $color-average: #80C999;
+// // $color-average: #27B67C;
+// // $color-border-svg: #007E4E;
 
 .sprint {
   position: relative;
@@ -71,7 +65,6 @@ $color-average: #79bc90;
     padding: 2rem 0;
     border-radius: 5rem;
     border-bottom: 5px solid $color-scroll;
-    border-top: 5px solid $color-scroll;
 
     background-color: $color-bg;
 
@@ -180,23 +173,24 @@ $color-average: #79bc90;
   }
 
   &__button {
-    width: 20rem;
-    height: 5rem;
+    width: 16rem;
+    height: 4.5rem;
 
-    box-shadow: 0 0 3px $color-shadow;
-    border-radius: 4px;
+    box-shadow: $element-shadow;
+    border-radius: $button-border-radius * 1.2;
 
     text-align: center;
     color: $color-bg;
     font-size: 2.5rem;
-    line-height: 5rem;
+    line-height: 4.3rem;
+    font-weight: bold;
 
     cursor: pointer;
 
     transition: all 0.4s;
 
     &_true {
-      border-bottom: 3px solid $color-button-true-hover;
+      border-bottom: 4px solid $color-button-true-hover;
 
       background-color: $color-button-true;
 
@@ -206,7 +200,7 @@ $color-average: #79bc90;
     }
 
     &_false {
-      border-bottom: 3px solid $color-button-false-hover;
+      border-bottom: 4px solid $color-button-false-hover;
 
       background-color: $color-button-false;
 

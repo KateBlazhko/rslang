@@ -4,8 +4,9 @@ import Signal from '../common/signal';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
-import randomSort from '../common/functions';
-import Logging, { IStateLog } from '../Logging';
+import randomSort from '../utils/functions';
+import Logging, { IStateLog } from '../login/Logging';
+import Stats, { IGameStat } from '../api/Stats';
 import bookConfig from '../constants/bookConfig';
 
 enum TextInner {
@@ -17,6 +18,8 @@ export interface IWordStat {
   wordId: string,
   answer: boolean
 }
+
+export type Stat = [IWordStat[], IGameStat]
 
 class Sprint extends Control {
   private sprintWrap: Control;
@@ -53,7 +56,7 @@ class Sprint extends Control {
     this.onFinish.add(this.recordStatToBD.bind(this));
   }
 
-  public onFinish = new Signal<IWordStat[]>();
+  public onFinish = new Signal<Stat>();
 
   private async renderPreloader(words: number[]) {
     const [group, page] = words;
@@ -148,18 +151,24 @@ class Sprint extends Control {
     throw new Error('no logging');
   }
 
-  private async recordStatToBD(wordsStat: IWordStat[]) {
+  private async recordStatToBD(stat: Stat) {
+    const [ wordsStat, gameStat ] = stat
+
     const stateLog = await this.login.checkStorageLogin();
     if (stateLog.state) {
       const userWordsAll = await Words.getUserWords(stateLog.userId, stateLog.token);
 
-      const recordResult = await Promise.all(wordsStat.map((word) => {
+      const recordWordResult = await Promise.all(wordsStat.map((word) => {
         const userWord = userWordsAll.find((item) => item.optional.wordId === word.wordId);
         if (userWord) {
-          return Words.updateUserStat(stateLog, userWord, word.answer);
+          return Words.updateWordStat(stateLog, userWord, word.answer);
         }
-        return Words.createUserStat(stateLog, word);
+        gameStat.newWords += 1
+        return Words.createWordStat(stateLog, word);
       }));
+
+      const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'sprint')
+
     }
   }
 

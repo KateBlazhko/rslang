@@ -1,4 +1,5 @@
 import Control from '../common/control';
+import bookConfig from '../constants/bookConfig';
 import ButtonAnswer from './buttonAnswer';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
@@ -45,7 +46,7 @@ class StartPage extends Control {
 
     if (prevPage.includes('book')) {
       if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
-        const group = 7;
+        const group = bookConfig.numberDifficultGroup;
         const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
   
         const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
