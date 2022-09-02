@@ -90,14 +90,24 @@ class Stats {
 
   }
 
-  public static async recordGeneralStats(stateLog: IStateLog, newGeneralStats: IGeneral) {
+  public static async recordGeneralStats(
+    stateLog: IStateLog, 
+    newWordsStats: GeneralItem, 
+    learnedWordsStats: GeneralItem,
+  ) {
     const userStat = await Stats.getStats(stateLog.userId, stateLog.token)
 
     const { learnedWords, optional: { dateReg, dateCurrent, sprint, audio, general }} = userStat
 
     const newGeneral = {
-      ...general,
-      ...newGeneralStats
+      newWords: {
+        ...general.newWords,
+        ...newWordsStats
+      },
+      learnedWords: {
+        ...general.learnedWords,
+        ...learnedWordsStats
+      }
     }
 
     Stats.updateStat(stateLog.userId, stateLog.token, {

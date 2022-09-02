@@ -2,7 +2,7 @@ import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import BASELINK from '../constants/url';
-import { IStateLog } from '../Logging';
+import { IStateLog } from '../login/Logging';
 import stopPlayAudio from '../utils/stopPlayAudio';
 import CardBook from './CardBook';
 import Loader from './Loader';

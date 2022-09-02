@@ -46,7 +46,7 @@ export interface IUserWord {
       countError: number
       seriesRightAnswer: number
       isLearn: boolean
-      dataGetNew: string
+      dataGetNew: string | undefined
       dataLearn?: string | undefined
     }
 }

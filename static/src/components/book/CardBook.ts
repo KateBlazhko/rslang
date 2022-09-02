@@ -2,7 +2,8 @@ import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import BASELINK from '../constants/url';
-import { IStateLog } from '../Logging';
+import { IStateLog } from '../login/Logging';
+import { adapterDate } from '../utils/functions';
 import stopPlayAudio from '../utils/stopPlayAudio';
 
 class CardBook extends Control {
@@ -73,7 +74,7 @@ class CardBook extends Control {
 
   }
 
-  async checkDifficult(userWord: IUserWord, difficult: 'easy' | 'hard', learn?: boolean) {
+  async checkDifficult(userWord: IUserWord, difficult: 'easy' | 'hard', isLearn?: boolean) {
     const word = userWord;
     await Words.updateUserWord(
       this.user.userId,
@@ -86,36 +87,40 @@ class CardBook extends Control {
           сountRightAnswer: word.optional.сountRightAnswer,
           countError: word.optional.countError,
           seriesRightAnswer: word.optional.seriesRightAnswer,
-          isLearn: learn ?? word.optional.isLearn,
+          // isLearn: isLearn ?? word.optional.isLearn,
+          isLearn: false,
           dataGetNew: word.optional.dataGetNew,
-          dataLearn: (
-            word.optional.isLearn
-                  && word.optional.isLearn !== userWord.optional.isLearn)
-            ? new Date() : undefined,
+          // dataLearn: (
+          //   word.optional.isLearn
+          //         && word.optional.isLearn !== userWord.optional.isLearn)
+          //   ? adapterDate(new Date()) : undefined,
+          dataLearn: undefined
         },
       },
     );
   }
 
-  async checkStudy(userWord: IUserWord, learn: boolean, difficult?: 'easy' | 'hard') {
+  async checkStudy(userWord: IUserWord, isLearn: boolean, difficult?: 'easy' | 'hard') {
     const word = userWord;
     await Words.updateUserWord(
       this.user.userId,
       this.user.token,
       userWord.optional.wordId,
       {
-        difficulty: difficult || 'easy',
+        // difficulty: difficult || 'easy',
+        difficulty: 'easy',
         optional: {
           wordId: word.optional.wordId,
           сountRightAnswer: word.optional.сountRightAnswer,
           countError: word.optional.countError,
           seriesRightAnswer: word.optional.seriesRightAnswer,
-          isLearn: learn,
+          isLearn: isLearn,
           dataGetNew: word.optional.dataGetNew,
-          dataLearn: (
-            word.optional.isLearn
-                  && word.optional.isLearn !== userWord.optional.isLearn)
-            ? new Date() : undefined,
+          // dataLearn: (
+          //   word.optional.isLearn
+          //         && word.optional.isLearn !== userWord.optional.isLearn)
+          //   ? adapterDate(new Date()) : undefined,
+          dataLearn: isLearn ? adapterDate(new Date()) : undefined,
         },
       },
     );
@@ -130,7 +135,8 @@ class CardBook extends Control {
         countError: 0,
         seriesRightAnswer: 0,
         isLearn: false,
-        dataGetNew: new Date(),
+        // dataGetNew: adapterDate(new Date()),
+        dataGetNew: undefined,
       },
     });
     const userWord = await Words.getUserWordByID(this.user.userId, this.user.token, word.id);

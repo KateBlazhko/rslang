@@ -109,13 +109,14 @@ class Logging {
   }
 
   async createStats() {
-    const date = adapterDate( new Date() )
+    const date = new Date()
+    // date.setDate(date.getDate() - 1)
 
     await Stats.updateStat(this.stateLog.userId, this.stateLog.token, {
       learnedWords: 0,
       optional: {
-        dateReg: date,
-        dateCurrent: date,
+        dateReg: adapterDate (date),
+        dateCurrent: adapterDate (date),
         sprint: {
           newWords: 0, 
           сountRightAnswer: 0, 
@@ -130,10 +131,10 @@ class Logging {
         },
         general: {
           newWords: {
-            [date]: 0
+            [adapterDate (date)]: 0
           },
           learnedWords: {
-            [date]: 0
+            [adapterDate (date)]: 0
           }
         }
       }

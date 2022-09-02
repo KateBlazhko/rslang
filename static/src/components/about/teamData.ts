@@ -13,7 +13,7 @@ const TEAM_DATA = [
     position: "Team Lead",
     avatar: "./assets/img/kate.jpeg",
     responsibilities:
-      "Handed out tasks and got nervous. Also did the Sprint game, the stats section, and was responsible for the styles you see. "
+      "Handed out tasks and got nervous. Also did the Sprint game, the stats section, edited book and was responsible for the styles you see. "
   },
   {
     name: "Aleksander",

@@ -1,6 +1,6 @@
 import Control from '../common/control';
 import Signal from '../common/signal';
-import Logging, { IStateLog } from '../Logging';
+import Logging, { IStateLog } from '../login/Logging';
 import addClassOnPage from '../utils/freeClass';
 import DifficultPage from './DifficultPage';
 import PageBook from './PageBool';

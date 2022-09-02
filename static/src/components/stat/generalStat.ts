@@ -43,13 +43,10 @@ class GeneralStat extends Control {
       ...(await this.dateLoop(stateLog, this.getCountLearnedWordsByDate, dataReg, date, learnedWords, {}))
     }
 
-    await Stats.recordGeneralStats(stateLog, {
-      newWords: newWordsStats,
-      learnedWords: learnedWordsStats
-    })
+    await Stats.recordGeneralStats(stateLog, newWordsStats, learnedWordsStats)
+
     const userStatNew = await Stats.getStats(stateLog.userId, stateLog.token)  
     const { optional: { general: generalNew } } = userStatNew
-
     this.drawСhartNewWords(generalNew)
 
   }
@@ -58,7 +55,7 @@ class GeneralStat extends Control {
     stateLog: IStateLog,
     callback: (date: string, stateLog: IStateLog) =>  Promise<number>,
     index: Date | null, 
-    date: Date, 
+    currentDate: Date, 
     general: GeneralItem,
     newGeneralStats: GeneralItem
   ): Promise<GeneralItem> {
@@ -67,10 +64,10 @@ class GeneralStat extends Control {
       return newGeneralStats
     }
 
-    if (adapterDate(date) === adapterDate(index)) {
+    if (adapterDate(currentDate) === adapterDate(index)) {
       newGeneralStats[adapterDate(index)] = await callback(adapterDate(index), stateLog)
       return {
-        ...(await this.dateLoop(stateLog, callback, null, date, general, newGeneralStats))
+        ...(await this.dateLoop(stateLog, callback, null, currentDate, general, newGeneralStats))
       }
     }
 
@@ -80,7 +77,7 @@ class GeneralStat extends Control {
     index.setDate(index.getDate() + 1)
 
     return {
-      ...(await this.dateLoop(stateLog, callback, index, date, general, newGeneralStats))
+      ...(await this.dateLoop(stateLog, callback, index, currentDate, general, newGeneralStats))
     }
   }
 
@@ -120,21 +117,21 @@ class GeneralStat extends Control {
   }
 
   private drawLineChart(ctx: CanvasRenderingContext2D, newWords: GeneralItem, learnedWordsData: number[]) {
-    const labels = Object.keys(newWords)
+    const labels = Object.keys(newWords).reverse()
 
     const data = {
       labels: labels,
       datasets: [
         {
         label: 'The number of new words',
-        data: Object.values(newWords),
+        data: Object.values(newWords).reverse(),
         fill: false,
         borderColor: '#1f9465',
         tension: 0.1
        },
        {
         label: 'The increase in the total number of learned words',
-        data: learnedWordsData,
+        data: learnedWordsData.reverse(),
         fill: false,
         borderColor: '#e0677d',
         tension: 0.1
@@ -148,7 +145,7 @@ class GeneralStat extends Control {
         plugins: {
           title: {
               display: true,
-              text: 'General stats by new words by da ',
+              text: 'General stats by new words by day',
               font: {
                 size: 16,
                 family: "'Nunito', sans-serif"
