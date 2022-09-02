@@ -6,10 +6,12 @@ $color-level-english-3: #fcdd2e;
 $border-level-english-3: #f5a51c;
 $color-level-english-4: #1f9465;
 $border-level-english-4: #017347;
-$color-level-english-5: #068cfa;
-$border-level-english-5: #162fbd;
-$color-level-english-6: #966AAD;
-$border-level-english-6: #63387C;
+$color-level-english-5: #29cbfc;
+$border-level-english-5: #068cfa;
+$color-level-english-6: #5e74f2;
+$border-level-english-6: #162fbd;
+$color-level-english-7: #966AAD;
+$border-level-english-7: #63387C;
 $color-bg: #ffffff;
 $color-shadow: #aaa9a9;
 $color-text: #696969;
@@ -75,6 +77,11 @@ $color-bg-button-border: #40396e;
       &:nth-child(6) {
         background: $color-level-english-6;
         border-bottom: 3px solid $border-level-english-6;
+      }
+
+      &:nth-child(7) {
+        background: $color-level-english-7;
+        border-bottom: 3px solid $border-level-english-7;
       }
     }
   }
