@@ -61,7 +61,7 @@ class DifficultPage extends Control {
     const main = new Control(this.node, 'div', 'container_card');
     const arr = await this.getWords(user);
     this.createCards(main.node, arr as unknown as IWord[]);
-    if (arr.length === 0) main.node.innerHTML = '<h1 class="no_cards">Вы еще не добавили сложные слова!!!</h1>';
+    if (arr.length === 0) main.node.innerHTML = `<span class="no_cards">You haven't added difficult words yet!!!</span>`;
     loader.destroy();
   }
 

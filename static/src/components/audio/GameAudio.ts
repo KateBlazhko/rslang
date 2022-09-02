@@ -69,13 +69,9 @@ class GameAudio extends Control {
   // eslint-disable-next-line class-methods-use-this
   async getDifficultWord(user: IStateLog) {
     const words: IWord[] = [];
-    const res = (await Words.getDifficultyWords(user)).map((el) => {
-      Object.defineProperty(el, 'id', {
-        value: el._id, configurable: true, enumerable: true, writable: true,
-      });
-      return el;
-    });
-    words.push(...res as unknown as IWord[]);
+    const res = Words.adapterAggregatedWords(await Words.getDifficultyWords(user)) 
+    
+    words.push(...res);
     if (words.length < 27) {
       words.push(...await GameAudio.getAggWords(user, 5, 1));
     }
@@ -89,7 +85,6 @@ class GameAudio extends Control {
       this.arrWords = await GameAudio.getAllWords(difficult);
     } else if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
       this.arrWords = await this.getDifficultWord(stateLog);
-      console.log(this.arrWords);
     } else {
       const el = prevPage.split('/');
       const group = el[1];

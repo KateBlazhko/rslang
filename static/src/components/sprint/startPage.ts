@@ -43,16 +43,29 @@ class StartPage extends Control {
     
     const prevPage = this.state.getInitiator()
 
-    if (prevPage.includes('book') && prevPage.split('/').length >= 3) {
+    if (prevPage.includes('book')) {
+      if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
+        const group = 7;
+        const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
+  
+        const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
+        button.node.onclick = () => {
+          this.state.onPreload.emit([group]);
+          this.destroy();
+        };
+      }
 
-      const [ , group, page ] = prevPage.slice(1).split('/');
-      const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
+      if (prevPage.split('/').length >= 3) {
 
-      const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
-      button.node.onclick = () => {
-        this.state.onPreload.emit([+group, +page]);
-        this.destroy();
-      };
+        const [ , group, page ] = prevPage.slice(1).split('/');
+        const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
+  
+        const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
+        button.node.onclick = () => {
+          this.state.onPreload.emit([+group, +page]);
+          this.destroy();
+        };
+      }
     } else {
       const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromHeader);
       const buttonWrap = new Control(fourth.node, 'div', 'start__button-wrap');

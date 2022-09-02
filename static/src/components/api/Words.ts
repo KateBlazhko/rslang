@@ -328,7 +328,7 @@ class Words {
     throw ErrorUser;
   }
 
-  private static adapterAggregatedWords(aggregatedWordsAll: IWordAgr[]) {
+  public static adapterAggregatedWords(aggregatedWordsAll: IWordAgr[]) {
     const wordsAll: IWord[] = aggregatedWordsAll.map((word) => {
       const { _id: id, ...wordRest } = word;
       return {

@@ -5,7 +5,8 @@ import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
 import randomSort from '../common/functions';
-import Logging from '../Logging';
+import Logging, { IStateLog } from '../Logging';
+import bookConfig from '../constants/bookConfig';
 
 enum TextInner {
   preloader = 'We\'re getting closer, get ready...',
@@ -16,8 +17,6 @@ export interface IWordStat {
   wordId: string,
   answer: boolean
 }
-
-const COUNTPAGE = 30;
 
 class Sprint extends Control {
   private sprintWrap: Control;
@@ -67,7 +66,11 @@ class Sprint extends Control {
         const stateLog = await this.login.checkStorageLogin();
 
         if (stateLog.state) {
-          this.words = await this.getAggregatedWords(words);
+          if (group === bookConfig.numberDifficultGroup) {
+            this.words = await this.getDifficultWord(stateLog);
+          } else {
+            this.words = await this.getAggregatedWords(words);
+          }
         } else {
           this.words = await this.getWords(group, page);
         }
@@ -92,6 +95,12 @@ class Sprint extends Control {
     }
   }
 
+  private async getDifficultWord(stateLog: IStateLog) {
+    const words: IWord[] = [];
+    const res = await Words.getDifficultyWords(stateLog);
+    return Words.adapterAggregatedWords(res)
+  }
+
   private async getWords(group: number, page?: number) {
     try {
       if (page) {
@@ -102,7 +111,7 @@ class Sprint extends Control {
 
         return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
-      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 5) as number[];
+      const randomPage = randomSort([...Array(bookConfig.maxPage).keys()]).slice(0, 5) as number[];
       const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
         group: group.toString(),
         page: key.toString(),
