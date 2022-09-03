@@ -1,165 +1,178 @@
+import { Chart, registerables } from 'chart.js';
 import Stats, { GeneralItem, IGeneral } from '../api/Stats';
 import Words from '../api/Words';
 import Control from '../common/control';
 import Logging, { IStateLog } from '../login/Logging';
 import { adapterDate } from '../utils/functions';
-import { Chart, registerables } from 'chart.js';
+
 Chart.register(...registerables);
 
 class GeneralStat extends Control {
-  private chart: Control
+  private chart: Control;
 
   constructor(
     public parentNode: HTMLElement | null,
-    private login: Logging
+    private login: Logging,
   ) {
     super(parentNode, 'div', 'stat__general general');
 
     this.chart = new Control(this.node, 'div', 'general__chart-wrap');
-    this.updateStat()
-
+    this.updateStat();
   }
 
   private async updateStat() {
-    const stateLog = await this.login.checkStorageLogin()
+    const stateLog = await this.login.checkStorageLogin();
 
-    const userStat = await Stats.getStats(stateLog.userId, stateLog.token)  
-    const { optional: { dateReg, general } } = userStat
+    const userStat = await Stats.getStats(stateLog.userId, stateLog.token);
+    const { optional: { dateReg, general } } = userStat;
 
-    await this.recordToStat(stateLog, dateReg, general)
+    await this.recordToStat(stateLog, dateReg, general);
   }
 
   private async recordToStat(stateLog: IStateLog, dataRegString: string, general: IGeneral) {
-    const date = new Date()
-    const dataReg = new Date( dataRegString )
+    const date = new Date();
+    const dataReg = new Date(dataRegString);
 
-    const { newWords, learnedWords } = general
+    const { newWords, learnedWords } = general;
 
     const newWordsStats = {
-      ...(await this.dateLoop(stateLog, this.getCountNewWordsByDate, dataReg, date, newWords, {}))
-    }
+      ...(await this.dateLoop(
+        stateLog,
+        GeneralStat.getCountNewWordsByDate,
+        dataReg,
+        date,
+        newWords,
+        {},
+      )),
+    };
 
     const learnedWordsStats = {
-      ...(await this.dateLoop(stateLog, this.getCountLearnedWordsByDate, dataReg, date, learnedWords, {}))
-    }
+      ...(await this.dateLoop(
+        stateLog,
+        GeneralStat.getCountLearnedWordsByDate,
+        dataReg,
+        date,
+        learnedWords,
+        {},
+      )),
+    };
 
-    await Stats.recordGeneralStats(stateLog, {
-      newWords: newWordsStats,
-      learnedWords: learnedWordsStats
-    })
-    const userStatNew = await Stats.getStats(stateLog.userId, stateLog.token)  
-    const { optional: { general: generalNew } } = userStatNew
+    await Stats.recordGeneralStats(stateLog, newWordsStats, learnedWordsStats);
 
-    this.drawСhartNewWords(generalNew)
-
+    const userStatNew = await Stats.getStats(stateLog.userId, stateLog.token);
+    const { optional: { general: generalNew } } = userStatNew;
+    this.drawСhartNewWords(generalNew);
   }
 
   private async dateLoop(
     stateLog: IStateLog,
-    callback: (date: string, stateLog: IStateLog) =>  Promise<number>,
-    index: Date | null, 
-    date: Date, 
+    callback: (date: string, state: IStateLog) => Promise<number>,
+    index: Date | null,
+    currentDate: Date,
     general: GeneralItem,
-    newGeneralStats: GeneralItem
+    newGeneralStats: GeneralItem,
   ): Promise<GeneralItem> {
-
     if (!index) {
-      return newGeneralStats
+      return newGeneralStats;
     }
 
-    if (adapterDate(date) === adapterDate(index)) {
-      newGeneralStats[adapterDate(index)] = await callback(adapterDate(index), stateLog)
+    if (adapterDate(currentDate) === adapterDate(index)) {
+      newGeneralStats[adapterDate(index)] = await callback(adapterDate(index), stateLog);
       return {
-        ...(await this.dateLoop(stateLog, callback, null, date, general, newGeneralStats))
-      }
+        ...(await this.dateLoop(stateLog, callback, null, currentDate, general, newGeneralStats)),
+      };
     }
 
     if (!general[adapterDate(index)]) {
-      newGeneralStats[adapterDate(index)] = await callback(adapterDate(index), stateLog)
+      newGeneralStats[adapterDate(index)] = await callback(adapterDate(index), stateLog);
     }
-    index.setDate(index.getDate() + 1)
+    index.setDate(index.getDate() + 1);
 
     return {
-      ...(await this.dateLoop(stateLog, callback, index, date, general, newGeneralStats))
-    }
+      ...(await this.dateLoop(stateLog, callback, index, currentDate, general, newGeneralStats)),
+    };
   }
 
-  private async getCountNewWordsByDate(date: string, stateLog: IStateLog) {
-    const words = await Words.getNewWordsByDate(stateLog, date)
+  private static async getCountNewWordsByDate(date: string, stateLog: IStateLog) {
+    const words = await Words.getNewWordsByDate(stateLog, date);
 
-    return words.length
+    return words.length;
   }
 
-  private async getCountLearnedWordsByDate(date: string, stateLog: IStateLog) {
-    const words = await Words.getLearnedWordsByDate(stateLog, date)
+  private static async getCountLearnedWordsByDate(date: string, stateLog: IStateLog) {
+    const words = await Words.getLearnedWordsByDate(stateLog, date);
 
-    return words.length
+    return words.length;
   }
 
   private drawСhartNewWords(general: IGeneral) {
     const canvas = new Control<HTMLCanvasElement>(this.chart.node, 'canvas', 'stat__canvas');
     const ctx = canvas.node.getContext('2d');
 
-    const { newWords, learnedWords } = general
+    const { newWords, learnedWords } = general;
 
-    const learnedWordsData = this.getDataAboutLearnedWords(learnedWords)
+    const learnedWordsData = GeneralStat.getDataAboutLearnedWords(learnedWords);
 
     if (ctx) {
-      this.drawLineChart(ctx, newWords, learnedWordsData)
+      GeneralStat.drawLineChart(ctx, newWords, learnedWordsData);
     }
   }
 
-  private getDataAboutLearnedWords(learnedWords: GeneralItem) {
+  private static getDataAboutLearnedWords(learnedWords: GeneralItem) {
     return Object.values(learnedWords)
       .map((value, index, array) => {
         const sumPrevItems = array
           .slice(0, index)
-          .reduce((sum, item) => sum + item, 0)
-        return value + sumPrevItems
-      })
+          .reduce((sum, item) => sum + item, 0);
+        return value + sumPrevItems;
+      });
   }
 
-  private drawLineChart(ctx: CanvasRenderingContext2D, newWords: GeneralItem, learnedWordsData: number[]) {
-    const labels = Object.keys(newWords)
-
+  private static drawLineChart(
+    ctx: CanvasRenderingContext2D,
+    newWords: GeneralItem,
+    learnedWordsData: number[],
+  ) {
+    const labels = Object.keys(newWords);
+    console.log(labels);
     const data = {
-      labels: labels,
+      labels,
       datasets: [
         {
-        label: 'The number of new words',
-        data: Object.values(newWords),
-        fill: false,
-        borderColor: '#1f9465',
-        tension: 0.1
-       },
-       {
-        label: 'The increase in the total number of learned words',
-        data: learnedWordsData,
-        fill: false,
-        borderColor: '#e0677d',
-        tension: 0.1
-       }
-      ]
+          label: 'The number of new words',
+          data: Object.values(newWords),
+          fill: false,
+          borderColor: '#1f9465',
+          tension: 0.1,
+        },
+        {
+          label: 'The increase in the total number of learned words',
+          data: learnedWordsData,
+          fill: false,
+          borderColor: '#e0677d',
+          tension: 0.1,
+        },
+      ],
     };
     const config = {
       type: 'line',
-      data: data,
+      data,
       options: {
         plugins: {
           title: {
-              display: true,
-              text: 'General stats by new words by da ',
-              font: {
-                size: 16,
-                family: "'Nunito', sans-serif"
+            display: true,
+            text: 'General stats by new words by day',
+            font: {
+              size: 16,
+              family: "'Nunito', sans-serif",
 
-              }
-          }
+            },
+          },
         },
-      }
-    };  
-    
-    const myChart = new Chart(ctx, config)
+      },
+    };
+
+    const myChart = new Chart(ctx, config);
   }
 }
 

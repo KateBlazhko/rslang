@@ -1,7 +1,6 @@
+import BASELINK from '../constants/url';
 import ErrorUser from '../utils/ErrorUser';
 
-const localLink = 'http://localhost:3000';
-const BASELINK = 'https://rs-lang-machine.herokuapp.com';
 interface ICreateUser {
   name: string,
   email: string,
@@ -22,7 +21,7 @@ interface IAuth {
 }
 class User {
   static createUser = async (user: ICreateUser) => {
-    const rawResponse = await fetch(`${localLink}/users`, {
+    const rawResponse = await fetch(`${BASELINK}/users`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -39,7 +38,7 @@ class User {
   };
 
   static loginUser = async (user: ILoginUser) => {
-    const rawResponse = await fetch(`${localLink}/signin`, {
+    const rawResponse = await fetch(`${BASELINK}/signin`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -55,7 +54,7 @@ class User {
   };
 
   static getUser = async (userId: string, token: string) => {
-    const rawResponse = await fetch(`${localLink}/users/${userId}`, {
+    const rawResponse = await fetch(`${BASELINK}/users/${userId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

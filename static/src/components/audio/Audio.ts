@@ -13,47 +13,46 @@ class Audio extends Control {
 
   game: GameAudio;
 
+  prevPage: string;
+
+  bookPage: boolean;
+
   constructor(
     parentNode: HTMLElement | null,
     login: Logging,
-    private onGoBook: Signal<string>,
+    page: string,
   ) {
     super(parentNode, 'div', 'audio__container', '');
     this.login = login;
-    this.startPage = new StartPageAudio(null);
+    this.bookPage = (page.includes('book') && page.split('/').length === 3) || (page.includes('difficult'));
+    this.startPage = new StartPageAudio(null, this.bookPage);
+    this.prevPage = page;
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
-    onGoBook.add(this.setInitiator.bind(this));
-
     this.renderPage('start');
     this.startGame();
-  }
-
-  public setInitiator(page: string) {
-    this.initiator = page === 'book' ? 'book' : 'header';
-  }
-
-  public getInitiator(): 'book' | 'header' {
-    return this.initiator;
   }
 
   repeatListen() {
     this.node.innerHTML = '';
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
     this.renderPage('start');
+    this.startPage.createBtnDifficult(false);
   }
 
   startGame() {
     this.startPage.startBtn.node.addEventListener('click', async () => {
       this.renderPage('game');
 
-      this.game.game(`${this.startPage.difficult}`, this.getInitiator());
+      this.game.game(`${this.startPage.difficult}`, this.prevPage);
     });
   }
 
   renderPage(page: 'start' | 'game') {
     this.node.innerHTML = '';
     if (page === 'start') this.startPage.render(this.node);
-    else this.game.render(this.node);
+    else {
+      this.game.render(this.node);
+    }
   }
 }
 

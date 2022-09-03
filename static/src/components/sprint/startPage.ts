@@ -1,4 +1,5 @@
 import Control from '../common/control';
+import bookConfig from '../constants/bookConfig';
 import ButtonAnswer from './buttonAnswer';
 import GamePage from './gamePage';
 import SprintState from './sprintState';
@@ -38,6 +39,57 @@ class StartPage extends Control {
   }
 
   private renderStartPage() {
+    this.renderCommonDescriptions();
+
+    const prevPage = this.state.getInitiator();
+console.log(prevPage.split('/').length)
+    if (prevPage.includes('book')) {
+      if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
+        const group = bookConfig.numberDifficultGroup;
+        const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
+
+        const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
+        button.node.onclick = () => {
+          this.state.onPreload.emit([group]);
+          this.destroy();
+        };
+      }
+
+      if (prevPage.split('/').length >= 3) {
+        const [, group, page] = prevPage.slice(1).split('/');
+        const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
+
+        const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
+        button.node.onclick = () => {
+          this.state.onPreload.emit([+group, +page]);
+          this.destroy();
+        };
+      }
+
+      if (prevPage.split('/').length === 1) {
+        this.defaultStart()
+      }
+      
+    } else {
+      this.defaultStart()
+    }
+  }
+
+  private defaultStart() {
+    const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromHeader);
+    const buttonWrap = new Control(fourth.node, 'div', 'start__button-wrap');
+
+    const buttonList = [...Array(COUNTLEVELS).keys()].map((item) => {
+      const button = new ButtonAnswer(buttonWrap.node, 'start__button', (item + 1).toString());
+      button.node.onclick = () => {
+        this.state.onPreload.emit([item]);
+        this.destroy();
+      };
+
+      return button;
+    });
+  }
+  private renderCommonDescriptions() {
     const first = new Control(this.node, 'div', 'start__desription start__desription_odd');
     first.node.innerHTML = `
     <h3 class="start__title">${TextInner.title}</h3>
@@ -53,30 +105,6 @@ class StartPage extends Control {
       <div class="start__button start__button_pseudo"><span>→</span></div>
     </div>
     `;
-
-    if (this.state.getInitiator() === 'header') {
-      const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromHeader);
-      const buttonWrap = new Control(fourth.node, 'div', 'start__button-wrap');
-
-      const buttonList = [...Array(COUNTLEVELS).keys()].map((item) => {
-        const button = new ButtonAnswer(buttonWrap.node, 'start__button', (item + 1).toString());
-        button.node.onclick = () => {
-          this.state.onPreload.emit([item]);
-          this.destroy();
-        };
-
-        return button;
-      });
-    } else {
-      // todo get group, page number
-      const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
-
-      const button = new ButtonAnswer(fourth.node, 'start__button', TextInner.buttonFromBook);
-      button.node.onclick = () => {
-        this.state.onPreload.emit([0, 2]);
-        this.destroy();
-      };
-    }
   }
 
   public render() {

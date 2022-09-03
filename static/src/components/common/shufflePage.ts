@@ -39,4 +39,20 @@ function randomWord(array: IWord[]) {
   return array;
 }
 
-export { shufflePage, shuffleArrayPage, randomWord };
+function seriesSuccess(arrWord: { word: IWord, status: boolean }[]) {
+  let res = 0;
+  let count = 0;
+  arrWord.forEach((item) => {
+    if (item.status) {
+      count += 1;
+      if (count > res) res = count;
+    } else {
+      count = 0;
+    }
+  });
+  return res;
+}
+
+export {
+  shufflePage, shuffleArrayPage, randomWord, seriesSuccess,
+};

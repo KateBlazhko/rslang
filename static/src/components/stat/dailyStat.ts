@@ -1,3 +1,4 @@
+import { Chart, registerables } from 'chart.js';
 import Stats, { IGameStat, IStatOptional } from '../api/Stats';
 import Words from '../api/Words';
 import Control from '../common/control';
@@ -5,7 +6,6 @@ import Logging, { IStateLog } from '../login/Logging';
 import { adapterDate, getPercent } from '../utils/functions';
 import ButtonStat from './buttonStat';
 
-import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 enum TextInner {
@@ -17,189 +17,184 @@ enum TextInner {
 }
 
 class DailyStat extends Control {
-  private buttonWrap: Control
-  private statWrap: Control | null = null
+  private buttonWrap: Control;
+
+  private statWrap: Control | null = null;
 
   constructor(
     public parentNode: HTMLElement | null,
-    private login: Logging
+    private login: Logging,
   ) {
     super(parentNode, 'div', 'stat__daily daily');
 
     this.buttonWrap = new Control(this.node, 'div', 'daily__button-wrap');
-    const buttonName = ['sprint', 'audio', 'book']
-    const buttonList = buttonName.map(name => {
-      return this.drawButton(name)
-    })
+    const buttonName = ['sprint', 'audio', 'book'];
+    const buttonList = buttonName.map((name) => this.drawButton(name));
 
-    const [ firstButton ] = buttonList
-    firstButton.node.classList.add('active')
-    this.getStat(firstButton.name)
+    const [firstButton] = buttonList;
+    firstButton.node.classList.add('active');
+    this.getStat(firstButton.name);
 
     buttonList.forEach((button, indexButton, arr) => {
       button.node.onclick = () => {
-        button.node.classList.add('active')
+        button.node.classList.add('active');
 
         arr
           .filter((_item, index) => index !== indexButton)
           .forEach((item) => {
-            item.node.classList.remove('active')
-        })
+            item.node.classList.remove('active');
+          });
 
-
-        this.getStat(button.name)
-      }
-      return button
-    })
+        this.getStat(button.name);
+      };
+      return button;
+    });
   }
 
   private drawButton(name: string) {
-    const icon = new ButtonStat(this.buttonWrap.node, `daily__icon`, '', name);
+    const icon = new ButtonStat(this.buttonWrap.node, 'daily__icon', '', name);
 
     const img = new Control<HTMLImageElement>(icon.node, 'img', 'daily__img');
     img.node.src = `./assets/img/${name}.png`;
-    const text = new Control(icon.node, 'div', `daily__text`);
+    const text = new Control(icon.node, 'div', 'daily__text');
     text.node.innerHTML = `
     <span>${name[0].toUpperCase()}${name.slice(1)}</span>
     `;
     return icon;
   }
 
-  private async checkStat(dataCurrent: string, stateLog: IStateLog) {
-    const userStat = await Stats.getStats(stateLog.userId, stateLog.token)  
+  private static async checkStat(dataCurrent: string, stateLog: IStateLog) {
+    const userStat = await Stats.getStats(stateLog.userId, stateLog.token);
 
-    const isSameDate = userStat.optional.dateCurrent === dataCurrent
+    const isSameDate = userStat.optional.dateCurrent === dataCurrent;
     if (isSameDate) {
-      return userStat
-    } else {
-      const resultResetStat= await Stats.resetStat(stateLog, userStat, dataCurrent)
-      const userStatNew = await Stats.getStats(stateLog.userId, stateLog.token)
-      return userStatNew
+      return userStat;
     }
+    const resultResetStat = await Stats.resetStat(stateLog, userStat, dataCurrent);
+    const userStatNew = await Stats.getStats(stateLog.userId, stateLog.token);
+    return userStatNew;
   }
 
   private async getStat(name: string) {
-    const stateLog = await this.login.checkStorageLogin()
-    const date = adapterDate(new Date)
+    const stateLog = await this.login.checkStorageLogin();
+    const date = adapterDate(new Date());
 
-    this.checkStat(date, stateLog)
+    DailyStat.checkStat(date, stateLog);
 
-    const stat = await this.checkStat(date, stateLog)
-    const learnedWords = await Words.getLearnedWordsByDate(stateLog, date)
-    const newWordsAll = await Words.getNewWordsByDate(stateLog, date)
+    const stat = await DailyStat.checkStat(date, stateLog);
+    const learnedWords = await Words.getLearnedWordsByDate(stateLog, date);
+    const newWordsAll = await Words.getNewWordsByDate(stateLog, date);
 
-    this.drawStat(name)
+    this.drawStat(name);
 
     if (name === 'book') {
-      const gameStatSprint = stat.optional.sprint
-      const { countError: errorSprint, сountRightAnswer: rightSprint } = gameStatSprint
-      const gameStatAudio = stat.optional.audio
-      const { countError: errorAudio, сountRightAnswer: rightAudio } = gameStatAudio
+      const gameStatSprint = stat.optional.sprint;
+      const { countError: errorSprint, сountRightAnswer: rightSprint } = gameStatSprint;
+      const gameStatAudio = stat.optional.audio;
+      const { countError: errorAudio, сountRightAnswer: rightAudio } = gameStatAudio;
 
-      const countlearnedWords = learnedWords.length
+      const countlearnedWords = learnedWords.length;
 
-      const countNewWords = newWordsAll.length
+      const countNewWords = newWordsAll.length;
 
       this.drawStatWords(
-        countlearnedWords, 
-        countNewWords, 
-        errorSprint + errorAudio, 
-        rightSprint + rightAudio
-      )
-
+        countlearnedWords,
+        countNewWords,
+        errorSprint + errorAudio,
+        rightSprint + rightAudio,
+      );
     } else {
-      const gameStat = stat.optional[name as keyof IStatOptional] as IGameStat
-      this.drawStatGame(gameStat)
+      const gameStat = stat.optional[name as keyof IStatOptional] as IGameStat;
+      this.drawStatGame(gameStat);
     }
-
-
   }
 
   private drawStat(name: string) {
-    if (this.statWrap) this.statWrap.destroy()
-    
+    if (this.statWrap) this.statWrap.destroy();
+
     this.statWrap = new Control(this.node, 'div', 'daily__stat-wrap');
 
-    const title = new Control(this.statWrap.node, 'h3', 'daily__name', name[0].toUpperCase() + name.slice(1)) 
+    const title = new Control(this.statWrap.node, 'h3', 'daily__name', name[0].toUpperCase() + name.slice(1));
   }
 
   private drawStatWords(
-    learnedWords: number, 
-    newWords: number, 
-    errors: number, 
-    rights: number
+    learnedWords: number,
+    newWords: number,
+    errors: number,
+    rights: number,
   ) {
     if (this.statWrap) {
-      const percent = getPercent(errors, errors + rights)
+      const percent = getPercent(errors, errors + rights);
       if (percent) {
         const canvas = new Control<HTMLCanvasElement>(this.statWrap.node, 'canvas', 'stat__canvas');
         const ctx = canvas.node.getContext('2d');
-    
+
         if (ctx) {
-          this.drawChart(ctx, percent)
+          DailyStat.drawChart(ctx, percent);
         }
       } else {
         const text = [
           new Control(this.statWrap.node, 'span', 'daily__item', TextInner.errors),
-          new Control(this.statWrap.node, 'span', 'daily__item', TextInner.rights)
-        ]
+          new Control(this.statWrap.node, 'span', 'daily__item', TextInner.rights),
+        ];
       }
 
       const text = [
         new Control(
-          this.statWrap.node, 
-          'span', 
-          'daily__item', 
-          `${TextInner.learnedWords}: ${learnedWords}`
-        ),  
+          this.statWrap.node,
+          'span',
+          'daily__item',
+          `${TextInner.learnedWords}: ${learnedWords}`,
+        ),
         new Control(
-          this.statWrap.node, 
-          'span', 
-          'daily__item', 
-          `${TextInner.newWords}: ${newWords}`
-        )
-      ] 
+          this.statWrap.node,
+          'span',
+          'daily__item',
+          `${TextInner.newWords}: ${newWords}`,
+        ),
+      ];
     }
   }
 
-  private drawStatGame(gameStat: IGameStat) {    
+  private drawStatGame(gameStat: IGameStat) {
     if (this.statWrap) {
-      const { countError, сountRightAnswer, maxSeriesRightAnswer, newWords } = gameStat
+      const {
+        countError, сountRightAnswer, maxSeriesRightAnswer, newWords,
+      } = gameStat;
 
-      const percent = getPercent(countError, countError + сountRightAnswer)
-       if (percent) {
+      const percent = getPercent(countError, countError + сountRightAnswer);
+      if (percent) {
         const canvas = new Control<HTMLCanvasElement>(this.statWrap.node, 'canvas', 'stat__canvas');
         const ctx = canvas.node.getContext('2d');
-    
+
         if (ctx) {
-          this.drawChart(ctx, percent)
+          DailyStat.drawChart(ctx, percent);
         }
       } else {
         const text = [
           new Control(this.statWrap.node, 'span', 'daily__item', TextInner.errors),
-          new Control(this.statWrap.node, 'span', 'daily__item', TextInner.rights)
-        ]
+          new Control(this.statWrap.node, 'span', 'daily__item', TextInner.rights),
+        ];
       }
-  
+
       const text = [
         new Control(
-          this.statWrap.node, 
-          'span', 
-          'daily__item', 
-          `${TextInner.maxSeriesRightAnswer}: ${maxSeriesRightAnswer}`
-        ),  
+          this.statWrap.node,
+          'span',
+          'daily__item',
+          `${TextInner.maxSeriesRightAnswer}: ${maxSeriesRightAnswer}`,
+        ),
         new Control(
-          this.statWrap.node, 
-          'span', 
-          'daily__item', 
-          `${TextInner.newWords}: ${newWords}`
-        )
-      ] 
+          this.statWrap.node,
+          'span',
+          'daily__item',
+          `${TextInner.newWords}: ${newWords}`,
+        ),
+      ];
     }
   }
 
-  private drawChart(ctx: CanvasRenderingContext2D, percent: number) {
-  
+  private static drawChart(ctx: CanvasRenderingContext2D, percent: number) {
     const data = {
       labels: [
         'Errors',
@@ -214,29 +209,28 @@ class DailyStat extends Control {
         ],
         hoverOffset: 4,
 
-      }]
+      }],
     };
-  
+
     const config = {
       type: 'doughnut',
-      data: data,
+      data,
       options: {
         plugins: {
-            title: {
-                display: true,
-                text: 'Answers',
-                font: {
-                  size: 16,
-                  family: "'Nunito', sans-serif"
+          title: {
+            display: true,
+            text: 'Answers',
+            font: {
+              size: 16,
+              family: "'Nunito', sans-serif",
 
-                }
-            }
-        }
+            },
+          },
+        },
       },
     };
 
-    const myChart = new Chart(ctx, config)
-
+    const myChart = new Chart(ctx, config);
   }
 }
 

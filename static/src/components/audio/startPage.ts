@@ -11,8 +11,11 @@ class StartPageAudio extends Control {
 
   description: Control<HTMLElement>;
 
+  draw: boolean;
+
   constructor(
     parentNode: HTMLElement | null,
+    draw: boolean,
   ) {
     super(parentNode, 'div', 'start__page__audio');
     this.description = new Control(this.node, 'div', 'description__audio');
@@ -20,8 +23,9 @@ class StartPageAudio extends Control {
     this.containerBtn = new Control(this.node, 'div', 'audio_container__btn');
     this.startBtn = new Control(this.node, 'button', 'start_btn__audio', 'Start');
     this.arrBtn = [];
+    this.draw = true;
     this.difficult = 1;
-    this.createBtnDifficult();
+    this.createBtnDifficult(draw);
   }
 
   createDescription() {
@@ -46,22 +50,25 @@ class StartPageAudio extends Control {
     `;
   }
 
-  private createBtnDifficult(): void {
-    for (let i = 1; i <= 6; i += 1) {
-      const btn = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', '', `${i}`);
-      this.arrBtn.push({
-        node: btn.node,
-        difficult: i - 1,
-      });
-      if (i === 1) this.addActive(btn.node);
-    }
+  createBtnDifficult(draw: boolean): void {
+    if (!draw) {
+      for (let i = 1; i <= 6; i += 1) {
+        const btn = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', '', `${i}`);
+        this.arrBtn.push({
+          node: btn.node,
+          difficult: i - 1,
+        });
+        if (i === 1) this.addActive(btn.node);
+      }
 
-    this.arrBtn.forEach((item) => {
-      item.node.addEventListener('click', () => {
-        this.difficult = item.difficult;
-        this.addActive(item.node);
+      this.arrBtn.forEach((item) => {
+        item.node.addEventListener('click', () => {
+          this.difficult = item.difficult;
+          this.addActive(item.node);
+        });
       });
-    });
+      this.draw = true;
+    }
   }
 
   private addActive(node: HTMLButtonElement): void {

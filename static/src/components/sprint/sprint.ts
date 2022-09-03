@@ -5,8 +5,9 @@ import GamePage from './gamePage';
 import SprintState from './sprintState';
 import StartPage from './startPage';
 import randomSort from '../utils/functions';
-import Logging from '../login/Logging';
+import Logging, { IStateLog } from '../login/Logging';
 import Stats, { IGameStat } from '../api/Stats';
+import bookConfig from '../constants/bookConfig';
 
 enum TextInner {
   preloader = 'We\'re getting closer, get ready...',
@@ -19,8 +20,6 @@ export interface IWordStat {
 }
 
 export type Stat = [IWordStat[], IGameStat]
-
-const COUNTPAGE = 30;
 
 class Sprint extends Control {
   private sprintWrap: Control;
@@ -42,14 +41,14 @@ class Sprint extends Control {
   constructor(
     private parentNode: HTMLElement | null,
     private login: Logging,
-    private onGoBook: Signal<string>,
+    private prevPage: { page: string; },
   ) {
     super(parentNode, 'div', 'sprint');
 
-    this.sprintWrap = new Control(this.node, 'div', 'sprint__wrap')
+    this.sprintWrap = new Control(this.node, 'div', 'sprint__wrap');
     this.state = new SprintState();
+    this.state.setInitiator(this.prevPage.page);
     this.state.onPreload.add(this.renderPreloader.bind(this));
-    onGoBook.add(this.state.setInitiator.bind(this.state));
 
     this.preloader = new Control(null, 'span', 'sprint__preloader', TextInner.preloader);
 
@@ -62,15 +61,20 @@ class Sprint extends Control {
   private async renderPreloader(words: number[]) {
     const [group, page] = words;
     this.node.append(this.preloader.node);
-
     try {
-      if (this.state.getInitiator() === 'header') {
+      if (!this.state.getInitiator().includes('book')) {
         this.words = await this.getWords(group);
       } else {
         const stateLog = await this.login.checkStorageLogin();
 
         if (stateLog.state) {
-          this.words = await this.getAggregatedWords(words);
+          if (group === bookConfig.numberDifficultGroup) {
+            this.words = await Sprint.getDifficultWord(stateLog);
+          } else  if (page) {
+            this.words = await this.getAggregatedWords(words);
+            } else {
+              this.words = await this.getWords(group);
+            }
         } else {
           this.words = await this.getWords(group, page);
         }
@@ -80,10 +84,11 @@ class Sprint extends Control {
       this.animationWrap = new Control(this.node, 'div', 'sprint__animation-wrap');
 
       this.gamePage = new GamePage(
-        this.sprintWrap.node, 
-        this.state, this.words, 
+        this.sprintWrap.node,
+        this.state,
+        this.words,
         this.onFinish,
-        this.animationWrap
+        this.animationWrap,
       );
     } catch {
       this.preloader.node.textContent = TextInner.error;
@@ -94,7 +99,15 @@ class Sprint extends Control {
     }
   }
 
+  private static async getDifficultWord(stateLog: IStateLog) {
+    const words: IWord[] = [];
+    const res = await Words.getDifficultyWords(stateLog);
+    return Words.adapterAggregatedWords(res);
+  }
+
   private async getWords(group: number, page?: number) {
+    console.log('this.words');
+
     try {
       if (page) {
         const words = await Words.getWords({
@@ -104,7 +117,8 @@ class Sprint extends Control {
 
         return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
-      const randomPage = randomSort([...Array(COUNTPAGE).keys()]).slice(0, 5) as number[];
+
+      const randomPage = randomSort([...Array(bookConfig.maxPage).keys()]).slice(0, 5) as number[];
       const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
         group: group.toString(),
         page: key.toString(),
@@ -142,7 +156,7 @@ class Sprint extends Control {
   }
 
   private async recordStatToBD(stat: Stat) {
-    const [ wordsStat, gameStat ] = stat
+    const [wordsStat, gameStat] = stat;
 
     const stateLog = await this.login.checkStorageLogin();
     if (stateLog.state) {
@@ -153,12 +167,11 @@ class Sprint extends Control {
         if (userWord) {
           return Words.updateWordStat(stateLog, userWord, word.answer);
         }
-        gameStat.newWords += 1
+        gameStat.newWords += 1;
         return Words.createWordStat(stateLog, word);
       }));
 
-      const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'sprint')
-
+      const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'sprint');
     }
   }
 

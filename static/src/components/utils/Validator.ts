@@ -8,7 +8,7 @@ class Validator {
     value.label.querySelector('.warning__div')?.remove();
 
     if (patternType === 'email') {
-      warningMessage = `Email is not correct, check please`;
+      warningMessage = 'Email is not correct, check please';
       pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     } else if (patternType === 'password') {
       warningMessage = 'Your password is not correct, it must be at least 8 characters long and contain letters and numbers';

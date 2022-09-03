@@ -15,16 +15,16 @@ function randomSort(array: IWord[] | number[]) {
   return array;
 }
 
-export function adapterDate (date: Date) {
-  const year = new Date(Date.parse(date.toString())).getFullYear()
-  const month = new Date(Date.parse(date.toString())).getMonth()
-  const day = new Date(Date.parse(date.toString())).getDate()
+export function adapterDate(date: Date) {
+  const year = new Date(Date.parse(date.toString())).getFullYear();
+  const month = new Date(Date.parse(date.toString())).getMonth();
+  const day = new Date(Date.parse(date.toString())).getDate();
 
-  return `${year}-${month + 1}-${day}`
+  return `${year}-${month + 1}-${day}`;
 }
 
 export function getPercent(value: number, sum: number) {
-  return (value * 100) / sum
+  return (value * 100) / sum;
 }
 
 export default randomSort;

@@ -1,9 +1,11 @@
-import Words, { IWord } from '../api/Words';
+import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
-import { shufflePage, shuffleArrayPage } from '../common/shufflePage';
-import Logging, { IStateLog } from '../login//Logging';
+import randomSort from '../utils/functions';
+import { shufflePage, shuffleArrayPage, seriesSuccess } from '../common/shufflePage';
+import Logging, { IStateLog } from '../login/Logging';
 import CardAudio from './CardAudio';
 import StatisticAudio from './StatisticAudio';
+import Stats from '../api/Stats';
 
 interface ICardAudio {
     value: number;
@@ -65,23 +67,59 @@ class GameAudio extends Control {
     return shuffleArrayPage(wordsAll.flat());
   }
 
-  async game(difficult: string, initiator: 'book' | 'header') {
-    if (initiator === 'header') {
-      this.arrWords = await GameAudio.getAllWords(difficult);
-    } else {
-      const group = 0;
-      const page = 2;
-      // todo getting group, page from book
-      const stateLog = await this.login.checkStorageLogin();
+  // eslint-disable-next-line class-methods-use-this
+  async getDifficultWord(user: IStateLog) {
+    const words: IWord[] = [];
+    const res = Words.adapterAggregatedWords(await Words.getDifficultyWords(user));
 
+    words.push(...res);
+    if (words.length < 27) {
+      words.push(...await GameAudio.getAggWords(user, 5, 1));
+    }
+
+    return words.slice(0, 27);
+  }
+
+  async game(difficult: string, prevPage: string) {
+    const stateLog = await this.login.checkStorageLogin();
+    if (!prevPage.includes('book')) {
+      this.arrWords = await GameAudio.getAllWords(difficult);
+    } else if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
+      this.arrWords = await this.getDifficultWord(stateLog);
+    } else {
+      const el = prevPage.split('/');
+      const group = el[1];
+      const page = el[2];
       if (stateLog.state) {
-        this.arrWords = await GameAudio.getAggregatedWords(stateLog, group, page);
+        this.arrWords = await GameAudio.getAggWords(stateLog, +group, +page);
       } else {
-        this.arrWords = await GameAudio.getAllWords(group.toString(), page.toString());
+        this.arrWords = await GameAudio.pageWords(group.toString(), page.toString());
       }
     }
 
     this.createCard();
+  }
+
+  static async pageWords(difficult: string, page: string) {
+    let thisPage = +page;
+    const words = [];
+    words.push(...await GameAudio.getAllWords(difficult, `${thisPage}`));
+    if (words.length < 27) {
+      thisPage = thisPage > 0 ? thisPage - 1 : thisPage = 29;
+      words.push(...await GameAudio.getAllWords(difficult, `${thisPage}`));
+    }
+    return words;
+  }
+
+  static async getAggWords(stateLog: IStateLog, group: number, page: number) {
+    let thisPage = page;
+    const words = [];
+    words.push(...await GameAudio.getAggregatedWords(stateLog, +group, thisPage));
+    if (words.length < 27) {
+      thisPage = thisPage > 0 ? thisPage - 1 : thisPage = 29;
+      words.push(...await GameAudio.getAggregatedWords(stateLog, +group, thisPage));
+    }
+    return words;
   }
 
   private static async getAggregatedWords(stateLog: IStateLog, group: number, page: number) {
@@ -117,14 +155,14 @@ class GameAudio extends Control {
       if (successWord?.value === +key) {
         this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
         successWord.node.classList.add('success');
-        this.arrWordsStatus.push({ word: successWord.word, status: true });
+        this.arrWordsStatus.push({ word: card.words.successWord, status: true });
         success.play();
       } else if (thisCard) {
         successWord?.node.classList.toggle('success');
         this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
         thisCard.node.classList.add('failed');
         fail.play();
-        this.arrWordsStatus.push({ word: thisCard.word, status: false });
+        this.arrWordsStatus.push({ word: card.words.successWord, status: false });
       }
 
       card.allWords.forEach((node) => { node.node.disabled = true; });
@@ -141,12 +179,12 @@ class GameAudio extends Control {
     if (item.word.id === card.words.successWord.id) {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
       item.node.classList.add('success');
-      this.arrWordsStatus.push({ word: item.word, status: true });
+      this.arrWordsStatus.push({ word: card.words.successWord, status: true });
       success.play();
     } else {
       this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
       item.node.classList.add('failed');
-      this.arrWordsStatus.push({ word: item.word, status: false });
+      this.arrWordsStatus.push({ word: card.words.successWord, status: false });
       fail.play();
       successWord?.node.classList.toggle('success');
     }
@@ -167,6 +205,9 @@ class GameAudio extends Control {
         }
         return Words.createWordStat(stateLog, { wordId: word.word.id, answer: word.status });
       }));
+
+      const gameStat = this.gameStatistic(this.arrWordsStatus, userWordsAll);
+      const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'audio');
     }
   }
 
@@ -177,6 +218,24 @@ class GameAudio extends Control {
     const statistic = new StatisticAudio(this.node, this.arrWordsStatus);
     document.onkeydown = () => {};
   }
+
+  gameStatistic(arrWord: { word: IWord, status: boolean }[], userWords: IUserWord[]) {
+    const map = userWords.map((el) => el.optional.wordId);
+    const res = arrWord.filter((el) => !map.includes(el.word.id));
+    return {
+      newWords: res.length,
+      сountRightAnswer: arrWord.filter((el) => el.status === true).length,
+      countError: arrWord.filter((el) => el.status === false).length,
+      maxSeriesRightAnswer: seriesSuccess(this.arrWordsStatus),
+    };
+  }
+
+  // IGameStat {
+  //   newWords: number, (тех, которых не было в пользовательских)
+  //   сountRightAnswer: number, (количество правильных ответов за игру)
+  //   countError: number, (количество ошибок за игру)
+  //   maxSeriesRightAnswer: number (максимальная серия правильных ответов за игру)
+  // }
 
   buttonNext(card: CardAudio) {
     const button = new Control(null, 'button', 'button_next', 'Next');
