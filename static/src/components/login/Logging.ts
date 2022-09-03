@@ -3,7 +3,7 @@ import ButtonLogging from '../common/ButtonLogging';
 import Control from '../common/control';
 import ModalLog from './ModalLog';
 import Validator from '../utils/Validator';
-import { User, IAuth } from '../api/User';
+import { User, IAuth, IToken } from '../api/User';
 import StatisticPage from '../stat/statistic';
 import Stats from '../api/Stats';
 import { adapterDate } from '../utils/functions';
@@ -148,11 +148,31 @@ class Logging {
     this.accessStatistics();
   }
 
+  // eslint-disable-next-line class-methods-use-this, consistent-return
+  async getNewToken() {
+    const response = localStorage.getItem('user');
+    const user = JSON.parse(response!) as IAuth;
+
+    const res = await User.getToken(user.userId, user.refreshToken);
+    if (res instanceof Response) {
+      const newToken = await res.json() as IToken;
+      user.token = newToken.token;
+      user.refreshToken = newToken.refreshToken;
+      localStorage.setItem('user', JSON.stringify(user));
+      return user;
+    }
+    console.log('res');
+  }
+
   async checkStorageLogin() {
     const response = localStorage.getItem('user');
     if (response) {
-      const user = JSON.parse(response) as IAuth;
+      let user = JSON.parse(response) as IAuth;
       const req = await User.getUser(user.userId, user.token);
+      if (req.status === 401) {
+        const newUs = await this.getNewToken();
+        if (newUs) user = newUs;
+      }
       if (req.status === 200) {
         this.successLog();
         this.saveState(user);

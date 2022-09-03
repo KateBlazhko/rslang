@@ -230,13 +230,6 @@ class GameAudio extends Control {
     };
   }
 
-  // IGameStat {
-  //   newWords: number, (тех, которых не было в пользовательских)
-  //   сountRightAnswer: number, (количество правильных ответов за игру)
-  //   countError: number, (количество ошибок за игру)
-  //   maxSeriesRightAnswer: number (максимальная серия правильных ответов за игру)
-  // }
-
   buttonNext(card: CardAudio) {
     const button = new Control(null, 'button', 'button_next', 'Next');
     card.node.prepend(button.node);
