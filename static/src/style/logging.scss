@@ -15,15 +15,27 @@ $button-log-out-border: #e0677d;
   .profile {
     width: 50px;
     height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    color: $color-bg;
-    font-weight: 700;
-    text-decoration: none;
-    background-color: dimgray;
+    @include flexCenter();
+    // font-size: 26px;
+    // color: $color-bg;
+    // font-weight: 700;
+    // text-decoration: none;
+    // background-color: dimgray;
     border-radius: 50%;
+
+    background: url('./assets/icons/stat.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    filter: $filter-color;
+      -webkit-filter: grayscale(1);
+      transition: all 0.5s ease-in-out; 
+
+    &.login {
+      filter: none;
+      -webkit-filter: grayscale(0);
+    }
   }
 
   button {
