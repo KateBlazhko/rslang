@@ -1,36 +1,52 @@
-.notification__overlay {
-	position: absolute;
-  top: 0;
-	left: 0;
-	z-index: 3;
+.notification {
 
-  @include flexCenter();
-  
-	width: 100%;
-	height: 100vh;
+	&__overlay {
+		position: absolute;
+		top: 30%;
+		left: 0;
+		z-index: 3;
+	
+		@include flexCenter();
+		
+		width: 100%;
+		height: 10%;
+	
+		// background-color: $blackout;
+	
+		opacity: 0;
+	
+		animation: Change-opacity 4s;
+		animation-fill-mode: forwards;
+		animation-direction: normal;
+	
+	}
+	
+	&__inner {
+		// overflow: hidden;
+		@include flexCenter();
+		// align-self: flex-start;
+		width: 37rem;
+		height: 100%;
+		border-radius: 5px;
+	
+		background-color: $color-bg;
+	}
 
-	// background-color: $blackout;
-
-	opacity: 0;
-
-	animation: Change-opacity 1s;
-	animation-fill-mode: forwards;
-	animation-direction: normal;
-
-}
-
-.notification__inner {
-	// overflow: hidden;
-  @include flexCenter();
-	// align-self: flex-start;
-	width: 30rem;
-	height: 10rem;
-	border-radius: 5px;
-
-	background-color: $color-bg;
-
-	.notification__text {
-		font-size: 3rem;
+	&__text {
+		font-size: 2rem;
 		color: $color-text
 	}
 }
+
+@keyframes Change-opacity {
+	0% {
+			opacity: 0;
+	}
+50% {
+			opacity: 1;
+	}
+	100% {
+		opacity: 0;
+}
+}
+
