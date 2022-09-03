@@ -27,6 +27,8 @@ class GameAudio extends Control {
 
   login: Logging;
 
+  count: number;
+
   constructor(start: () => void, login: Logging) {
     super(null, 'div', 'game__page__audio');
     this.login = login;
@@ -38,6 +40,7 @@ class GameAudio extends Control {
     this.arrWordsStatus = [];
     this.value = { word: 0 };
     this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+    this.count = 20;
     this.repeatListen();
   }
 
@@ -234,7 +237,7 @@ class GameAudio extends Control {
     const button = new Control(null, 'button', 'button_next', 'Next');
     card.node.prepend(button.node);
     button.node.addEventListener('click', () => {
-      if (this.value.word < 20) {
+      if (this.value.word < this.count) {
         this.createCard(card);
       } else {
         this.viewStatistic(card);
@@ -243,7 +246,7 @@ class GameAudio extends Control {
     });
     document.onkeydown = (e) => {
       if (e.key === 'Enter') {
-        if (this.value.word < 20) {
+        if (this.value.word < this.count) {
           this.createCard(card);
         } else {
           this.viewStatistic(card);

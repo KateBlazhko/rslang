@@ -172,8 +172,9 @@ class Logging {
       if (req.status === 401) {
         const newUs = await this.getNewToken();
         if (newUs) user = newUs;
-      }
-      if (req.status === 200) {
+        this.successLog();
+        this.saveState(user);
+      } else if (req.status === 200) {
         this.successLog();
         this.saveState(user);
       } else {
