@@ -24,7 +24,8 @@ class CardBook extends Control {
     word: IWord,
     private sounds: string[],
     user: IStateLog,
-    public onAudioPlay: Signal<boolean>
+    public onAudioPlay: Signal<boolean>,
+    public onMarkedWords?: Signal<Record<string, boolean>>
   ) {
     super(parentNode, 'div', 'card_item');
     this.user = user;
@@ -189,6 +190,7 @@ class CardBook extends Control {
 
       if (difficult === 'hard') {
         difficult = 'easy';
+        this.onMarkedWords?.emit({[word.id]: false})
         // difficultBtn.node.textContent = 'Difficult';
         difficultBtn.node.classList.remove('active');
         this.node.classList.remove('difficult');
@@ -196,6 +198,7 @@ class CardBook extends Control {
       } else {
         difficult = 'hard';
         learn = false;
+        this.onMarkedWords?.emit({[word.id]: true})
         // difficultBtn.node.textContent = 'Delete';
         // studyBtn.node.textContent = 'Study';
         difficultBtn.node.classList.add('active');
@@ -205,7 +208,7 @@ class CardBook extends Control {
         this.node.classList.remove('study');
         await this.checkDifficult(this.UserWord, 'hard', false);
       }
-      this.checkAllCards();
+      // this.checkAllCards();
     });
     studyBtn.node.addEventListener('click', async () => {
       if (!this.UserWord) {
@@ -214,6 +217,7 @@ class CardBook extends Control {
 
       if (learn) {
         learn = false;
+        this.onMarkedWords?.emit({[word.id]: false})
         // studyBtn.node.textContent = 'Study';
         studyBtn.node.classList.remove('active');
         this.node.classList.remove('study');
@@ -221,6 +225,8 @@ class CardBook extends Control {
       } else {
         learn = true;
         difficult = 'easy';
+        this.onMarkedWords?.emit({[word.id]: true})
+
         // studyBtn.node.textContent = 'Studied';
         // difficultBtn.node.textContent =  'Difficult';
 
@@ -231,26 +237,12 @@ class CardBook extends Control {
         this.node.classList.remove('difficult');
         await this.checkStudy(this.UserWord!, true, 'easy');
       }
-      this.checkAllCards();
+      // this.checkAllCards();
     });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  checkAllCards() {
-    const study = document.querySelectorAll('.study');
-    const difficult = document.querySelectorAll('.difficult');
-    const page = document.querySelector('.page_book_container');
-    const allCard = document.querySelectorAll('.card_item');
-
-    if (study.length + difficult.length === 20) page?.classList.add('all-check');
-    else page?.classList.remove('all-check');
-
-    if (allCard.length === 0 && page) page.innerHTML = `<h1 class="no_cards">You haven't added difficult words yet!!!</h1>`;
   }
 
   addUserFunctional(word: IWord, userWords?: IUserWord[]) {
     const userWord = userWords?.find((el) => el.optional.wordId === word.id);
-    // const containerBtn = new Control(this.description.node, 'div', 'container-btn');
     this.createBtnDifficultAndStudy(this.buttonWrap.node, word, userWord);
     this.createUserButton(this.buttonWrap.node, word, userWord);
   }
@@ -258,7 +250,6 @@ class CardBook extends Control {
 
   createUserButton(node: HTMLElement, word: IWord, userWord?: IUserWord) {
     const user = new Control<HTMLImageElement>(node, 'div', 'button button_userWords');
-
   };
 
 

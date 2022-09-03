@@ -67,6 +67,20 @@ class Header extends Control {
     this.arrHref = [home, about, book, sprint, audio];
   }
 
+  setDisable(isDisable: boolean) {
+    const [ , , , ...gameButtons] = this.arrHref
+console.log(gameButtons)
+    if (isDisable) {
+      gameButtons.forEach(button => {
+        button.node.classList.add('disable')
+      })
+    } else {
+      gameButtons.forEach(button => {
+        button.node.classList.remove('disable')
+      })
+    }
+  }
+
   addEventListen() {
     this.arrHref.forEach((item) => {
       item.node.addEventListener('click', () => {

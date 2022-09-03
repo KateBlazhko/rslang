@@ -26,6 +26,8 @@ class Router {
   }
 
   public onGoPage = new Signal<string>();
+  public onDisable = new Signal<boolean>();
+
 
   private hashChange() {
     window.addEventListener('hashchange', () => {
@@ -45,7 +47,7 @@ class Router {
 
     if (hash.includes('book')) {
       this.onGoPage.emit(hash);
-      this.currentPage = new Book(container, this.login, hash);
+      this.currentPage = new Book(container, this.login, hash, this.onDisable);
     }
 
     if (window.location.hash.length === 0) {

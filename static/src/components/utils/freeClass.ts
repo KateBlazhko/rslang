@@ -7,7 +7,7 @@ const addClassOnPage = (node: HTMLElement, group: number) => {
       node.classList.add('two-group');
       break;
     case 2:
-      node.classList.add('tree-group');
+      node.classList.add('three-group');
       break;
     case 3:
       node.classList.add('four-group');

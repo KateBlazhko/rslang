@@ -16,13 +16,17 @@ class PageBook extends Control {
 
   audioIcons: HTMLImageElement[] = [];
 
+  markedWords: Record<string, boolean> = {}
+
+  words: IWord[] = []
 
   constructor(
     parentNode: HTMLElement | null,
     difficult: string,
     page: string,
     user: IStateLog,
-    public onAudioPlay: Signal<boolean>
+    public onAudioPlay: Signal<boolean>,
+    private onDisable: Signal<boolean>
   ) {
     super(parentNode, 'div', 'page_book_container');
     this.page = page;
@@ -30,54 +34,91 @@ class PageBook extends Control {
     this.difficult = difficult;
     this.getWordsDb(difficult, page);
     this.onAudioPlay.add(this.disabeAudioIcons.bind(this))
+
+    this.onMarkedWords.add(this.updateMarkedWords.bind(this))
   }
+
+  onMarkedWords = new Signal<Record<string, boolean>>()
 
   async getWordsDb(difficult: string, page: string) {
     const loader = new Loader(this.node);
-    const words = await Words.getWords({ group: difficult, page });
+    this.words = await Words.getWords({ group: difficult, page });
     if (this.user.state) {
       const userWords = await Words.getUserWords(this.user.userId, this.user.token);
-      this.createPage(words, page, userWords);
+      this.createPage(page, userWords);
     } else {
-      this.createPage(words, page);
+      this.createPage(page);
     }
     loader.destroy();
   }
 
-  createPage(words: IWord[], page: string, userWords?: IUserWord[]) {
-    if (userWords) {
-      const resWords = userWords.filter((el) => el.difficulty === 'hard' || el.optional.isLearn);
-      if (resWords.length === 20) this.node.classList.add('all-check');
-    }
+  createPage(page: string, userWords?: IUserWord[]) {
+    // if (userWords) {
+    //   const resWords = userWords.filter((el) => el.difficulty === 'hard' || el.optional.isLearn);
+    //   if (resWords.length === 20) {
+    //     this.node.classList.add('all-check');
+    //     this.onDisable.emit(true)
+    //   } 
+    // }
+    const marked = new Control(this.node, 'div', 'marked', `Great job! You've learned everything on this page`);
+
     const paginationTop = new Control(this.node, 'div', 'pagination');
     const main = new Control(this.node, 'div', 'container_card');
     const paginationButton = new Control(this.node, 'div', 'pagination');
 
     this.createPagination(paginationTop.node, page);
     this.createPagination(paginationButton.node, page);
+    this.createCards(main.node, userWords);
 
-    this.createCards(main.node, words, userWords);
+    this.checkCards()
   }
 
-  createCards(main: HTMLElement, words: IWord[], userWords?: IUserWord[]) {
+  createCards(main: HTMLElement, userWords?: IUserWord[]) {
 
-    words.forEach((word) => {
-
+    this.words.forEach((word) => {
       const sounds = [
         `${BASELINK}/${word.audio}`,
         `${BASELINK}/${word.audioMeaning}`,
         `${BASELINK}/${word.audioExample}`,
       ];
-      const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay);
+      const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay, this.onMarkedWords);
 
       this.audioIcons.push(...card.audio);
 
       if (userWords) {
+        const userWord = userWords.find(item => item.optional.wordId === word.id)
+        if (userWord) {
+          const isMarked = (userWord.optional.isLearn || userWord.difficulty === 'hard') ? true : false
+          this.markedWords = {
+            ...this.markedWords,
+            [word.id]: isMarked
+          }
+        }
         card.addUserFunctional(word, userWords);
       } else {
         card.addUserFunctional(word);
       }
     });
+  }
+
+  checkCards() {
+    const countMarkedWords = Object.values(this.markedWords).filter(item => item === true).length
+    if (this.words.length === countMarkedWords) {
+      this.node.classList.add('all-check');
+      this.onDisable.emit(true)
+    } else {
+      this.node.classList.remove('all-check');
+      this.onDisable.emit(false)
+    }
+  }
+
+  updateMarkedWords(item: Record<string, boolean>) {
+    this.markedWords = {
+      ...this.markedWords,
+      ...item
+    }
+console.log()
+    this.checkCards()
   }
 
   disabeAudioIcons(onAudioPlay: boolean) {
