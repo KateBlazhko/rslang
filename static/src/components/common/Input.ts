@@ -1,20 +1,24 @@
-import Control from './control';
+import Control from "./control";
 
 class Input<NodeType extends HTMLElement = HTMLElement> extends Control {
   private _input: HTMLInputElement;
 
   constructor(
     parentNode: HTMLElement | null,
-    type = 'text',
-    content = '',
+    type = "text",
+    content = "",
+    accept = ""
   ) {
-    super(parentNode, 'label', '');
-    this._input = document.createElement('input');
-    this.createInput(type, content);
+    super(parentNode, "label", "");
+    this._input = document.createElement("input");
+    this.createInput(type, content, accept);
   }
 
-  createInput(type: string, content: string) {
+  createInput(type: string, content: string, accept: string) {
     this._input.type = type;
+    if (accept) {
+      this._input.accept = accept;
+    }
     this.node.textContent = content;
     this.node.append(this._input);
   }

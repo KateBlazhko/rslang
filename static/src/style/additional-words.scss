@@ -3,17 +3,17 @@
   padding: 2rem;
   background-size: cover;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 
-  &__wrap {
-    width: 100%;
-    max-width: 1920px;
-    height: 100%;
+  //   &__wrap {
+  //     width: 100%;
+  //     max-width: 1920px;
+  //     height: 100%;
 
-    @include flexCenter();
-    flex-wrap: wrap;
-    gap: 2rem;
-  }
+  //     @include flexCenter();
+  //     flex-wrap: wrap;
+  //     gap: 2rem;
+  //   }
 
   &__title {
     display: flex;
@@ -56,5 +56,42 @@
     font-size: 3rem;
     text-align: start;
     color: $color-text;
+  }
+
+  &__form {
+    margin: 40px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    color: $color-text;
+    background: $color-bg;
+    border-radius: 20px;
+    padding: 20px;
+    font-size: 3rem;
+    box-shadow: $element-shadow;
+
+    label {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      font-size: 20px;
+      margin: 0 20px;
+      font-weight: 700;
+      color: $color-text;
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      box-shadow: $element-shadow;
+      font-size: 20px;
+      height: 30px;
+      padding: 0px 6px;
+      font-weight: 600;
+      outline: none;
+    }
   }
 }
