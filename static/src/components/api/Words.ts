@@ -85,6 +85,17 @@ class Words {
     return content;
   }
 
+  public static async getCustomWords(stateLog: IStateLog) {
+    const url = `${BASELINK}/words?${Words.getQueryParams({
+      group: '6',
+      page: '0',
+    })}`;
+
+    const rawResponse = await fetch(url);
+    const content: IWord[] = await rawResponse.json();
+    return content;
+  }
+
   public static async getWordByID(wordId: string) {
     const url = `${BASELINK}/words/${wordId}`;
 

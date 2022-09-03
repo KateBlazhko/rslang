@@ -2,6 +2,7 @@ import Control from '../common/control';
 import Signal from '../common/signal';
 import Logging, { IStateLog } from '../login/Logging';
 import addClassOnPage from '../utils/freeClass';
+import CustomPage from './CustomPage';
 import DifficultPage from './DifficultPage';
 import PageBook from './PageBool';
 
@@ -34,6 +35,7 @@ class Book extends Control {
       <a href="#book/4/0">Pre-Advanced C1</a>
       <a href="#book/5/0">Advanced C2</a>
       ${user.state ? '<a href="#book/difficult">Difficult words</a>' : ''}
+      ${user.state ? '<a href="#book/custom">Custom words</a>' : ''}
     `;
   }
 
@@ -56,6 +58,9 @@ class Book extends Control {
     } else if (itemHash[1] === 'difficult') {
       const newPage = new DifficultPage(this.node, user, this.onAudioPlay);
       newPage.node.classList.add('difficult');
+    } else if (itemHash[1] === 'custom') {
+      const newPage = new CustomPage(this.node, user, this.onAudioPlay);
+      newPage.node.classList.add('custom');
     } else {
       this.createHrefBtn(user);
     }
