@@ -206,36 +206,32 @@ $color-bg-button-border: #40396e;
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
-
-            filter: $filter-color;
-            -webkit-filter: grayscale(1);
-            transition: all 0.5s ease-in-out; 
-
-            &.active {
-              filter: none;
-              -webkit-filter: grayscale(0);
-            }
           }
           
           .button_difficult {
-            // background: $color-level-english-1;
-            // border-bottom: 3px solid $border-level-english-1;
-            background-image: url('./assets/icons/difficult.svg');
+            background-image: url('./assets/icons/difficult-def.svg');
 
+            &.active {
+              background-image: url('./assets/icons/difficult.svg');
+            }
           }
 
           .button_studied {
-            // background: $color-level-english-6;
-            // border-bottom: 3px solid $border-level-english-6;
-            background-image: url('./assets/icons/studied.svg');
+            background-image: url('./assets/icons/studied-def.svg');
             background-size: contain;
+
+            &.active {
+              background-image: url('./assets/icons/studied.svg');
+            }
           }
 
           .button_userWords {
             width: 6.2rem;
-            // background: $color-level-english-6;
-            // border-bottom: 3px solid $border-level-english-6;
-            background-image: url('./assets/icons/userWords.svg');
+            background-image: url('./assets/icons/userWords-def.svg');
+
+            &.active {
+              background-image: url('./assets/icons/userWords.svg');
+            }
           }
         }
 
