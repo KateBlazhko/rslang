@@ -1,3 +1,4 @@
+import { WebpackOptionsDefaulter } from '../../../node_modules/webpack/types';
 import Words, { IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
@@ -17,6 +18,10 @@ class DifficultPage extends Control {
   allCards: ICardDifficult[];
 
   audioIcons: HTMLImageElement[] = [];
+
+  words: IWord[] = []
+
+  main: Control | null = null
 
   constructor(
     parentNode: HTMLElement | null,
@@ -40,37 +45,39 @@ class DifficultPage extends Control {
       ];
 
       const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay);
-      card.difficultListen();
+      card.onDeleteWord.add(this.checkIsEmpty.bind(this))
+
+      card.difficultListen(word.id);
       this.allCards.push({ node: card, item: word });
       this.audioIcons.push(...card.audio);
       card.addUserFunctional(word, userWords);
     });
   }
 
-  // listenMain(event: HTMLElement, arr: ICardDifficult[]) {
-  //   if (event.tagName === 'BUTTON') {
-  //     console.log(event)
-  //   }
-  // }
-
   async createPage(user: IStateLog) {
     const loader = new Loader(this.node);
-    const main = new Control(this.node, 'div', 'container_card');
-    const arr = await this.getWords(user);
-    this.createCards(main.node, arr as unknown as IWord[]);
-    if (arr.length === 0) main.node.innerHTML = '<span class="no_cards">You haven\'t added difficult words yet!!!</span>';
+    this.main = new Control(this.node, 'div', 'container_card');
+    this.words = await this.getWords(user);
+    this.createCards(this.main.node, this.words);
+    this.checkIsEmpty()
     loader.destroy();
+  }
+
+  checkIsEmpty(id?: string) {
+    if (id) {
+      this.words = this.words.filter(item => item.id !== id)
+    }
+    
+    if (this.words.length === 0) {
+      if (this.main)
+        this.main.node.innerHTML = '<span class="no_cards">You haven\'t added difficult words yet!!!</span>';
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
   async getWords(user: IStateLog) {
     const res = await Words.getDifficultyWords(user);
-    const newArr = res.map((item) => {
-      Object.defineProperty(item, 'id', {
-        value: item._id, configurable: true, enumerable: true, writable: true,
-      });
-      return item;
-    });
+    const newArr = Words.adapterAggregatedWords(res)
     return newArr;
   }
 

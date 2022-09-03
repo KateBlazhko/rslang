@@ -41,6 +41,8 @@ class CardBook extends Control {
     this.createCard();
   }
 
+  onDeleteWord = new Signal<string>()
+
   createCard() {
     const img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
     img.node.src = `${BASELINK}/${this.word.image}`;
@@ -228,7 +230,7 @@ class CardBook extends Control {
 
   createUserButton(node: HTMLElement, word: IWord, userWord?: IUserWord) {
     const user = new Control<HTMLImageElement>(node, 'div', 'button button_userWords');
-console.log(userWord?.optional)
+
     if (userWord?.optional.dataGetNew) {
       user.node.classList.add('active');
       user.node.title = 'Сheck game stats'
@@ -272,11 +274,12 @@ console.log(userWord?.optional)
   }
 
   // eslint-disable-next-line class-methods-use-this
-  difficultListen() {
+  difficultListen(id: string) {
     this.node.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
-      if (target.tagName === 'BUTTON') {
+      if (target.classList.contains('button_difficult')) {
         this.destroy();
+        this.onDeleteWord.emit(id)
       }
     });
   }

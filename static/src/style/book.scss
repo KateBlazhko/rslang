@@ -131,6 +131,12 @@ $color-bg-button-border: #40396e;
 
       width: 100%;
 
+      .no_cards {
+        text-align: center;
+        font-size: 2rem;
+        color: $color-text
+      }
+
       .card_item {
         position: relative;
         @include flexCenter();
