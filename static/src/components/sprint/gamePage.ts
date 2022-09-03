@@ -9,8 +9,9 @@ import ButtonAnswer from './buttonAnswer';
 import soundManager from '../utils/soundManager';
 import StartPage from './startPage';
 import ResultPage from './resultPage';
-import { IWordStat } from './sprint';
+import { IWordStat, Stat } from './sprint';
 import Signal from '../common/signal';
+import { IGameStat } from '../api/Stats';
 
 enum TextInner {
   points = '0',
@@ -18,10 +19,11 @@ enum TextInner {
   buttonFalse = 'False ←'
 }
 
-const TIME = 10;
+const TIME = 60;
 
 class GamePage extends Control {
-  private correctAnswerSeries: number = 0;
+  private seriesRightAnswer: number = 0;
+  private maxSeriesRightAnswer: number = 0;
 
   private settingsSoundWrap: Control;
 
@@ -56,14 +58,14 @@ class GamePage extends Control {
   private countRightAnswer: number = 0;
 
   private wordsStat: IWordStat[] = [];
-
+  private gameStat: IGameStat
   private onGetAnswer: (answer: boolean) => void;
 
   constructor(
     public parentNode: HTMLElement | null,
     private state: SprintState,
     private words: IWord[],
-    private onFinish: Signal<IWordStat[]>,
+    private onFinish: Signal<Stat>,
     private animationWrap: Control
   ) {
     super(parentNode, 'div', 'sprint__game');
@@ -73,9 +75,16 @@ class GamePage extends Control {
     this.questions = this.createQuestions();
     this.buttonReturn = new Control(this.node, 'div', 'sprint__button sprint__button_return');
     this.buttonReturn.node.onclick = () => {
-      const startPage = new StartPage(parentNode, this.state, this.state.getInitiator());
+      const startPage = new StartPage(parentNode, this.state);
       this.destroy();
     };
+
+    this.gameStat = {
+      newWords: 0,
+      сountRightAnswer: 0,
+      countError: 0,
+      maxSeriesRightAnswer: 0
+    }
 
     this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap');
 
@@ -227,10 +236,12 @@ class GamePage extends Control {
         this.countRightAnswer += 10 * this.rate;
         this.pointsView.node.textContent = this.countRightAnswer.toString();
 
-        this.correctAnswerSeries += 1;
-        this.checkAnswerSeries(this.correctAnswerSeries);
+        this.maxSeriesRightAnswer +=1
+        this.seriesRightAnswer += 1;
+        this.checkAnswerSeries(this.seriesRightAnswer);
 
         this.getStat(word, true);
+
 
         if (this.state.getSoundPlay()) soundManager.playOk();
       } else {
@@ -252,17 +263,23 @@ class GamePage extends Control {
       wordId: word.id,
       answer,
     });
+
+    if (answer) {
+      this.gameStat.сountRightAnswer += 1
+    } else {
+      this.gameStat.countError += 1
+    }
   }
 
-  private checkAnswerSeries(correctAnswerSeries: number) {
-    this.indicatorList[correctAnswerSeries - 1].delClass('default');
-    if (correctAnswerSeries === 3) {
+  private checkAnswerSeries(seriesRightAnswer: number) {
+    this.indicatorList[seriesRightAnswer - 1].delClass('default');
+    if (seriesRightAnswer === 3) {
       if (this.rate < 6) {
         this.rate += 1;
         this.renderRate();
       }
 
-      this.correctAnswerSeries = 0;
+      this.seriesRightAnswer = 0;
       setTimeout(() => {
         this.indicatorList.forEach((indicator) => { indicator.addClass('default'); });
       }, 1000);
@@ -272,7 +289,9 @@ class GamePage extends Control {
   private resetAnswerSeries() {
     this.iconRateList.forEach((svg) => svg.destroy());
     this.indicatorList.forEach((indicator) => { indicator.addClass('default'); });
-    this.correctAnswerSeries = 0;
+    this.gameStat.maxSeriesRightAnswer = Math.max(this.gameStat.maxSeriesRightAnswer, this.maxSeriesRightAnswer)
+    this.maxSeriesRightAnswer = 0
+    this.seriesRightAnswer = 0;
     this.rate = 1;
   }
 
@@ -288,7 +307,7 @@ class GamePage extends Control {
   }
 
   private finish() {
-    this.onFinish.emit(this.wordsStat);
+    this.onFinish.emit([this.wordsStat, this.gameStat]);
     this.destroy();
     const resultPage = new ResultPage(this.parentNode, this.state, this.words, this.results);
   }

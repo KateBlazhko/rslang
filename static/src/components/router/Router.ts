@@ -1,8 +1,9 @@
 import Sprint from '../sprint/sprint';
+import Statistic from '../stat/statistic';
 import Signal from '../common/signal';
 import Control from '../common/control';
 import HomePage from '../home/homePage';
-import Logging from '../Logging';
+import Logging from '../login/Logging';
 import Audio from '../audio/Audio';
 import AboutPage from '../about/aboutPage';
 
@@ -57,7 +58,8 @@ class Router {
         this.currentPage = new Audio(container, this.login, this.onGoPage);
         break;
       case 'statistics':
-        container.innerHTML = '<h1>statistics</h1>';
+        container.innerHTML = '';
+        this.currentPage = new Statistic(container, this.login);
         break;
       default:
         this.onGoPage.emit('home');

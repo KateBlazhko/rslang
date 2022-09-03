@@ -1,6 +1,5 @@
-import Words from '../api/Words';
-import Header from '../Header';
-import Logging from '../Logging';
+import Header from './Header';
+import Logging from '../login/Logging';
 import Router from '../router/Router';
 import Footer from '../footer';
 

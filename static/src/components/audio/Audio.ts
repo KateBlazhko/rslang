@@ -1,5 +1,5 @@
 import Control from '../common/control';
-import Logging from '../Logging';
+import Logging from '../login/Logging';
 import StartPageAudio from './startPage';
 import GameAudio from './GameAudio';
 import Signal from '../common/signal';

@@ -1,0 +1,71 @@
+import Control from '../common/control';
+import Logging from '../login/Logging';
+import DailyStat from './dailyStat';
+import GeneralStat from './generalStat';
+
+enum TextInner {
+  daily = 'Daily stats',
+  general = 'General stats',
+  description = 'Hello, Captain! Here you can find out your learning progress'
+}
+
+class StatisticPage extends Control {
+  private dailyStat: DailyStat;
+
+  private generalStat: GeneralStat;
+
+  private currentStat: DailyStat | GeneralStat | null = null;
+
+  private statWrap: Control;
+
+  constructor(
+    public parentNode: HTMLElement | null,
+    public login: Logging,
+  ) {
+    super(parentNode, 'div', 'stat');
+
+    const buttonWrap = new Control(this.node, 'div', 'stat__button-wrap');
+
+    const description = new Control(buttonWrap.node, 'span', 'stat__description', TextInner.description);
+
+    this.statWrap = new Control(this.node, 'div', 'stat__inner');
+
+    this.dailyStat = new DailyStat(null, login);
+    this.generalStat = new GeneralStat(null, login);
+    this.currentStat = null;
+
+    const buttonsDaily = new Control(buttonWrap.node, 'div', 'stat__button', TextInner.daily);
+    buttonsDaily.node.classList.add('active')
+
+    const buttonsGeneral = new Control(buttonWrap.node, 'div', 'stat__button', TextInner.general);
+
+    buttonsDaily.node.onclick = () => {
+      this.switchStat(this.dailyStat);
+      buttonsDaily.node.classList.add('active')
+      buttonsGeneral.node.classList.remove('active')
+
+    };
+
+    buttonsGeneral.node.onclick = () => {
+      this.switchStat(this.generalStat);
+      buttonsDaily.node.classList.remove('active')
+      buttonsGeneral.node.classList.add('active')
+    };
+
+    this.init()
+  }
+
+  private init() {
+    this.currentStat = this.dailyStat;
+    this.statWrap.node.append(this.currentStat.node);
+  }
+
+  private switchStat(view: DailyStat | GeneralStat) {
+    if (this.currentStat) this.currentStat.destroy();
+
+    this.currentStat = view;
+    this.statWrap.node.append(this.currentStat.node);
+  }
+}
+
+export default StatisticPage;

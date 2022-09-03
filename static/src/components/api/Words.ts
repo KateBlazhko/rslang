@@ -1,6 +1,7 @@
-import { IStateLog } from '../Logging';
+import { IStateLog } from '../login/Logging';
 import { IWordStat } from '../sprint/sprint';
 import ErrorUser from '../utils/ErrorUser';
+import { adapterDate } from '../utils/functions';
 
 export const BASELINK = 'http://localhost:3000';
 // export const BASELINK = 'https://rs-lang-machine.herokuapp.com';
@@ -47,8 +48,8 @@ export interface IUserWord {
       countError: number
       seriesRightAnswer: number
       isLearn: boolean
-      dataGetNew: Date
-      dataLearn?: Date | undefined
+      dataGetNew: string
+      dataLearn?: string | undefined
     }
 }
 
@@ -60,7 +61,7 @@ export interface IAggregatedWords {
 }
 
 export interface IQueryParams {
-  group: string,
+  group?: string,
   page?: string,
   wordsPerPage?: string,
   filter?: string
@@ -170,10 +171,11 @@ class Words {
     }
   }
 
-  public static async updateUserStat(stateLog: IStateLog, userWord: IUserWord, answer: boolean) {
+  public static async updateWordStat(stateLog: IStateLog, userWord: IUserWord, answer: boolean) {
     if (answer) {
       const isLearn = Words.checkIsLearn(userWord);
       const date = new Date();
+      const dateAdapt = adapterDate(date)
       const result = await Words.updateUserWord(
         stateLog.userId,
         stateLog.token,
@@ -187,7 +189,7 @@ class Words {
             seriesRightAnswer: userWord.optional.seriesRightAnswer + 1,
             isLearn,
             dataGetNew: userWord.optional.dataGetNew,
-            dataLearn: (isLearn && isLearn !== userWord.optional.isLearn) ? date : undefined,
+            dataLearn: (isLearn && isLearn !== userWord.optional.isLearn) ? dateAdapt : undefined,
           },
         },
       );
@@ -212,8 +214,8 @@ class Words {
     return result;
   }
 
-  public static async createUserStat(stateLog: IStateLog, word: IWordStat) {
-    const date = new Date();
+  public static async createWordStat(stateLog: IStateLog, word: IWordStat) {
+    const date = adapterDate(new Date()) ;
 
     if (word.answer) {
       const result = await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
@@ -297,6 +299,75 @@ class Words {
     );
 
     return aggregatedWords;
+  }
+
+  public static async getLearnedWordsByDate(stateLog: IStateLog, date: string) {
+    const aggregatedWords = await Words.getAggregatedWords(
+      stateLog.userId,
+      stateLog.token,
+      {
+        page: '0',
+        wordsPerPage: '600',
+        filter: encodeURIComponent(JSON.stringify({ 
+          $and: [
+            { 'userWord.optional.isLearn': true }, 
+            { 'userWord.optional.dataLearn': date }
+          ] 
+        })),
+      },
+    );
+
+    if (Array.isArray(aggregatedWords)) {
+      return aggregatedWords
+        .map(words => words.paginatedResults)
+        .flat()
+    }
+
+    return [];
+  }
+
+  public static async getDifficultyWords(stateLog: IStateLog) {
+    const aggregatedWords = await Words.getAggregatedWords(
+      stateLog.userId,
+      stateLog.token,
+      {
+        page: '0',
+        wordsPerPage: '600',
+        filter: encodeURIComponent(JSON.stringify({ 
+          'userWord.difficulty': 'hard' 
+        })),
+      },
+    );
+
+    if (Array.isArray(aggregatedWords)) {
+      return aggregatedWords
+        .map(words => words.paginatedResults)
+        .flat()
+    }
+
+    return [];
+  }
+
+  public static async getNewWordsByDate(stateLog: IStateLog, date: string) {
+    const aggregatedWords = await Words.getAggregatedWords(
+      stateLog.userId,
+      stateLog.token,
+      {
+        page: '0',
+        wordsPerPage: '600',
+        filter: encodeURIComponent(JSON.stringify({ 
+          'userWord.optional.dataGetNew': date 
+        })),
+      },
+    );
+
+    if (Array.isArray(aggregatedWords)) {
+      return aggregatedWords
+        .map(words => words.paginatedResults)
+        .flat()
+    }
+
+    return [];
   }
 
   public static async checkAggregatedWords(
