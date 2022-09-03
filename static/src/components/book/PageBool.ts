@@ -1,4 +1,5 @@
 import Words, { IUserWord, IWord } from '../api/Words';
+import ButtonHref from '../common/ButtonHref';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import BASELINK from '../constants/url';
@@ -6,6 +7,11 @@ import { IStateLog } from '../login/Logging';
 import stopPlayAudio from '../utils/stopPlayAudio';
 import CardBook from './CardBook';
 import Loader from './Loader';
+
+const enum ButtonHrefContent {
+  sprint = 'Sprint',
+  audio = 'Audio'
+}
 
 class PageBook extends Control {
   page: string;
@@ -19,6 +25,8 @@ class PageBook extends Control {
   markedWords: Record<string, boolean> = {};
 
   words: IWord[] = [];
+
+  arrHref: Array<ButtonHref> = [];
 
   constructor(
     parentNode: HTMLElement | null,
@@ -56,15 +64,37 @@ class PageBook extends Control {
 
     const paginationTop = new Control(this.node, 'div', 'pagination');
     const marked = new Control(this.node, 'div', 'marked', 'Great job! You\'ve learned everything on this page');
+    this.createHrefBtn()
 
     const main = new Control(this.node, 'div', 'container_card');
     const paginationButton = new Control(this.node, 'div', 'pagination');
-
     this.createPagination(paginationTop.node, page);
     this.createPagination(paginationButton.node, page);
     this.createCards(main.node, userWords);
 
     this.checkCards();
+  }
+
+  createHrefBtn() {
+    const container = new Control(this.node, 'div', 'page__button-side-wrap');
+
+    container.node.innerHTML = `
+      <a class="page__button-side" href="#book/0/0">A1</a>
+      <a class="page__button-side" href="#book/1/0">A2</a>
+      <a class="page__button-side" href="#book/2/0">B1</a>
+      <a class="page__button-side" href="#book/3/0">B2</a>
+      <a class="page__button-side" href="#book/3/0">C1</a>
+      <a class="page__button-side" href="#book/5/0">C2</a>
+      ${this.user.state ? '<a class="page__button-side" href="#book/difficult">D</a>' : ''}
+      ${this.user.state ? '<a class="page__button-side" href="#book/difficult">A</a>' : ''}
+
+    `;
+
+    const sprint = new ButtonHref(container.node, '#sprint', ButtonHrefContent.sprint);
+    const audio = new ButtonHref(container.node, '#audio', ButtonHrefContent.audio);
+
+    this.arrHref = [sprint, audio];
+
   }
 
   createCards(main: HTMLElement, userWords?: IUserWord[]) {
