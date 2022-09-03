@@ -8,7 +8,8 @@ interface IHeaderEl {
   about: ButtonHref,
   book: ButtonHref,
   sprint: ButtonHref,
-  audio: ButtonHref
+  audio: ButtonHref,
+  additionalWords: ButtonHref
 }
 
 const enum ButtonHrefContent {
@@ -16,7 +17,8 @@ const enum ButtonHrefContent {
   about = 'About Us',
   book = 'Book',
   sprint = 'Sprint',
-  audio = 'Audio'
+  audio = 'Audio',
+  additionalWords = 'Additional words'
 }
 
 class Header extends Control {
@@ -53,15 +55,16 @@ class Header extends Control {
 
   createHeader() {
     // const nav = new Control(this.node, 'nav', 'navbar');
-
+    
     const home = new ButtonHref(this.nav.node, '#home', ButtonHrefContent.home);
     const about = new ButtonHref(this.nav.node, '#about', ButtonHrefContent.about);
     const book = new ButtonHref(this.nav.node, '#book', ButtonHrefContent.book);
     const sprint = new ButtonHref(this.nav.node, '#sprint', ButtonHrefContent.sprint);
     const audio = new ButtonHref(this.nav.node, '#audio', ButtonHrefContent.audio);
+    const additionalWords = new ButtonHref(this.nav.node, '#additionalWords', ButtonHrefContent.additionalWords); 
 
     this.getAllElementsHeader = {
-      home, about, book, sprint, audio,
+      home, about, book, sprint, audio, additionalWords
     };
 
     this.arrHref = [home, about, book, sprint, audio];
