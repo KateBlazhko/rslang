@@ -53,9 +53,10 @@ class PageBook extends Control {
   }
 
   createPage(page: string, userWords?: IUserWord[]) {
-    const marked = new Control(this.node, 'div', 'marked', 'Great job! You\'ve learned everything on this page');
 
     const paginationTop = new Control(this.node, 'div', 'pagination');
+    const marked = new Control(this.node, 'div', 'marked', 'Great job! You\'ve learned everything on this page');
+
     const main = new Control(this.node, 'div', 'container_card');
     const paginationButton = new Control(this.node, 'div', 'pagination');
 

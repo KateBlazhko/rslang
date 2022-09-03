@@ -170,10 +170,9 @@ class Words {
   }
 
   public static async updateWordStat(stateLog: IStateLog, userWord: IUserWord, answer: boolean) {
+    const date = adapterDate(new Date());
     if (answer) {
       const isLearn = Words.checkIsLearn(userWord);
-      const date = new Date();
-      const dateAdapt = adapterDate(date);
       const result = await Words.updateUserWord(
         stateLog.userId,
         stateLog.token,
@@ -186,8 +185,8 @@ class Words {
             countError: userWord.optional.countError,
             seriesRightAnswer: userWord.optional.seriesRightAnswer + 1,
             isLearn,
-            dataGetNew: userWord.optional.dataGetNew,
-            dataLearn: (isLearn && isLearn !== userWord.optional.isLearn) ? dateAdapt : undefined,
+            dataGetNew: userWord.optional.dataGetNew ? userWord.optional.dataGetNew : date,
+            dataLearn: (isLearn && isLearn !== userWord.optional.isLearn) ? date : undefined,
           },
         },
       );
@@ -205,7 +204,7 @@ class Words {
           countError: userWord.optional.countError + 1,
           seriesRightAnswer: 0,
           isLearn: false,
-          dataGetNew: userWord.optional.dataGetNew,
+          dataGetNew: userWord.optional.dataGetNew ? userWord.optional.dataGetNew : date,
         },
       },
     );

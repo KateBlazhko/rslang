@@ -13,6 +13,7 @@ $color-table: #f5a51c;
   gap: 2rem;
 
   width: 50%;
+  min-width: 48rem;
   padding: 2rem;
   border-radius: 5rem;
   border-bottom: 5px solid $color-scroll;
@@ -24,16 +25,22 @@ $color-table: #f5a51c;
   }
 
   @media (max-width: 768px) {
-    width: 90%;
+    width: 100%;
   }
 
   &__title {
     width: 100%;
 
     text-align: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: $color-text
   }  
+
+  &__text {
+    text-align: center;
+    font-size: 2rem;
+    color: $color-text
+  }
 
   &__table {
     overflow-y: scroll;

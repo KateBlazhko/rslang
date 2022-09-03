@@ -201,7 +201,6 @@ $color-bg-button-border: #40396e;
             border: none;
             color: $color-bg;
             border-radius: 5px;
-            cursor: pointer;
 
             background-repeat: no-repeat;
             background-size: cover;
@@ -209,6 +208,8 @@ $color-bg-button-border: #40396e;
           }
           
           .button_difficult {
+            cursor: pointer;
+
             background-image: url('./assets/icons/difficult-def.svg');
 
             &.active {
@@ -217,6 +218,8 @@ $color-bg-button-border: #40396e;
           }
 
           .button_studied {
+            cursor: pointer;
+
             background-image: url('./assets/icons/studied-def.svg');
             background-size: contain;
 
@@ -230,6 +233,8 @@ $color-bg-button-border: #40396e;
             background-image: url('./assets/icons/userWords-def.svg');
 
             &.active {
+              cursor: pointer;
+
               background-image: url('./assets/icons/userWords.svg');
             }
           }
