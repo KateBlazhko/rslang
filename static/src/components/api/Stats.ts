@@ -6,11 +6,6 @@ import Words from './Words';
 export const BASELINK = 'http://localhost:3000';
 // export const BASELINK = 'https://rs-lang-machine.herokuapp.com';
 
-export interface IStat {
-  learnedWords: number,
-  optional: IStatOptional
-}
-
 export interface IGameStat {
   newWords: number,
   сountRightAnswer: number,
@@ -32,10 +27,13 @@ export interface IStatOptional {
   general: IGeneral
 }
 
+export interface IStat {
+  learnedWords: number,
+  optional: IStatOptional
+}
 
 class Stats {
-  
-  public static async getStats(userId: string, token: string,) {
+  public static async getStats(userId: string, token: string) {
     const url = `${BASELINK}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
@@ -53,7 +51,7 @@ class Stats {
   public static async updateStat(
     userId: string,
     token: string,
-    stat: IStat
+    stat: IStat,
   ) {
     const url = `${BASELINK}/users/${userId}/statistics`;
 
@@ -74,74 +72,77 @@ class Stats {
   }
 
   public static async recordGameStats(stateLog: IStateLog, gameStat: IGameStat, game: 'sprint' | 'audio') {
-    const userStat = await Stats.getStats(stateLog.userId, stateLog.token)
-    const dataCurrentAdapt = adapterDate(new Date)
+    const userStat = await Stats.getStats(stateLog.userId, stateLog.token);
+    const dataCurrentAdapt = adapterDate(new Date());
 
-    const isSameDate = userStat.optional.dateCurrent = dataCurrentAdapt
-    const learnedWords = await Words.getLearnedWordsByDate(stateLog, dataCurrentAdapt)
+    const isSameDate = userStat.optional.dateCurrent === dataCurrentAdapt;
+    const learnedWords = await Words.getLearnedWordsByDate(stateLog, dataCurrentAdapt);
 
-      const countLearnedWords = learnedWords.length
+    const countLearnedWords = learnedWords.length;
 
-      if (isSameDate) {
-        Stats.addToStat(stateLog, userStat, gameStat, game)
-      } else {
-        Stats.recordStat(stateLog, userStat, gameStat, game, dataCurrentAdapt)
-      }
-
+    if (isSameDate) {
+      Stats.addToStat(stateLog, userStat, gameStat, game);
+    } else {
+      Stats.recordStat(stateLog, userStat, gameStat, game, dataCurrentAdapt);
+    }
   }
 
   public static async recordGeneralStats(
-    stateLog: IStateLog, 
-    newWordsStats: GeneralItem, 
+    stateLog: IStateLog,
+    newWordsStats: GeneralItem,
     learnedWordsStats: GeneralItem,
   ) {
-    const userStat = await Stats.getStats(stateLog.userId, stateLog.token)
+    const userStat = await Stats.getStats(stateLog.userId, stateLog.token);
 
-    const { learnedWords, optional: { dateReg, dateCurrent, sprint, audio, general }} = userStat
+    const {
+      learnedWords, optional: {
+        dateReg, dateCurrent, sprint, audio, general,
+      },
+    } = userStat;
 
     const newGeneral = {
       newWords: {
         ...general.newWords,
-        ...newWordsStats
+        ...newWordsStats,
       },
       learnedWords: {
         ...general.learnedWords,
-        ...learnedWordsStats
-      }
-    }
+        ...learnedWordsStats,
+      },
+    };
 
     Stats.updateStat(stateLog.userId, stateLog.token, {
       learnedWords,
       optional: {
-        dateReg, 
-        dateCurrent, 
-        sprint, 
-        audio, 
-        general: newGeneral
-      }
-    })
-
+        dateReg,
+        dateCurrent,
+        sprint,
+        audio,
+        general: newGeneral,
+      },
+    });
   }
 
   public static async addToStat(
-    stateLog: IStateLog, 
-    userStat: IStat, 
+    stateLog: IStateLog,
+    userStat: IStat,
     gameStat: IGameStat,
-    game: 'sprint' | 'audio'
+    game: 'sprint' | 'audio',
   ) {
-
-    const { 
-      optional: { 
-        [game]: { 
-          newWords: newWordsLast, 
-          сountRightAnswer: сountRightAnswerLast, 
-          countError: countErrorLast, 
-          maxSeriesRightAnswer:  maxSeriesRightAnswerLast
+    const {
+      optional: {
+        [game]: {
+          newWords: newWordsLast,
+          сountRightAnswer: сountRightAnswerLast,
+          countError: countErrorLast,
+          maxSeriesRightAnswer: maxSeriesRightAnswerLast,
         },
-      } 
+      },
     } = userStat;
 
-    const { newWords, сountRightAnswer, countError, maxSeriesRightAnswer } = gameStat
+    const {
+      newWords, сountRightAnswer, countError, maxSeriesRightAnswer,
+    } = gameStat;
 
     const recordStat = await Stats.updateStat(stateLog.userId, stateLog.token, {
       learnedWords: userStat.learnedWords,
@@ -151,64 +152,65 @@ class Stats {
           newWords: newWordsLast + newWords,
           сountRightAnswer: сountRightAnswerLast + сountRightAnswer,
           countError: countErrorLast + countError,
-          maxSeriesRightAnswer: Math.max(maxSeriesRightAnswerLast, maxSeriesRightAnswer)
+          maxSeriesRightAnswer: Math.max(maxSeriesRightAnswerLast, maxSeriesRightAnswer),
         },
-      }
-    })
+      },
+    });
   }
 
   public static async recordStat(
-    stateLog: IStateLog, 
-    userStat: IStat, 
-    gameStat: IGameStat, 
+    stateLog: IStateLog,
+    userStat: IStat,
+    gameStat: IGameStat,
     game: 'sprint' | 'audio',
-    dateCurrent: string
+    dateCurrent: string,
   ) {
-    const { newWords, сountRightAnswer, countError, maxSeriesRightAnswer } = gameStat
-  
+    const {
+      newWords, сountRightAnswer, countError, maxSeriesRightAnswer,
+    } = gameStat;
+
     const recordStat = await Stats.updateStat(stateLog.userId, stateLog.token, {
       learnedWords: userStat.learnedWords,
       optional: {
         ...userStat.optional,
         dateCurrent,
         [game]: {
-          newWords: newWords,
-          сountRightAnswer: сountRightAnswer,
-          countError: countError,
-          maxSeriesRightAnswer: maxSeriesRightAnswer
+          newWords,
+          сountRightAnswer,
+          countError,
+          maxSeriesRightAnswer,
         },
-      }
-    })
+      },
+    });
   }
 
   public static async resetStat(
-    stateLog: IStateLog, 
-    userStat: IStat, 
-    dateCurrent: string
+    stateLog: IStateLog,
+    userStat: IStat,
+    dateCurrent: string,
   ) {
+    const { optional: { dateReg, general } } = userStat;
 
-    const { optional: { dateReg, general } } = userStat
-  
     const recordStat = await Stats.updateStat(stateLog.userId, stateLog.token, {
       learnedWords: 0,
       optional: {
         dateReg,
         dateCurrent,
         sprint: {
-          newWords: 0, 
-          сountRightAnswer: 0, 
-          countError: 0, 
-          maxSeriesRightAnswer: 0
+          newWords: 0,
+          сountRightAnswer: 0,
+          countError: 0,
+          maxSeriesRightAnswer: 0,
         },
         audio: {
-          newWords: 0, 
-          сountRightAnswer: 0, 
-          countError: 0, 
-          maxSeriesRightAnswer: 0
+          newWords: 0,
+          сountRightAnswer: 0,
+          countError: 0,
+          maxSeriesRightAnswer: 0,
         },
-        general
-      }
-    })
+        general,
+      },
+    });
   }
 }
 

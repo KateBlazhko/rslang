@@ -9,10 +9,12 @@ import Notification from '../common/notification';
 class CardBook extends Control {
   word: IWord;
 
-  audio: HTMLImageElement[]
+  audio: HTMLImageElement[];
 
   description: Control;
+
   imageWrap: Control;
+
   buttonWrap: Control;
 
   user: IStateLog;
@@ -25,7 +27,7 @@ class CardBook extends Control {
     private sounds: string[],
     user: IStateLog,
     public onAudioPlay: Signal<boolean>,
-    public onMarkedWords?: Signal<Record<string, boolean>>
+    public onMarkedWords?: Signal<Record<string, boolean>>,
   ) {
     super(parentNode, 'div', 'card_item');
     this.user = user;
@@ -42,7 +44,7 @@ class CardBook extends Control {
   createCard() {
     const img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
     img.node.src = `${BASELINK}/${this.word.image}`;
-    this.createButtons()
+    this.createButtons();
 
     const { description } = this;
     this.createTitle(description.node);
@@ -54,7 +56,7 @@ class CardBook extends Control {
     const volume = new Control<HTMLImageElement>(this.buttonWrap.node, 'img', 'img__button');
     volume.node.src = '../../assets/icons/volume.png';
     volume.node.addEventListener('click', async () => {
-      this.onAudioPlay.emit(true)
+      this.onAudioPlay.emit(true);
 
       const firstSound = new Audio(this.sounds[0]);
       const secondSound = new Audio(this.sounds[1]);
@@ -69,15 +71,13 @@ class CardBook extends Control {
           await thirdSound.play();
 
           setTimeout(() => {
-            this.onAudioPlay.emit(false)
+            this.onAudioPlay.emit(false);
           }, thirdSound.duration * 1000);
         }, (firstSound.duration + secondSound.duration) * 1000);
       }, firstSound.duration * 1000);
-
     });
     this.audio.push(volume.node);
   }
-
 
   createTitle(node: HTMLElement) {
     const container = new Control(node, 'div', 'title');
@@ -104,7 +104,7 @@ class CardBook extends Control {
           //   word.optional.isLearn
           //         && word.optional.isLearn !== userWord.optional.isLearn)
           //   ? adapterDate(new Date()) : undefined,
-          dataLearn: undefined
+          dataLearn: undefined,
         },
       },
     );
@@ -124,7 +124,7 @@ class CardBook extends Control {
           сountRightAnswer: word.optional.сountRightAnswer,
           countError: word.optional.countError,
           seriesRightAnswer: word.optional.seriesRightAnswer,
-          isLearn: isLearn,
+          isLearn,
           dataGetNew: word.optional.dataGetNew,
           // dataLearn: (
           //   word.optional.isLearn
@@ -156,9 +156,9 @@ class CardBook extends Control {
 
   createBtnDifficultAndStudy(node: HTMLElement, word: IWord, userWord?: IUserWord) {
     const difficultBtn = new Control(node, 'div', 'button button_difficult');
-    difficultBtn.node.title = 'Mark difficult'
+    difficultBtn.node.title = 'Mark difficult';
     const studyBtn = new Control(node, 'div', 'button button_studied');
-    studyBtn.node.title = 'Mark studied'
+    studyBtn.node.title = 'Mark studied';
 
     if (userWord?.difficulty === 'hard') {
       // difficultBtn.node.textContent = 'Delete';
@@ -190,7 +190,7 @@ class CardBook extends Control {
 
       if (difficult === 'hard') {
         difficult = 'easy';
-        this.onMarkedWords?.emit({[word.id]: false})
+        this.onMarkedWords?.emit({ [word.id]: false });
         // difficultBtn.node.textContent = 'Difficult';
         difficultBtn.node.classList.remove('active');
         this.node.classList.remove('difficult');
@@ -198,7 +198,7 @@ class CardBook extends Control {
       } else {
         difficult = 'hard';
         learn = false;
-        this.onMarkedWords?.emit({[word.id]: true})
+        this.onMarkedWords?.emit({ [word.id]: true });
         // difficultBtn.node.textContent = 'Delete';
         // studyBtn.node.textContent = 'Study';
         difficultBtn.node.classList.add('active');
@@ -217,7 +217,7 @@ class CardBook extends Control {
 
       if (learn) {
         learn = false;
-        this.onMarkedWords?.emit({[word.id]: false})
+        this.onMarkedWords?.emit({ [word.id]: false });
         // studyBtn.node.textContent = 'Study';
         studyBtn.node.classList.remove('active');
         this.node.classList.remove('study');
@@ -225,7 +225,7 @@ class CardBook extends Control {
       } else {
         learn = true;
         difficult = 'easy';
-        this.onMarkedWords?.emit({[word.id]: true})
+        this.onMarkedWords?.emit({ [word.id]: true });
 
         // studyBtn.node.textContent = 'Studied';
         // difficultBtn.node.textContent =  'Difficult';
@@ -252,22 +252,20 @@ class CardBook extends Control {
     const user = new Control<HTMLImageElement>(node, 'div', 'button button_userWords');
 
     if (userWord) {
-      user.node.classList.add('active')
+      user.node.classList.add('active');
 
       user.node.onclick = () => {
-        const errors = userWord.optional.countError
-        const right = userWord.optional.сountRightAnswer
+        const errors = userWord.optional.countError;
+        const right = userWord.optional.сountRightAnswer;
         const text = `
         You answered this word wrong ${errors} times \n
         You answered this word correctly ${right} times
-        `
+        `;
 
-        const notification = new Notification(this.node, "notification", text);
-      }
-
+        const notification = new Notification(this.node, 'notification', text);
+      };
     }
-  };
-
+  }
 
   createExample(node: HTMLElement) {
     const container = new Control(node, 'div', 'example');

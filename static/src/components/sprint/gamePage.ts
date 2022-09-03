@@ -23,6 +23,7 @@ const TIME = 60;
 
 class GamePage extends Control {
   private seriesRightAnswer: number = 0;
+
   private maxSeriesRightAnswer: number = 0;
 
   private settingsSoundWrap: Control;
@@ -58,7 +59,9 @@ class GamePage extends Control {
   private countRightAnswer: number = 0;
 
   private wordsStat: IWordStat[] = [];
-  private gameStat: IGameStat
+
+  private gameStat: IGameStat;
+
   private onGetAnswer: (answer: boolean) => void;
 
   constructor(
@@ -66,7 +69,7 @@ class GamePage extends Control {
     private state: SprintState,
     private words: IWord[],
     private onFinish: Signal<Stat>,
-    private animationWrap: Control
+    private animationWrap: Control,
   ) {
     super(parentNode, 'div', 'sprint__game');
     this.onGetAnswer = () => {};
@@ -83,8 +86,8 @@ class GamePage extends Control {
       newWords: 0,
       сountRightAnswer: 0,
       countError: 0,
-      maxSeriesRightAnswer: 0
-    }
+      maxSeriesRightAnswer: 0,
+    };
 
     this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap');
 
@@ -236,12 +239,11 @@ class GamePage extends Control {
         this.countRightAnswer += 10 * this.rate;
         this.pointsView.node.textContent = this.countRightAnswer.toString();
 
-        this.maxSeriesRightAnswer +=1
+        this.maxSeriesRightAnswer += 1;
         this.seriesRightAnswer += 1;
         this.checkAnswerSeries(this.seriesRightAnswer);
 
         this.getStat(word, true);
-
 
         if (this.state.getSoundPlay()) soundManager.playOk();
       } else {
@@ -265,9 +267,9 @@ class GamePage extends Control {
     });
 
     if (answer) {
-      this.gameStat.сountRightAnswer += 1
+      this.gameStat.сountRightAnswer += 1;
     } else {
-      this.gameStat.countError += 1
+      this.gameStat.countError += 1;
     }
   }
 
@@ -289,8 +291,11 @@ class GamePage extends Control {
   private resetAnswerSeries() {
     this.iconRateList.forEach((svg) => svg.destroy());
     this.indicatorList.forEach((indicator) => { indicator.addClass('default'); });
-    this.gameStat.maxSeriesRightAnswer = Math.max(this.gameStat.maxSeriesRightAnswer, this.maxSeriesRightAnswer)
-    this.maxSeriesRightAnswer = 0
+    this.gameStat.maxSeriesRightAnswer = Math.max(
+      this.gameStat.maxSeriesRightAnswer,
+      this.maxSeriesRightAnswer,
+    );
+    this.maxSeriesRightAnswer = 0;
     this.seriesRightAnswer = 0;
     this.rate = 1;
   }

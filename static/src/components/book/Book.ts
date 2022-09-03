@@ -14,7 +14,7 @@ class Book extends Control {
     parentNode: HTMLElement | null,
     login: Logging,
     hash: string,
-    private onDisable: Signal<boolean>
+    private onDisable: Signal<boolean>,
   ) {
     super(parentNode, 'div', 'book_container');
     this.login = login;
@@ -22,7 +22,7 @@ class Book extends Control {
     this.createPage(hash);
   }
 
-  public onAudioPlay = new Signal<boolean>()
+  public onAudioPlay = new Signal<boolean>();
 
   createHrefBtn(user: IStateLog) {
     const container = new Control(this.node, 'div', 'container_difficult');
@@ -44,10 +44,17 @@ class Book extends Control {
     const difficult = /^[0-5]+$/;
     const page = /^[0-29]+$/;
     if (itemHash[1] && itemHash[2]) {
-      const newPage = new PageBook(this.node, itemHash[1], itemHash[2], user, this.onAudioPlay, this.onDisable);
+      const newPage = new PageBook(
+        this.node,
+        itemHash[1],
+        itemHash[2],
+        user,
+        this.onAudioPlay,
+        this.onDisable,
+      );
       addClassOnPage(newPage.node, +itemHash[1]);
     } else if (itemHash[1] === 'difficult') {
-      const newPage = new DifficultPage(this.node, user, this.onAudioPlay );
+      const newPage = new DifficultPage(this.node, user, this.onAudioPlay);
       newPage.node.classList.add('difficult');
     } else {
       this.createHrefBtn(user);

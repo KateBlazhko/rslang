@@ -20,7 +20,6 @@ const enum ButtonHrefContent {
 }
 
 class Header extends Control {
-
   public getAllElementsHeader: Partial<IHeaderEl>;
 
   arrHref: Array<ButtonHref>;
@@ -31,18 +30,18 @@ class Header extends Control {
 
   private nav: Control;
 
-  private burger: Control
+  private burger: Control;
 
   constructor(
     private parent: HTMLElement | null,
-    login: Logging
+    login: Logging,
   ) {
-    super(parent, 'header', 'header')
+    super(parent, 'header', 'header');
     this.location = window.location;
     this.logging = login;
     this.getAllElementsHeader = {};
     this.arrHref = [];
-    const title = new Control(this.node, 'h1', 'header__title', 'RSS Lang')
+    const title = new Control(this.node, 'h1', 'header__title', 'RSS Lang');
     this.nav = new Control(this.node, 'nav', 'navbar');
     this.createHeader();
     this.burger = new Burger(this.node);
@@ -68,16 +67,16 @@ class Header extends Control {
   }
 
   setDisable(isDisable: boolean) {
-    const [ , , , ...gameButtons] = this.arrHref
+    const [, , , ...gameButtons] = this.arrHref;
 
     if (isDisable) {
-      gameButtons.forEach(button => {
-        button.node.classList.add('disable')
-      })
+      gameButtons.forEach((button) => {
+        button.node.classList.add('disable');
+      });
     } else {
-      gameButtons.forEach(button => {
-        button.node.classList.remove('disable')
-      })
+      gameButtons.forEach((button) => {
+        button.node.classList.remove('disable');
+      });
     }
   }
 

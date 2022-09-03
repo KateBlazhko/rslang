@@ -173,7 +173,7 @@ class Words {
     if (answer) {
       const isLearn = Words.checkIsLearn(userWord);
       const date = new Date();
-      const dateAdapt = adapterDate(date)
+      const dateAdapt = adapterDate(date);
       const result = await Words.updateUserWord(
         stateLog.userId,
         stateLog.token,
@@ -213,7 +213,7 @@ class Words {
   }
 
   public static async createWordStat(stateLog: IStateLog, word: IWordStat) {
-    const date = adapterDate(new Date()) ;
+    const date = adapterDate(new Date());
 
     if (word.answer) {
       const result = await Words.createUserWord(stateLog.userId, stateLog.token, word.wordId, {
@@ -306,19 +306,19 @@ class Words {
       {
         page: '0',
         wordsPerPage: '600',
-        filter: encodeURIComponent(JSON.stringify({ 
+        filter: encodeURIComponent(JSON.stringify({
           $and: [
-            { 'userWord.optional.isLearn': true }, 
-            { 'userWord.optional.dataLearn': date }
-          ] 
+            { 'userWord.optional.isLearn': true },
+            { 'userWord.optional.dataLearn': date },
+          ],
         })),
       },
     );
 
     if (Array.isArray(aggregatedWords)) {
       return aggregatedWords
-        .map(words => words.paginatedResults)
-        .flat()
+        .map((words) => words.paginatedResults)
+        .flat();
     }
 
     return [];
@@ -331,16 +331,16 @@ class Words {
       {
         page: '0',
         wordsPerPage: '600',
-        filter: encodeURIComponent(JSON.stringify({ 
-          'userWord.optional.dataGetNew': date 
+        filter: encodeURIComponent(JSON.stringify({
+          'userWord.optional.dataGetNew': date,
         })),
       },
     );
 
     if (Array.isArray(aggregatedWords)) {
       return aggregatedWords
-        .map(words => words.paginatedResults)
-        .flat()
+        .map((words) => words.paginatedResults)
+        .flat();
     }
 
     return [];

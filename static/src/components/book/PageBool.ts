@@ -16,9 +16,9 @@ class PageBook extends Control {
 
   audioIcons: HTMLImageElement[] = [];
 
-  markedWords: Record<string, boolean> = {}
+  markedWords: Record<string, boolean> = {};
 
-  words: IWord[] = []
+  words: IWord[] = [];
 
   constructor(
     parentNode: HTMLElement | null,
@@ -26,19 +26,19 @@ class PageBook extends Control {
     page: string,
     user: IStateLog,
     public onAudioPlay: Signal<boolean>,
-    private onDisable: Signal<boolean>
+    private onDisable: Signal<boolean>,
   ) {
     super(parentNode, 'div', 'page_book_container');
     this.page = page;
     this.user = user;
     this.difficult = difficult;
     this.getWordsDb(difficult, page);
-    this.onAudioPlay.add(this.disabeAudioIcons.bind(this))
+    this.onAudioPlay.add(this.disabeAudioIcons.bind(this));
 
-    this.onMarkedWords.add(this.updateMarkedWords.bind(this))
+    this.onMarkedWords.add(this.updateMarkedWords.bind(this));
   }
 
-  onMarkedWords = new Signal<Record<string, boolean>>()
+  onMarkedWords = new Signal<Record<string, boolean>>();
 
   async getWordsDb(difficult: string, page: string) {
     const loader = new Loader(this.node);
@@ -53,14 +53,7 @@ class PageBook extends Control {
   }
 
   createPage(page: string, userWords?: IUserWord[]) {
-    // if (userWords) {
-    //   const resWords = userWords.filter((el) => el.difficulty === 'hard' || el.optional.isLearn);
-    //   if (resWords.length === 20) {
-    //     this.node.classList.add('all-check');
-    //     this.onDisable.emit(true)
-    //   } 
-    // }
-    const marked = new Control(this.node, 'div', 'marked', `Great job! You've learned everything on this page`);
+    const marked = new Control(this.node, 'div', 'marked', 'Great job! You\'ve learned everything on this page');
 
     const paginationTop = new Control(this.node, 'div', 'pagination');
     const main = new Control(this.node, 'div', 'container_card');
@@ -70,29 +63,39 @@ class PageBook extends Control {
     this.createPagination(paginationButton.node, page);
     this.createCards(main.node, userWords);
 
-    this.checkCards()
+    this.checkCards();
   }
 
   createCards(main: HTMLElement, userWords?: IUserWord[]) {
-
     this.words.forEach((word) => {
       const sounds = [
         `${BASELINK}/${word.audio}`,
         `${BASELINK}/${word.audioMeaning}`,
         `${BASELINK}/${word.audioExample}`,
       ];
-      const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay, this.onMarkedWords);
+      const card = new CardBook(
+        main,
+        word,
+        sounds,
+        this.user,
+        this.onAudioPlay,
+        this.onMarkedWords,
+      );
 
       this.audioIcons.push(...card.audio);
 
       if (userWords) {
-        const userWord = userWords.find(item => item.optional.wordId === word.id)
+        const userWord = userWords.find((item) => item.optional.wordId === word.id);
         if (userWord) {
-          const isMarked = (userWord.optional.isLearn || userWord.difficulty === 'hard') ? true : false
+          const isMarked = !!((
+            userWord.optional.isLearn
+            || userWord.difficulty === 'hard'
+          ));
+
           this.markedWords = {
             ...this.markedWords,
-            [word.id]: isMarked
-          }
+            [word.id]: isMarked,
+          };
         }
         card.addUserFunctional(word, userWords);
       } else {
@@ -102,30 +105,30 @@ class PageBook extends Control {
   }
 
   checkCards() {
-    const countMarkedWords = Object.values(this.markedWords).filter(item => item === true).length
+    const countMarkedWords = Object.values(this.markedWords).filter((item) => item === true).length;
     if (this.words.length === countMarkedWords) {
       this.node.classList.add('all-check');
-      this.onDisable.emit(true)
+      this.onDisable.emit(true);
     } else {
       this.node.classList.remove('all-check');
-      this.onDisable.emit(false)
+      this.onDisable.emit(false);
     }
   }
 
   updateMarkedWords(item: Record<string, boolean>) {
     this.markedWords = {
       ...this.markedWords,
-      ...item
-    }
-console.log()
-    this.checkCards()
+      ...item,
+    };
+    console.log();
+    this.checkCards();
   }
 
   disabeAudioIcons(onAudioPlay: boolean) {
     if (onAudioPlay) {
-      stopPlayAudio(this.audioIcons, "none");
+      stopPlayAudio(this.audioIcons, 'none');
     } else {
-      stopPlayAudio(this.audioIcons, "auto");
+      stopPlayAudio(this.audioIcons, 'auto');
     }
   }
 

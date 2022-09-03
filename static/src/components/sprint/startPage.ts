@@ -39,16 +39,15 @@ class StartPage extends Control {
   }
 
   private renderStartPage() {
+    this.renderCommonDescriptions();
 
-    this.renderCommonDescriptions()
-    
-    const prevPage = this.state.getInitiator()
+    const prevPage = this.state.getInitiator();
 
     if (prevPage.includes('book')) {
       if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
         const group = bookConfig.numberDifficultGroup;
         const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
-  
+
         const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
         button.node.onclick = () => {
           this.state.onPreload.emit([group]);
@@ -57,10 +56,9 @@ class StartPage extends Control {
       }
 
       if (prevPage.split('/').length >= 3) {
-
-        const [ , group, page ] = prevPage.slice(1).split('/');
+        const [, group, page] = prevPage.slice(1).split('/');
         const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
-  
+
         const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
         button.node.onclick = () => {
           this.state.onPreload.emit([+group, +page]);

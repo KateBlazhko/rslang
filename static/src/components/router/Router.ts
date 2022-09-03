@@ -26,8 +26,8 @@ class Router {
   }
 
   public onGoPage = new Signal<string>();
-  public onDisable = new Signal<boolean>();
 
+  public onDisable = new Signal<boolean>();
 
   private hashChange() {
     window.addEventListener('hashchange', () => {
@@ -40,8 +40,8 @@ class Router {
   private setPage(hash: string) {
     const { page } = this.prevPage;
     const container = this.container.node;
-    this.onDisable.emit(false)
-    
+    this.onDisable.emit(false);
+
     if (hash) {
       this.onGoPage.emit(hash);
     }
@@ -61,7 +61,7 @@ class Router {
         break;
       case 'about':
         this.currentPage = new AboutPage(container);
-        ;
+
         break;
       case 'sprint':
         this.onGoPage.emit(hash);

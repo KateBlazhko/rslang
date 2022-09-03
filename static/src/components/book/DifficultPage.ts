@@ -18,24 +18,21 @@ class DifficultPage extends Control {
 
   audioIcons: HTMLImageElement[] = [];
 
-
   constructor(
-    parentNode: HTMLElement | null, 
+    parentNode: HTMLElement | null,
     user: IStateLog,
-    public onAudioPlay: Signal<boolean>
+    public onAudioPlay: Signal<boolean>,
   ) {
     super(parentNode, 'div', 'page_book_container');
     this.user = user;
     this.allCards = [];
     this.createPage(user);
-    this.onAudioPlay.add(this.disabeAudioIcons.bind(this))
+    this.onAudioPlay.add(this.disabeAudioIcons.bind(this));
   }
 
   async createCards(main: HTMLElement, words: IWord[]) {
-
     const userWords = await Words.getUserWords(this.user.userId, this.user.token);
     words.forEach((word) => {
-
       const sounds = [
         `${BASELINK}/${word.audio}`,
         `${BASELINK}/${word.audioMeaning}`,
@@ -61,7 +58,7 @@ class DifficultPage extends Control {
     const main = new Control(this.node, 'div', 'container_card');
     const arr = await this.getWords(user);
     this.createCards(main.node, arr as unknown as IWord[]);
-    if (arr.length === 0) main.node.innerHTML = `<span class="no_cards">You haven't added difficult words yet!!!</span>`;
+    if (arr.length === 0) main.node.innerHTML = '<span class="no_cards">You haven\'t added difficult words yet!!!</span>';
     loader.destroy();
   }
 
@@ -79,9 +76,9 @@ class DifficultPage extends Control {
 
   disabeAudioIcons(onAudioPlay: boolean) {
     if (onAudioPlay) {
-      stopPlayAudio(this.audioIcons, "none");
+      stopPlayAudio(this.audioIcons, 'none');
     } else {
-      stopPlayAudio(this.audioIcons, "auto");
+      stopPlayAudio(this.audioIcons, 'auto');
     }
   }
 }

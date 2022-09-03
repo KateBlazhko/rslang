@@ -70,8 +70,8 @@ class GameAudio extends Control {
   // eslint-disable-next-line class-methods-use-this
   async getDifficultWord(user: IStateLog) {
     const words: IWord[] = [];
-    const res = Words.adapterAggregatedWords(await Words.getDifficultyWords(user)) 
-    
+    const res = Words.adapterAggregatedWords(await Words.getDifficultyWords(user));
+
     words.push(...res);
     if (words.length < 27) {
       words.push(...await GameAudio.getAggWords(user, 5, 1));
@@ -206,8 +206,8 @@ class GameAudio extends Control {
         return Words.createWordStat(stateLog, { wordId: word.word.id, answer: word.status });
       }));
 
-      const gameStat = this.gameStatistic(this.arrWordsStatus, userWordsAll)
-      const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'audio')
+      const gameStat = this.gameStatistic(this.arrWordsStatus, userWordsAll);
+      const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'audio');
     }
   }
 
