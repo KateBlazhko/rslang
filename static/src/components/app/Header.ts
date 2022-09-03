@@ -69,7 +69,7 @@ class Header extends Control {
 
   setDisable(isDisable: boolean) {
     const [ , , , ...gameButtons] = this.arrHref
-console.log(gameButtons)
+
     if (isDisable) {
       gameButtons.forEach(button => {
         button.node.classList.add('disable')

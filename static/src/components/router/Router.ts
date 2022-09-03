@@ -40,7 +40,8 @@ class Router {
   private setPage(hash: string) {
     const { page } = this.prevPage;
     const container = this.container.node;
-
+    this.onDisable.emit(false)
+    
     if (hash) {
       this.onGoPage.emit(hash);
     }
