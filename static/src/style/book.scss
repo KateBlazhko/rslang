@@ -225,12 +225,17 @@ $color-bg-button-border: #40396e;
           }
 
           .button_studied {
-            width: 4.8rem;
             // background: $color-level-english-6;
             // border-bottom: 3px solid $border-level-english-6;
             background-image: url('./assets/icons/studied.svg');
             background-size: contain;
+          }
 
+          .button_userWords {
+            width: 6.2rem;
+            // background: $color-level-english-6;
+            // border-bottom: 3px solid $border-level-english-6;
+            background-image: url('./assets/icons/userWords.svg');
           }
         }
 
