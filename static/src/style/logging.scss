@@ -16,14 +16,9 @@ $button-log-out-border: #e0677d;
     width: 50px;
     height: 50px;
     @include flexCenter();
-    // font-size: 26px;
-    // color: $color-bg;
-    // font-weight: 700;
-    // text-decoration: none;
-    // background-color: dimgray;
     border-radius: 50%;
 
-    background: url('./assets/icons/stat.png');
+    background-image: url('./assets/icons/statIcon.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
