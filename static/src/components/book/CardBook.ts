@@ -4,7 +4,7 @@ import Signal from '../common/signal';
 import BASELINK from '../constants/url';
 import { IStateLog } from '../login/Logging';
 import { adapterDate } from '../utils/functions';
-import stopPlayAudio from '../utils/stopPlayAudio';
+import Notification from '../common/notification';
 
 class CardBook extends Control {
   word: IWord;
@@ -250,6 +250,22 @@ class CardBook extends Control {
 
   createUserButton(node: HTMLElement, word: IWord, userWord?: IUserWord) {
     const user = new Control<HTMLImageElement>(node, 'div', 'button button_userWords');
+
+    if (userWord) {
+      user.node.classList.add('active')
+
+      user.node.onclick = () => {
+        const errors = userWord.optional.countError
+        const right = userWord.optional.сountRightAnswer
+        const text = `
+        You answered this word wrong ${errors} times \n
+        You answered this word correctly ${right} times
+        `
+
+        const notification = new Notification(this.node, "notification", text);
+      }
+
+    }
   };
 
 

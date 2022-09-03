@@ -1,0 +1,36 @@
+.notification__overlay {
+	position: absolute;
+  top: 0;
+	left: 0;
+	z-index: 3;
+
+  @include flexCenter();
+  
+	width: 100%;
+	height: 100vh;
+
+	// background-color: $blackout;
+
+	opacity: 0;
+
+	animation: Change-opacity 1s;
+	animation-fill-mode: forwards;
+	animation-direction: normal;
+
+}
+
+.notification__inner {
+	// overflow: hidden;
+  @include flexCenter();
+	// align-self: flex-start;
+	width: 30rem;
+	height: 10rem;
+	border-radius: 5px;
+
+	background-color: $color-bg;
+
+	.notification__text {
+		font-size: 3rem;
+		color: $color-text
+	}
+}
