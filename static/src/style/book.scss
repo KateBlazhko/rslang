@@ -5,7 +5,6 @@ $color-bg-button-border: #40396e;
 
 .book_container {
   @include flexCenter();
-
   width: 100%;
   min-height: 620px;
 
@@ -70,7 +69,7 @@ $color-bg-button-border: #40396e;
 
   .page__button-side-wrap {
     position: fixed;
-    left: 0.3rem;
+    left: 0.5rem;
     min-width: 8rem;
       @include flexCenter();
     justify-content: start;
@@ -84,50 +83,41 @@ $color-bg-button-border: #40396e;
     @include flexCenter();
 
     width: 6rem;
-    height: 5rem;
+    height: 6rem;
 
     border-radius: $button-border-radius * 1.2;
+    border-bottom: 3px solid $color-shadow;
+    box-shadow: 0 0 3px $color-shadow;
 
-    font-size: 2.5rem;
+
+    background-color: $color-bg;
+
+    cursor: pointer;
+    
+    font-size: 2rem;
     text-align: center;
     font-weight: bold;
     text-decoration: none;
-    color: $color-bg;
+    color: $color-text;
 
     transition: .4s;
+
+    &:nth-child(1) {
+      background-image: url('./assets/icons/arrow.png');
+      background-size: 80%;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
 
     &:hover {
       transform: scale(1.1);
     }
 
-    &:nth-child(1) {
-      background: $color-level-english-1;
-      border-bottom: 3px solid $border-level-english-1;
-    }
-    &:nth-child(2) {
-      background: $color-level-english-2;
-      border-bottom: 3px solid $border-level-english-2;
-    }
-    &:nth-child(3) {
-      background: $color-level-english-3;
-      border-bottom: 3px solid $border-level-english-3;
-    }
-    &:nth-child(4) {
-      background: $color-level-english-4;
-      border-bottom: 3px solid $border-level-english-4;
-    }
-    &:nth-child(5) {
-      background: $color-level-english-5;
-      border-bottom: 3px solid $border-level-english-5;
-    }
-    &:nth-child(6) {
-      background: $color-level-english-6;
-      border-bottom: 3px solid $border-level-english-6;
-    }
+    &.disable {
+      pointer-events: none;
 
-    &:nth-child(7) {
-      background: $color-level-english-7;
-      border-bottom: 3px solid $border-level-english-7;
+      color: $color-shadow;
+
     }
   }
 
@@ -138,8 +128,9 @@ $color-bg-button-border: #40396e;
     align-items: center;
     gap: 3rem;
     width: 100%;
+    height: 100%;
     padding: 3rem;
-    padding-left: 8.5rem;
+    padding-left: 9rem;
 
     &.one-group {
       background-color: $bg-level-english-1;
@@ -419,7 +410,7 @@ $color-bg-button-border: #40396e;
         @include flexCenter();
 
         width: 6rem;
-        height: 5rem;
+        height: 6rem;
         border-radius: $button-border-radius;
         border-bottom: 3px solid $color-shadow;
         box-shadow: 0 0 3px $color-shadow;
@@ -430,7 +421,6 @@ $color-bg-button-border: #40396e;
         line-height: 4rem;
         color: $color-text;
         text-decoration: none;
-
 
         background-color: $color-bg;
 
@@ -452,7 +442,7 @@ $color-bg-button-border: #40396e;
         @include flexCenter();
 
         width: 6rem;
-        height: 5rem;
+        height: 6rem;
         box-shadow: 0 0 3px $color-shadow;
         border-radius: $button-border-radius;
         border-bottom: 3px solid $color-shadow;

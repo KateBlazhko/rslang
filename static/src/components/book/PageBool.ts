@@ -44,6 +44,7 @@ class PageBook extends Control {
     this.onAudioPlay.add(this.disabeAudioIcons.bind(this));
 
     this.onMarkedWords.add(this.updateMarkedWords.bind(this));
+    this.onDisable.add(this.setDisable.bind(this))
   }
 
   onMarkedWords = new Signal<Record<string, boolean>>();
@@ -78,23 +79,24 @@ class PageBook extends Control {
   createHrefBtn() {
     const container = new Control(this.node, 'div', 'page__button-side-wrap');
 
-    container.node.innerHTML = `
-      <a class="page__button-side" href="#book/0/0">A1</a>
-      <a class="page__button-side" href="#book/1/0">A2</a>
-      <a class="page__button-side" href="#book/2/0">B1</a>
-      <a class="page__button-side" href="#book/3/0">B2</a>
-      <a class="page__button-side" href="#book/3/0">C1</a>
-      <a class="page__button-side" href="#book/5/0">C2</a>
-      ${this.user.state ? '<a class="page__button-side" href="#book/difficult">D</a>' : ''}
-      ${this.user.state ? '<a class="page__button-side" href="#book/difficult">A</a>' : ''}
+    const returnHref = new ButtonHref(container.node, '#book', '', 'page__button-side');
+    const sprintHref = new ButtonHref(container.node, '#sprint', ButtonHrefContent.sprint, 'page__button-side');
+    const audioHref = new ButtonHref(container.node, '#audio', ButtonHrefContent.audio, 'page__button-side');
 
-    `;
+    this.arrHref = [sprintHref, audioHref];
+  }
 
-    const sprint = new ButtonHref(container.node, '#sprint', ButtonHrefContent.sprint);
-    const audio = new ButtonHref(container.node, '#audio', ButtonHrefContent.audio);
+  setDisable(isDisable: boolean) {
 
-    this.arrHref = [sprint, audio];
-
+    if (isDisable) {
+      this.arrHref.forEach((button) => {
+        button.node.classList.add('disable');
+      });
+    } else {
+      this.arrHref.forEach((button) => {
+        button.node.classList.remove('disable');
+      });
+    }
   }
 
   createCards(main: HTMLElement, userWords?: IUserWord[]) {
