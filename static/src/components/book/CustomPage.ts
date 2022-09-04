@@ -2,6 +2,7 @@ import Words, { IWord } from '../api/Words';
 import ButtonHref from '../common/ButtonHref';
 import Control from '../common/control';
 import Signal from '../common/signal';
+import bookConfig from '../constants/bookConfig';
 import BASELINK from '../constants/url';
 import { IStateLog } from '../login/Logging';
 import stopPlayAudio from '../utils/stopPlayAudio';
@@ -66,7 +67,7 @@ class CustomPage extends Control {
     const loader = new Loader(this.node);
     this.createHrefBtn();
     this.main = new Control(this.node, 'div', 'container_card');
-    this.words = await this.getWords(user);
+    this.words = await this.getWords();
     this.createCards(this.main.node, this.words);
     this.checkIsEmpty();
     loader.destroy();
@@ -107,8 +108,8 @@ class CustomPage extends Control {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async getWords(user: IStateLog) {
-    const res = await Words.getCustomWords(user);
+  async getWords() {
+    const res = await Words.getCustomWords(bookConfig.numberCustomGroup);
     return res;
   }
 

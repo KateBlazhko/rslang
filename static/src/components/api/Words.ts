@@ -85,9 +85,9 @@ class Words {
     return content;
   }
 
-  public static async getCustomWords(stateLog: IStateLog) {
+  public static async getCustomWords(group: number) {
     const url = `${BASELINK}/words?${Words.getQueryParams({
-      group: '6',
+      group: group.toString(),
       page: '0',
     })}`;
 
