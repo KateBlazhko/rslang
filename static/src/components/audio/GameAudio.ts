@@ -92,6 +92,10 @@ class GameAudio extends Control {
       this.arrWords = await this.getDifficultWord(stateLog);
       this.count = this.arrWords.length;
       this.value.step = 100 / this.count;
+    } else if (prevPage.includes('book') && prevPage.split('/').length === 1) {
+      this.arrWords = await GameAudio.getAllWords(difficult);
+      this.count = this.arrWords.length / 5;
+      this.value.step = 100 / this.count;
     } else {
       const el = prevPage.split('/');
       const group = el[1];

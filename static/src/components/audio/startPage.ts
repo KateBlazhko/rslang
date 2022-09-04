@@ -75,6 +75,7 @@ class StartPageAudio extends Control {
     this.containerBtn.node.innerHTML = '';
     const button = new Control(this.containerBtn.node, 'button', 'new-game', 'New Game');
     button.node.addEventListener('click', () => {
+      this.draw = true;
       this.createBtnDifficult(false);
       button.destroy();
     });
