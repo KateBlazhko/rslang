@@ -42,7 +42,6 @@ class StartPage extends Control {
     this.renderCommonDescriptions();
 
     const prevPage = this.state.getInitiator();
-console.log(prevPage.split('/').length)
     if (prevPage.includes('book')) {
       if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
         const group = bookConfig.numberDifficultGroup;

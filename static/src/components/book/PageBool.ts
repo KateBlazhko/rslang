@@ -153,7 +153,6 @@ class PageBook extends Control {
       ...this.markedWords,
       ...item,
     };
-    console.log();
     this.checkCards();
   }
 

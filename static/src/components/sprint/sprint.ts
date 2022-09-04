@@ -106,7 +106,6 @@ class Sprint extends Control {
   }
 
   private async getWords(group: number, page?: number) {
-    console.log('this.words');
 
     try {
       if (page) {
