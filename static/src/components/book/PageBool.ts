@@ -44,7 +44,7 @@ class PageBook extends Control {
     this.onAudioPlay.add(this.disabeAudioIcons.bind(this));
 
     this.onMarkedWords.add(this.updateMarkedWords.bind(this));
-    this.onDisable.add(this.setDisable.bind(this))
+    this.onDisable.add(this.setDisable.bind(this));
   }
 
   onMarkedWords = new Signal<Record<string, boolean>>();
@@ -62,10 +62,9 @@ class PageBook extends Control {
   }
 
   createPage(page: string, userWords?: IUserWord[]) {
-
     const paginationTop = new Control(this.node, 'div', 'pagination');
     const marked = new Control(this.node, 'div', 'marked', 'Great job! You\'ve learned everything on this page');
-    this.createHrefBtn()
+    this.createHrefBtn();
 
     const main = new Control(this.node, 'div', 'container_card');
     const paginationButton = new Control(this.node, 'div', 'pagination');
@@ -87,7 +86,6 @@ class PageBook extends Control {
   }
 
   setDisable(isDisable: boolean) {
-
     if (isDisable) {
       this.arrHref.forEach((button) => {
         button.node.classList.add('disable');

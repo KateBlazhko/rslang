@@ -66,11 +66,10 @@ class StartPage extends Control {
       }
 
       if (prevPage.split('/').length === 1) {
-        this.defaultStart()
+        this.defaultStart();
       }
-      
     } else {
-      this.defaultStart()
+      this.defaultStart();
     }
   }
 
@@ -88,6 +87,7 @@ class StartPage extends Control {
       return button;
     });
   }
+
   private renderCommonDescriptions() {
     const first = new Control(this.node, 'div', 'start__desription start__desription_odd');
     first.node.innerHTML = `

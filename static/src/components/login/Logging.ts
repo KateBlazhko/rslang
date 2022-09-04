@@ -175,15 +175,14 @@ class Logging {
       if (!this.stateLog.state) event.preventDefault();
     });
     if (!this.stateLog.state) {
-      this.profile.node.classList.remove('login')
+      this.profile.node.classList.remove('login');
       // this.profile.node.textContent = 'U';
       if (window.location.hash.slice(1) === 'statistics') {
         window.location.hash = '#home';
       }
     } else {
-      this.profile.node.classList.add('login')
+      this.profile.node.classList.add('login');
       // this.profile.node.textContent = 'A';
-
     }
   }
 

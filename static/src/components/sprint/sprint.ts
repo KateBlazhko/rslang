@@ -70,11 +70,11 @@ class Sprint extends Control {
         if (stateLog.state) {
           if (group === bookConfig.numberDifficultGroup) {
             this.words = await Sprint.getDifficultWord(stateLog);
-          } else  if (page) {
+          } else if (page) {
             this.words = await this.getAggregatedWords(words);
-            } else {
-              this.words = await this.getWords(group);
-            }
+          } else {
+            this.words = await this.getWords(group);
+          }
         } else {
           this.words = await this.getWords(group, page);
         }
@@ -106,7 +106,6 @@ class Sprint extends Control {
   }
 
   private async getWords(group: number, page?: number) {
-
     try {
       if (page) {
         const words = await Words.getWords({

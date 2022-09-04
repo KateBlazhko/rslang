@@ -25,9 +25,9 @@ class CustomPage extends Control {
 
   audioIcons: HTMLImageElement[] = [];
 
-  words: IWord[] = []
+  words: IWord[] = [];
 
-  main: Control | null = null
+  main: Control | null = null;
 
   arrHref: Array<ButtonHref> = [];
 
@@ -53,7 +53,7 @@ class CustomPage extends Control {
       ];
 
       const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay);
-      card.onDeleteWord.add(this.checkIsEmpty.bind(this))
+      card.onDeleteWord.add(this.checkIsEmpty.bind(this));
 
       card.difficultListen(word.id);
       this.allCards.push({ node: card, item: word });
@@ -64,11 +64,11 @@ class CustomPage extends Control {
 
   async createPage(user: IStateLog) {
     const loader = new Loader(this.node);
-    this.createHrefBtn()
+    this.createHrefBtn();
     this.main = new Control(this.node, 'div', 'container_card');
     this.words = await this.getWords(user);
     this.createCards(this.main.node, this.words);
-    this.checkIsEmpty()
+    this.checkIsEmpty();
     loader.destroy();
   }
 
@@ -82,7 +82,6 @@ class CustomPage extends Control {
   }
 
   setDisable(isDisable: boolean) {
-
     if (isDisable) {
       this.arrHref.forEach((button) => {
         button.node.classList.add('disable');
@@ -96,16 +95,14 @@ class CustomPage extends Control {
 
   checkIsEmpty(id?: string) {
     if (id) {
-      this.words = this.words.filter(item => item.id !== id)
+      this.words = this.words.filter((item) => item.id !== id);
     }
 
     if (this.words.length === 0) {
-      if (this.main)
-        this.main.node.innerHTML = '<span class="no_cards">You haven\'t added custom words yet</span>';
-        this.setDisable(true)
+      if (this.main) this.main.node.innerHTML = '<span class="no_cards">You haven\'t added custom words yet</span>';
+      this.setDisable(true);
     } else {
-      this.setDisable(false)
-
+      this.setDisable(false);
     }
   }
 
