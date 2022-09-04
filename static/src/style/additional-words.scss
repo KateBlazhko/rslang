@@ -144,4 +144,28 @@
       opacity: 0.3;
     }
   }
+
+  .error__window {
+    background-color: $warning-background;
+    border: 2px solid $modal-color-red;
+    color: $modal-color-red;
+    margin: 10px 15px 0;
+    font-size: 16px;
+    padding: 10px;
+    display: flex;
+    text-align: center;
+    border-radius: 15px;
+  }
+
+  .success__window {
+    background-color: $background-container;
+    border: 2px solid $modal-color-green;
+    color: $modal-color-green;
+    margin: 10px 15px 0;
+    font-size: 16px;
+    padding: 10px;
+    display: flex;
+    text-align: center;
+    border-radius: 15px;
+  }
 }

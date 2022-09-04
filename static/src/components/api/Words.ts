@@ -2,6 +2,7 @@ import BASELINK from '../constants/url';
 import { IStateLog } from '../login/Logging';
 import { IWordStat } from '../sprint/sprint';
 import ErrorUser from '../utils/ErrorUser';
+import ErrorNewWord from '../utils/ErrorNewWord';
 import { adapterDate } from '../utils/functions';
 
 export interface IWord {
@@ -130,6 +131,24 @@ class Words {
     });
     const content: IUserWord = await rawResponse.json();
     return content;
+  }
+
+  public static async createNewWord(token: string, word: FormData) {
+    const url = `${BASELINK}/words`;
+
+    const rawResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: word,
+    });
+
+    try {
+      return rawResponse;;
+    } catch (e) {
+      return new ErrorNewWord(rawResponse);
+    }
   }
 
   public static async createUserWord(

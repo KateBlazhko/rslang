@@ -1,10 +1,8 @@
+import BASELINK from '../constants/url';
 import { IStateLog } from '../login/Logging';
 import ErrorUser from '../utils/ErrorUser';
 import { adapterDate } from '../utils/functions';
 import Words from './Words';
-
-export const BASELINK = 'http://localhost:3000';
-// export const BASELINK = 'https://rs-lang-machine.herokuapp.com';
 
 export interface IGameStat {
   newWords: number,

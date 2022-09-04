@@ -1,6 +1,8 @@
+import Words from "../api/Words";
 import Control from "../common/control";
 import Input from "../common/Input";
 import Logging from "../login/Logging";
+import ErrorNewWord from "../utils/ErrorNewWord";
 import { FORM_INPUTS_FILE, FORM_INPUTS_TEXT } from "./formInputs";
 
 enum TextInner {
@@ -11,8 +13,18 @@ enum TextInner {
 }
 
 class AdditionalWordsPage extends Control {
-  constructor(public parentNode: HTMLElement | null, public login: Logging) {
+  private form: Control<HTMLElement>;
+
+  login: Logging;
+
+  private errorWindow: Control<HTMLButtonElement>;
+  private successWindow: Control<HTMLButtonElement>;
+
+  private submitBtn: HTMLButtonElement;
+
+  constructor(parentNode: HTMLElement | null, login: Logging) {
     super(parentNode, "div", "additionalWords");
+    this.login = login;
 
     const description = new Control(this.node, "div", "additionalWords__title");
     description.node.innerHTML = `<div class='additionalWords__title-preview'>
@@ -20,12 +32,22 @@ class AdditionalWordsPage extends Control {
         <span>${TextInner.titleText}</span>
     </div>`;
 
-    const form = new Control(this.node, "form", "additionalWords__form");
+    this.errorWindow = new Control<HTMLButtonElement>(
+      null,
+      "div",
+      "error__window"
+    );
+    this.successWindow = new Control<HTMLButtonElement>(
+      null,
+      "div",
+      "success__window"
+    );
+    this.form = new Control(this.node, "form", "additionalWords__form");
 
     const inputsFile = FORM_INPUTS_FILE.map(
       (fileInput) =>
         new Input(
-          form.node,
+          this.form.node,
           fileInput.type,
           fileInput.label,
           fileInput.name,
@@ -34,10 +56,15 @@ class AdditionalWordsPage extends Control {
     );
     const inputsText = FORM_INPUTS_TEXT.map(
       (fileInput) =>
-        new Input(form.node, fileInput.type, fileInput.label, fileInput.name)
+        new Input(
+          this.form.node,
+          fileInput.type,
+          fileInput.label,
+          fileInput.name
+        )
     );
 
-    form.node.addEventListener("submit", (e: SubmitEvent) => {
+    this.form.node.addEventListener("submit", (e: SubmitEvent) => {
       e.preventDefault();
       [...inputsText, ...inputsFile].forEach((item) => {
         item.node.querySelector(".warning__div")?.remove();
@@ -64,6 +91,14 @@ class AdditionalWordsPage extends Control {
       });
 
       if (isValidForm) {
+        let formData = new FormData();
+        Object.entries(data).forEach(([formItemName, formItemValue]) =>
+          formData.append(
+            typeof formItemValue === "string" ? formItemName : "media",
+            formItemValue
+          )
+        );
+        this.createNewWord(formData);
       }
     });
 
@@ -71,7 +106,39 @@ class AdditionalWordsPage extends Control {
     submitBtn.type = "submit";
     submitBtn.textContent = "Create";
     submitBtn.classList.add("additionalWords__submitBtn");
-    form.node.append(submitBtn);
+    this.submitBtn = submitBtn;
+    this.form.node.append(submitBtn);
+  }
+
+  async createNewWord(wordFormData: FormData) {
+    this.submitBtn.textContent = "Loading...";
+    this.submitBtn.disabled = true;
+    this.submitBtn.style.opacity = "0.5";
+
+    this.errorWindow.destroy();
+    this.successWindow.destroy();
+    const stateLog = await this.login.checkStorageLogin();
+
+    if (stateLog.state) {
+      const res = await Words.createNewWord(stateLog.token, wordFormData);
+      this.submitBtn.textContent = "Create";
+      this.submitBtn.disabled = false;
+      this.submitBtn.style.opacity = "1";
+
+      if (res.status === 200) {
+        this.successWindow.node.innerHTML = "Successfully created";
+        this.form.node.append(this.successWindow.node);
+        setTimeout(() => {
+          this.successWindow.destroy();
+        }, 5000);
+      } else {
+        ErrorNewWord.getErrorMessage(res.status, this.errorWindow.node);
+        this.form.node.append(this.errorWindow.node);
+        setTimeout(() => {
+          this.errorWindow.destroy();
+        }, 5000);
+      }
+    }
   }
 }
 
