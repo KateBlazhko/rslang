@@ -36,7 +36,6 @@ class Audio extends Control {
     this.node.innerHTML = '';
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
     this.renderPage('start');
-    this.startPage.createBtnDifficult(false);
   }
 
   startGame() {
