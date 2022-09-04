@@ -41,7 +41,7 @@ class ModalLog {
     this.password = new Input(this.form.node, 'password', 'Password: ');
     this.submit = new Control<HTMLButtonElement>(this.form.node, 'button', 'button__submit', 'Login');
     this.errorWindow = new Control<HTMLButtonElement>(null, 'div', 'error__window');
-    this.outModal = new Control(null, 'div', 'out__modal', 'Вы точно хотите выйти их аккаунта ?');
+    this.outModal = new Control(null, 'div', 'out__modal', 'Are you sure you want to log out of your account?');
     this.noBtn = new Control<HTMLButtonElement>(this.outModal.node, 'button', 'button__out_no', 'No');
     this.yesBtn = new Control<HTMLButtonElement>(this.outModal.node, 'button', 'button__out_yes', 'Yes');
     this.remoteLogReg();
