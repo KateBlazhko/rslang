@@ -7,6 +7,7 @@ import Logging from '../login/Logging';
 import Audio from '../audio/Audio';
 import AboutPage from '../about/aboutPage';
 import Book from '../book/Book';
+import Validator from '../utils/Validator';
 
 class Router {
   private location: Location;
@@ -23,6 +24,19 @@ class Router {
     this.location = window.location;
     this.setPage(this.location.hash.slice(1));
     this.hashChange();
+    this.listenLogin();
+  }
+
+  listenLogin() {
+    this.login.modal.formElements.submit.node.addEventListener('click', () => {
+      const email = Validator.validate('email', this.login.modal.email);
+      const password = Validator.validate('password', this.login.modal.password);
+
+      if (email && password) {
+        if (this.currentPage) this.currentPage.destroy();
+        this.setPage(this.location.hash.slice(1));
+      }
+    });
   }
 
   public onGoPage = new Signal<string>();

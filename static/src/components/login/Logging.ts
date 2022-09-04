@@ -18,13 +18,13 @@ export interface IStateLog {
 class Logging {
   private container: Control<HTMLElement>;
 
-  private loginBtn: ButtonLogging;
+  public loginBtn: ButtonLogging;
 
   private profile: ButtonHref;
 
   private stateLog: IStateLog;
 
-  private modal: ModalLog;
+  public modal: ModalLog;
 
   constructor() {
     this.container = new Control<HTMLDivElement>(null, 'div', 'logging__container');
