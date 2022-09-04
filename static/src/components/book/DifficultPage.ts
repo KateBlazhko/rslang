@@ -35,6 +35,7 @@ class DifficultPage extends Control {
     parentNode: HTMLElement | null,
     user: IStateLog,
     public onAudioPlay: Signal<boolean>,
+    private onDisable: Signal<boolean>,
   ) {
     super(parentNode, 'div', 'page_book_container');
     this.user = user;
@@ -101,7 +102,9 @@ class DifficultPage extends Control {
     if (this.words.length === 0) {
       if (this.main) this.main.node.innerHTML = '<span class="no_cards">You haven\'t added difficult words yet</span>';
       this.setDisable(true);
+      this.onDisable.emit(true)
     } else {
+      this.onDisable.emit(false)
       this.setDisable(false);
     }
   }

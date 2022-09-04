@@ -56,7 +56,7 @@ class Book extends Control {
       );
       addClassOnPage(newPage.node, +itemHash[1]);
     } else if (itemHash[1] === 'difficult') {
-      const newPage = new DifficultPage(this.node, user, this.onAudioPlay);
+      const newPage = new DifficultPage(this.node, user, this.onAudioPlay, this.onDisable);
       newPage.node.classList.add('difficult');
     } else if (itemHash[1] === 'custom') {
       const newPage = new CustomPage(this.node, user, this.onAudioPlay);
