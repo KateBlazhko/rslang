@@ -194,7 +194,7 @@ class GameAudio extends Control {
   }
 
   async saveWordsUser() {
-    let newWords = 0
+    let newWords = 0;
     const stateLog = await this.login.checkStorageLogin();
     if (stateLog.state) {
       const userWordsAll = await Words.getUserWords(stateLog.userId, stateLog.token);
@@ -203,11 +203,11 @@ class GameAudio extends Control {
         const userWord = userWordsAll.find((item) => item.optional.wordId === word.word.id);
         if (userWord) {
           if (userWord.optional.dataGetNew === undefined) {
-            newWords += 1
+            newWords += 1;
           }
           return Words.updateWordStat(stateLog, userWord, word.status);
         }
-        newWords += 1
+        newWords += 1;
         return Words.createWordStat(stateLog, { wordId: word.word.id, answer: word.status });
       }));
 
@@ -224,7 +224,11 @@ class GameAudio extends Control {
     document.onkeydown = () => {};
   }
 
-  gameStatistic(arrWord: { word: IWord, status: boolean }[], userWords: IUserWord[], newWords: number) {
+  gameStatistic(
+    arrWord: { word: IWord, status: boolean }[],
+    userWords: IUserWord[],
+    newWords: number,
+  ) {
     // const map = userWords.map((el) => el.optional.wordId);
     // const res = arrWord.filter((el) => !map.includes(el.word.id));
     return {

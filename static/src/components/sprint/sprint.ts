@@ -70,13 +70,10 @@ class Sprint extends Control {
         if (stateLog.state) {
           if (group === bookConfig.numberDifficultGroup) {
             this.words = await Sprint.getDifficultWord(stateLog);
-            
           } else if (group === bookConfig.numberCustomGroup) {
             this.words = await Sprint.getCustomWord(group);
-
-          }else if (page) {
+          } else if (page) {
             this.words = await this.getAggregatedWords(words);
-
           } else {
             this.words = await this.getWords(group);
           }
