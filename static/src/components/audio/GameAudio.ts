@@ -193,12 +193,12 @@ class GameAudio extends Control {
     const successWord = card.resultWords.find((el) => el.word.id === card.words.successWord.id);
 
     if (item.word.id === card.words.successWord.id) {
-      this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+      this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.progress}%, gainsboro ${this.value.progress += this.value.step}%, gainsboro)`;
       item.node.classList.add('success');
       this.arrWordsStatus.push({ word: card.words.successWord, status: true });
       success.play();
     } else {
-      this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+      this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.progress}%, gainsboro ${this.value.progress += this.value.step}%, gainsboro)`;
       item.node.classList.add('failed');
       this.arrWordsStatus.push({ word: card.words.successWord, status: false });
       fail.play();
