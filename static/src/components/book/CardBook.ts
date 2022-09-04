@@ -56,7 +56,7 @@ class CardBook extends Control {
 
   createButtons() {
     const volume = new Control<HTMLImageElement>(this.buttonWrap.node, 'img', 'img__button');
-    volume.node.src = '../../assets/icons/volume.png';
+    volume.node.src = './assets/icons/volume.png';
     volume.node.addEventListener('click', async () => {
       this.onAudioPlay.emit(true);
 
