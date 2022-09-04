@@ -24,19 +24,12 @@ class Router {
     this.location = window.location;
     this.setPage(this.location.hash.slice(1));
     this.hashChange();
-    this.listenLogin();
+    this.login.getEvent(this.listenLogin.bind(this));
   }
 
   listenLogin() {
-    this.login.modal.formElements.submit.node.addEventListener('click', () => {
-      const email = Validator.validate('email', this.login.modal.email);
-      const password = Validator.validate('password', this.login.modal.password);
-
-      if (email && password) {
-        if (this.currentPage) this.currentPage.destroy();
-        this.setPage(this.location.hash.slice(1));
-      }
-    });
+    if (this.currentPage) this.currentPage.destroy();
+    this.setPage(this.location.hash.slice(1));
   }
 
   public onGoPage = new Signal<string>();

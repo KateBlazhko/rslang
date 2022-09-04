@@ -26,6 +26,8 @@ class Logging {
 
   public modal: ModalLog;
 
+  setPage: null | (() => void);
+
   constructor() {
     this.container = new Control<HTMLDivElement>(null, 'div', 'logging__container');
     this.stateLog = { state: false, userId: '', token: '' };
@@ -37,9 +39,17 @@ class Logging {
     this.addCallModal();
     this.outModalBtnListen();
     this.listenSubmit();
+    this.setPage = null;
   }
 
   public onLogin = new Signal<boolean>();
+
+  // eslint-disable-next-line class-methods-use-this, consistent-return
+  getEvent(func?: () => void) {
+    if (func) {
+      this.setPage = func;
+    }
+  }
 
   listenSubmit() {
     this.modal.formElements.form.node.addEventListener('click', (e) => {
@@ -79,6 +89,7 @@ class Logging {
         this.modal.callErrorWindow(res.status);
       }
     }
+    this.setPage!();
   }
 
   async registerUser(email: boolean, password: boolean, name: boolean) {
@@ -105,6 +116,7 @@ class Logging {
         this.modal.callErrorWindow(res.status);
       }
     }
+    this.setPage!();
   }
 
   async createStats() {
