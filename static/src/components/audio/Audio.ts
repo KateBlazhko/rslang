@@ -35,6 +35,12 @@ class Audio extends Control {
   repeatListen() {
     this.node.innerHTML = '';
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
+    if (this.prevPage.includes('book')) {
+      const btn = this.startPage.createBtnNewGame();
+      btn.node.addEventListener('click', () => {
+        this.prevPage = '#audio';
+      });
+    }
     this.renderPage('start');
   }
 

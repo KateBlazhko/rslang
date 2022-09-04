@@ -71,6 +71,16 @@ class StartPageAudio extends Control {
     }
   }
 
+  createBtnNewGame() {
+    this.containerBtn.node.innerHTML = '';
+    const button = new Control(this.containerBtn.node, 'button', 'new-game', 'New Game');
+    button.node.addEventListener('click', () => {
+      this.createBtnDifficult(false);
+      button.destroy();
+    });
+    return button;
+  }
+
   private addActive(node: HTMLButtonElement): void {
     this.arrBtn.forEach((item) => item.node.classList.remove('active'));
     node.classList.add('active');

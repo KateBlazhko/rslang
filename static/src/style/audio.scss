@@ -213,6 +213,11 @@ $color-button-start-border: #63387C;
     }
 
     .audio_container__btn {
+
+      .new-game {
+        width: 220px;
+      }
+
       @include flexCenter();
       gap: 2rem;
 
