@@ -186,6 +186,33 @@ $color-bg-button-border: #40396e;
 
     }
 
+    &.all-check .pagination a {
+      &.active {
+        position: relative;
+        border-bottom: none;
+        color: $color-bg;
+
+        // background: $color-level-english-4;
+        // border-bottom: 3px solid $border-level-english-4;
+        
+        &::after {
+          position: absolute;
+          top: 25%;
+          left: 25%;
+          z-index: 5;
+          content: '';
+          width: 3rem;
+          height: 3rem;
+
+          background-image: url('./assets/icons/true.svg');
+          background-color: $color-bg-button;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+      }
+
+    }
+
     .container_card {
       position: relative;
 
@@ -440,7 +467,6 @@ $color-bg-button-border: #40396e;
 
           background: $color-bg-button;
           border-bottom: 3px solid $color-bg-button-border;
-
         }
       }
 
