@@ -33,7 +33,7 @@ class GameAudio extends Control {
     this.repeat = new Control<HTMLImageElement>(this.node, 'img', 'arrow_img', '');
     this.startPage = start;
     this.progress = new Control(this.node, 'div', 'audio_call__progress', 'Your Progress');
-    this.repeat.node.src = '../../assets/icons/arrow.png';
+    this.repeat.node.src = './assets/icons/arrow.png';
     this.arrWords = [];
     this.arrWordsStatus = [];
     this.value = { word: 0 };
@@ -145,8 +145,8 @@ class GameAudio extends Control {
   }
 
   listenKey(card: CardAudio, key: string) {
-    const success = new Audio('../../assets/sound/ok.mp3');
-    const fail = new Audio('../../assets/sound/fail.mp3');
+    const success = new Audio('./assets/sound/ok.mp3');
+    const fail = new Audio('./assets/sound/fail.mp3');
     const successWord = card.allWords.find((el) => el.word.id === card.words.successWord.id);
 
     if (card.allWords.map((i) => i.value).includes(+key)) {
@@ -172,8 +172,8 @@ class GameAudio extends Control {
   }
 
   listenGame(item: ICardAudio, card: CardAudio) {
-    const success = new Audio('../../assets/sound/ok.mp3');
-    const fail = new Audio('../../assets/sound/fail.mp3');
+    const success = new Audio('./assets/sound/ok.mp3');
+    const fail = new Audio('./assets/sound/fail.mp3');
     const successWord = card.allWords.find((el) => el.word.id === card.words.successWord.id);
 
     if (item.word.id === card.words.successWord.id) {
