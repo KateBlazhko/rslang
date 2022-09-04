@@ -15,8 +15,6 @@ interface ICardAudio {
 class GameAudio extends Control {
   arrWords: IWord[];
 
-  value: { word: number; };
-
   progress: Control<HTMLElement>;
 
   arrWordsStatus: Array<{word: IWord, status: boolean}>;
@@ -31,6 +29,8 @@ class GameAudio extends Control {
 
   randomWords: IWord[];
 
+  value: { word: number; progress: number; step: number; };
+
   constructor(start: () => void, login: Logging) {
     super(null, 'div', 'game__page__audio');
     this.login = login;
@@ -41,8 +41,8 @@ class GameAudio extends Control {
     this.arrWords = [];
     this.randomWords = [];
     this.arrWordsStatus = [];
-    this.value = { word: 0 };
-    this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+    this.value = { word: 0, progress: 0, step: 0 };
+    this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.progress}%, gainsboro ${0}%, gainsboro)`;
     this.count = 20;
     this.repeatListen();
   }
@@ -86,8 +86,12 @@ class GameAudio extends Control {
     const stateLog = await this.login.checkStorageLogin();
     if (!prevPage.includes('book')) {
       this.arrWords = await GameAudio.getAllWords(difficult);
+      this.count = this.arrWords.length / 5;
+      this.value.step = 100 / this.count;
     } else if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
       this.arrWords = await this.getDifficultWord(stateLog);
+      this.count = this.arrWords.length;
+      this.value.step = 100 / this.count;
     } else {
       const el = prevPage.split('/');
       const group = el[1];
@@ -95,6 +99,7 @@ class GameAudio extends Control {
       if (stateLog.state) {
         this.arrWords = await GameAudio.getAggregatedWords(stateLog, +group, +page);
         this.count = this.arrWords.length;
+        this.value.step = 100 / this.count;
       } else {
         this.arrWords = await GameAudio.getAllWords(group, `${page}`);
       }
@@ -162,13 +167,13 @@ class GameAudio extends Control {
       const thisCard = card.resultWords.find((el) => el.value === +key);
 
       if (successWord?.value === +key) {
-        this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+        this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.progress}%, gainsboro ${this.value.progress += this.value.step}%, gainsboro)`;
         successWord.node.classList.add('success');
         this.arrWordsStatus.push({ word: card.words.successWord, status: true });
         success.play();
       } else if (thisCard) {
         successWord?.node.classList.toggle('success');
-        this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.word * 5}%, gainsboro ${this.value.word * 5 + 2}%, gainsboro)`;
+        this.progress.node.style.background = `linear-gradient(to right, rgb(5, 176, 255) ${this.value.progress}%, gainsboro ${this.value.progress += this.value.step}%, gainsboro)`;
         thisCard.node.classList.add('failed');
         fail.play();
         this.arrWordsStatus.push({ word: card.words.successWord, status: false });
