@@ -66,14 +66,15 @@ class Sprint extends Control {
         this.words = await this.getWords(group);
       } else {
         const stateLog = await this.login.checkStorageLogin();
-        console.log(this.words);
 
         if (stateLog.state) {
           if (group === bookConfig.numberDifficultGroup) {
             this.words = await Sprint.getDifficultWord(stateLog);
-          } else {
+          } else  if (page) {
             this.words = await this.getAggregatedWords(words);
-          }
+            } else {
+              this.words = await this.getWords(group);
+            }
         } else {
           this.words = await this.getWords(group, page);
         }

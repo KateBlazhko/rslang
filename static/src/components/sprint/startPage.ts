@@ -42,7 +42,7 @@ class StartPage extends Control {
     this.renderCommonDescriptions();
 
     const prevPage = this.state.getInitiator();
-
+console.log(prevPage.split('/').length)
     if (prevPage.includes('book')) {
       if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
         const group = bookConfig.numberDifficultGroup;
@@ -65,22 +65,30 @@ class StartPage extends Control {
           this.destroy();
         };
       }
+
+      if (prevPage.split('/').length === 1) {
+        this.defaultStart()
+      }
+      
     } else {
-      const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromHeader);
-      const buttonWrap = new Control(fourth.node, 'div', 'start__button-wrap');
-
-      const buttonList = [...Array(COUNTLEVELS).keys()].map((item) => {
-        const button = new ButtonAnswer(buttonWrap.node, 'start__button', (item + 1).toString());
-        button.node.onclick = () => {
-          this.state.onPreload.emit([item]);
-          this.destroy();
-        };
-
-        return button;
-      });
+      this.defaultStart()
     }
   }
 
+  private defaultStart() {
+    const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromHeader);
+    const buttonWrap = new Control(fourth.node, 'div', 'start__button-wrap');
+
+    const buttonList = [...Array(COUNTLEVELS).keys()].map((item) => {
+      const button = new ButtonAnswer(buttonWrap.node, 'start__button', (item + 1).toString());
+      button.node.onclick = () => {
+        this.state.onPreload.emit([item]);
+        this.destroy();
+      };
+
+      return button;
+    });
+  }
   private renderCommonDescriptions() {
     const first = new Control(this.node, 'div', 'start__desription start__desription_odd');
     first.node.innerHTML = `

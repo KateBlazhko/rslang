@@ -41,6 +41,8 @@ class CardBook extends Control {
     this.createCard();
   }
 
+  onDeleteWord = new Signal<string>()
+
   createCard() {
     const img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
     img.node.src = `${BASELINK}/${this.word.image}`;
@@ -97,13 +99,8 @@ class CardBook extends Control {
           сountRightAnswer: word.optional.сountRightAnswer,
           countError: word.optional.countError,
           seriesRightAnswer: word.optional.seriesRightAnswer,
-          // isLearn: isLearn ?? word.optional.isLearn,
           isLearn: false,
           dataGetNew: word.optional.dataGetNew,
-          // dataLearn: (
-          //   word.optional.isLearn
-          //         && word.optional.isLearn !== userWord.optional.isLearn)
-          //   ? adapterDate(new Date()) : undefined,
           dataLearn: undefined,
         },
       },
@@ -117,7 +114,6 @@ class CardBook extends Control {
       this.user.token,
       userWord.optional.wordId,
       {
-        // difficulty: difficult || 'easy',
         difficulty: 'easy',
         optional: {
           wordId: word.optional.wordId,
@@ -126,10 +122,6 @@ class CardBook extends Control {
           seriesRightAnswer: word.optional.seriesRightAnswer,
           isLearn,
           dataGetNew: word.optional.dataGetNew,
-          // dataLearn: (
-          //   word.optional.isLearn
-          //         && word.optional.isLearn !== userWord.optional.isLearn)
-          //   ? adapterDate(new Date()) : undefined,
           dataLearn: isLearn ? adapterDate(new Date()) : undefined,
         },
       },
@@ -161,7 +153,6 @@ class CardBook extends Control {
     studyBtn.node.title = 'Mark studied';
 
     if (userWord?.difficulty === 'hard') {
-      // difficultBtn.node.textContent = 'Delete';
       difficultBtn.node.classList.add('active');
 
       this.node.classList.add('difficult');
@@ -169,7 +160,6 @@ class CardBook extends Control {
     }
 
     if (userWord?.optional.isLearn) {
-      // studyBtn.node.textContent = 'Studied';
       studyBtn.node.classList.add('active');
 
       this.node.classList.add('study');
@@ -191,7 +181,6 @@ class CardBook extends Control {
       if (difficult === 'hard') {
         difficult = 'easy';
         this.onMarkedWords?.emit({ [word.id]: false });
-        // difficultBtn.node.textContent = 'Difficult';
         difficultBtn.node.classList.remove('active');
         this.node.classList.remove('difficult');
         await this.checkDifficult(this.UserWord!, 'easy', false);
@@ -199,8 +188,6 @@ class CardBook extends Control {
         difficult = 'hard';
         learn = false;
         this.onMarkedWords?.emit({ [word.id]: true });
-        // difficultBtn.node.textContent = 'Delete';
-        // studyBtn.node.textContent = 'Study';
         difficultBtn.node.classList.add('active');
         studyBtn.node.classList.remove('active');
 
@@ -208,7 +195,6 @@ class CardBook extends Control {
         this.node.classList.remove('study');
         await this.checkDifficult(this.UserWord, 'hard', false);
       }
-      // this.checkAllCards();
     });
     studyBtn.node.addEventListener('click', async () => {
       if (!this.UserWord) {
@@ -218,7 +204,6 @@ class CardBook extends Control {
       if (learn) {
         learn = false;
         this.onMarkedWords?.emit({ [word.id]: false });
-        // studyBtn.node.textContent = 'Study';
         studyBtn.node.classList.remove('active');
         this.node.classList.remove('study');
         await this.checkStudy(this.UserWord!, false, 'easy');
@@ -227,9 +212,6 @@ class CardBook extends Control {
         difficult = 'easy';
         this.onMarkedWords?.emit({ [word.id]: true });
 
-        // studyBtn.node.textContent = 'Studied';
-        // difficultBtn.node.textContent =  'Difficult';
-
         studyBtn.node.classList.add('active');
         difficultBtn.node.classList.remove('active');
 
@@ -237,7 +219,6 @@ class CardBook extends Control {
         this.node.classList.remove('difficult');
         await this.checkStudy(this.UserWord!, true, 'easy');
       }
-      // this.checkAllCards();
     });
   }
 
@@ -246,14 +227,13 @@ class CardBook extends Control {
     this.createBtnDifficultAndStudy(this.buttonWrap.node, word, userWord);
     this.createUserButton(this.buttonWrap.node, word, userWord);
   }
-  // studied
 
   createUserButton(node: HTMLElement, word: IWord, userWord?: IUserWord) {
     const user = new Control<HTMLImageElement>(node, 'div', 'button button_userWords');
 
-    if (userWord) {
+    if (userWord?.optional.dataGetNew) {
       user.node.classList.add('active');
-
+      user.node.title = 'Сheck game stats'
       user.node.onclick = () => {
         const errors = userWord.optional.countError;
         const right = userWord.optional.сountRightAnswer;
@@ -277,14 +257,6 @@ class CardBook extends Control {
         ${this.word.textExampleTranslate}
       </fieldset>
     `;
-    // const audio = new Audio(`${BASELINK}/${this.word.audioExample}`);
-    // const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
-    // volume.node.src = '../../assets/icons/volume.png';
-    // volume.node.addEventListener('click', () => {
-    //   this.allAudio.forEach((el) => el.pause());
-    //   audio.play();
-    // });
-    // this.audio.push(audio);
   }
 
   createMeaning(node: HTMLElement) {
@@ -298,22 +270,16 @@ class CardBook extends Control {
       </fieldset>
   
     `;
-    // const audio = new Audio(`${BASELINK}/${this.word.audioMeaning}`);
-    // const volume = new Control<HTMLImageElement>(container.node, 'img', 'volume');
-    // volume.node.src = '../../assets/icons/volume.png';
-    // volume.node.addEventListener('click', () => {
-    //   this.allAudio.forEach((el) => el.pause());
-    //   audio.play();
-    // });
-    // this.audio.push(audio);
+
   }
 
   // eslint-disable-next-line class-methods-use-this
-  difficultListen() {
+  difficultListen(id: string) {
     this.node.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
-      if (target.tagName === 'BUTTON') {
+      if (target.classList.contains('button_difficult')) {
         this.destroy();
+        this.onDeleteWord.emit(id)
       }
     });
   }

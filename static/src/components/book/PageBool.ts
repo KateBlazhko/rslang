@@ -1,4 +1,5 @@
 import Words, { IUserWord, IWord } from '../api/Words';
+import ButtonHref from '../common/ButtonHref';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import BASELINK from '../constants/url';
@@ -6,6 +7,11 @@ import { IStateLog } from '../login/Logging';
 import stopPlayAudio from '../utils/stopPlayAudio';
 import CardBook from './CardBook';
 import Loader from './Loader';
+
+const enum ButtonHrefContent {
+  sprint = 'Sprint',
+  audio = 'Audio'
+}
 
 class PageBook extends Control {
   page: string;
@@ -19,6 +25,8 @@ class PageBook extends Control {
   markedWords: Record<string, boolean> = {};
 
   words: IWord[] = [];
+
+  arrHref: Array<ButtonHref> = [];
 
   constructor(
     parentNode: HTMLElement | null,
@@ -36,6 +44,7 @@ class PageBook extends Control {
     this.onAudioPlay.add(this.disabeAudioIcons.bind(this));
 
     this.onMarkedWords.add(this.updateMarkedWords.bind(this));
+    this.onDisable.add(this.setDisable.bind(this))
   }
 
   onMarkedWords = new Signal<Record<string, boolean>>();
@@ -53,17 +62,41 @@ class PageBook extends Control {
   }
 
   createPage(page: string, userWords?: IUserWord[]) {
-    const marked = new Control(this.node, 'div', 'marked', 'Great job! You\'ve learned everything on this page');
 
     const paginationTop = new Control(this.node, 'div', 'pagination');
+    const marked = new Control(this.node, 'div', 'marked', 'Great job! You\'ve learned everything on this page');
+    this.createHrefBtn()
+
     const main = new Control(this.node, 'div', 'container_card');
     const paginationButton = new Control(this.node, 'div', 'pagination');
-
     this.createPagination(paginationTop.node, page);
     this.createPagination(paginationButton.node, page);
     this.createCards(main.node, userWords);
 
     this.checkCards();
+  }
+
+  createHrefBtn() {
+    const container = new Control(this.node, 'div', 'page__button-side-wrap');
+
+    const returnHref = new ButtonHref(container.node, '#book', '', 'page__button-side');
+    const sprintHref = new ButtonHref(container.node, '#sprint', ButtonHrefContent.sprint, 'page__button-side');
+    const audioHref = new ButtonHref(container.node, '#audio', ButtonHrefContent.audio, 'page__button-side');
+
+    this.arrHref = [sprintHref, audioHref];
+  }
+
+  setDisable(isDisable: boolean) {
+
+    if (isDisable) {
+      this.arrHref.forEach((button) => {
+        button.node.classList.add('disable');
+      });
+    } else {
+      this.arrHref.forEach((button) => {
+        button.node.classList.remove('disable');
+      });
+    }
   }
 
   createCards(main: HTMLElement, userWords?: IUserWord[]) {

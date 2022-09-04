@@ -18,7 +18,7 @@ const enum ButtonHrefContent {
   audio = 'Audio'
 }
 
-class DifficultPage extends Control {
+class CustomPage extends Control {
   user: IStateLog;
 
   allCards: ICardDifficult[];
@@ -101,7 +101,7 @@ class DifficultPage extends Control {
 
     if (this.words.length === 0) {
       if (this.main)
-        this.main.node.innerHTML = '<span class="no_cards">You haven\'t added difficult words yet!!!</span>';
+        this.main.node.innerHTML = '<span class="no_cards">You haven\'t added custom words yet!!!</span>';
         this.setDisable(true)
     } else {
       this.setDisable(false)
@@ -111,9 +111,8 @@ class DifficultPage extends Control {
 
   // eslint-disable-next-line class-methods-use-this
   async getWords(user: IStateLog) {
-    const res = await Words.getDifficultyWords(user);
-    const newArr = Words.adapterAggregatedWords(res)
-    return newArr;
+    const res = await Words.getCustomWords(user);
+    return res;
   }
 
   disabeAudioIcons(onAudioPlay: boolean) {
@@ -125,4 +124,4 @@ class DifficultPage extends Control {
   }
 }
 
-export default DifficultPage;
+export default CustomPage;
