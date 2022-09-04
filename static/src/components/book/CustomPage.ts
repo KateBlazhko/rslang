@@ -101,7 +101,7 @@ class CustomPage extends Control {
 
     if (this.words.length === 0) {
       if (this.main)
-        this.main.node.innerHTML = '<span class="no_cards">You haven\'t added custom words yet!!!</span>';
+        this.main.node.innerHTML = '<span class="no_cards">You haven\'t added custom words yet</span>';
         this.setDisable(true)
     } else {
       this.setDisable(false)
