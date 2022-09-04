@@ -22,8 +22,9 @@ enum TextInner {
   fourthFromHeader =
   'Hurry up, the tide is exactly 1 minute away!!! What level of difficulty do you want?',
   fourthFromBook =
-  'Hurry up, the tide is exactly 1 minute away!!!',
-  buttonFromBook = 'Start'
+  `Hurry up, the tide is exactly 1 minute away!!! Click 'Start' or select another group`,
+  buttonFromBook = 'Start',
+  buttonChoice = 'Choice group'
 }
 
 const COUNTLEVELS = 6;
@@ -45,35 +46,19 @@ class StartPage extends Control {
     if (prevPage.includes('book')) {
       if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
         const group = bookConfig.numberDifficultGroup;
-        const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
-
-        const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
-        button.node.onclick = () => {
-          this.state.onPreload.emit([group]);
-          this.destroy();
-        };
+        this.startFromBook(group)
       }
 
       if (prevPage.split('/').length === 2 && prevPage.includes('custom')) {
         const group = bookConfig.numberCustomGroup;
-        const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
 
-        const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
-        button.node.onclick = () => {
-          this.state.onPreload.emit([group]);
-          this.destroy();
-        };
+        this.startFromBook(group)
+
       }
 
       if (prevPage.split('/').length >= 3) {
         const [, group, page] = prevPage.slice(1).split('/');
-        const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
-
-        const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
-        button.node.onclick = () => {
-          this.state.onPreload.emit([+group, +page]);
-          this.destroy();
-        };
+        this.startFromBook(+group, +page)
       }
 
       if (prevPage.split('/').length === 1) {
@@ -97,6 +82,28 @@ class StartPage extends Control {
 
       return button;
     });
+  }
+
+  private startFromBook(group: number, page?: number) {
+    const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
+    
+    const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
+    button.node.onclick = () => {
+      if (page) {
+        this.state.onPreload.emit([group, page]);
+      } else {
+        this.state.onPreload.emit([group]);
+      }
+      this.destroy();
+    };
+
+    const buttonChoice = new ButtonAnswer(fourth.node, 'start__button start__button_choice', TextInner.buttonChoice);
+    buttonChoice.node.onclick = () => {
+      fourth.destroy();
+      buttonChoice.destroy();
+      button.destroy()
+      this.defaultStart()
+    };
   }
 
   private renderCommonDescriptions() {
