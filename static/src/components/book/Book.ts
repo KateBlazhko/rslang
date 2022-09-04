@@ -59,7 +59,7 @@ class Book extends Control {
       const newPage = new DifficultPage(this.node, user, this.onAudioPlay, this.onDisable);
       newPage.node.classList.add('difficult');
     } else if (itemHash[1] === 'custom') {
-      const newPage = new CustomPage(this.node, user, this.onAudioPlay);
+      const newPage = new CustomPage(this.node, user, this.onAudioPlay, this.onDisable);
       newPage.node.classList.add('custom');
     } else {
       this.createHrefBtn(user);
