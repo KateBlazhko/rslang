@@ -102,6 +102,8 @@ class GameAudio extends Control {
         this.value.step = 100 / this.count;
       } else {
         this.arrWords = await GameAudio.getAllWords(group, `${page}`);
+        this.count = this.arrWords.length;
+        this.value.step = 100 / this.count;
       }
     }
 

@@ -210,9 +210,12 @@ class Logging {
       this.accessStatistics();
       localStorage.removeItem('user');
       this.modal.formElements.background.destroy();
+      window.location.hash = '#home';
       this.onLogin.emit(false);
     });
-    this.modal.noBtn.node.addEventListener('click', () => this.modal.formElements.background.destroy());
+    this.modal.noBtn.node.addEventListener('click', () => {
+      this.modal.formElements.background.destroy();
+    });
   }
 
   addCallModal() {
