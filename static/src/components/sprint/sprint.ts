@@ -163,6 +163,9 @@ class Sprint extends Control {
       const recordWordResult = await Promise.all(wordsStat.map((word) => {
         const userWord = userWordsAll.find((item) => item.optional.wordId === word.wordId);
         if (userWord) {
+          if (userWord.optional.dataGetNew === undefined) {
+            gameStat.newWords += 1;
+          }
           return Words.updateWordStat(stateLog, userWord, word.answer);
         }
         gameStat.newWords += 1;
