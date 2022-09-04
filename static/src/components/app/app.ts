@@ -18,6 +18,8 @@ class App {
     this.main = new Router(this.login);
     this.footer = new Footer(null, 'footer');
     this.main.onGoPage.add(this.footer.hide.bind(this.footer));
+
+    this.main.onDisable.add(this.header.setDisable.bind(this.header));
   }
 
   render() {
@@ -27,7 +29,7 @@ class App {
       this.footer.render(),
     );
 
-    this.footer.hide(window.location.hash.slice(1))
+    this.footer.hide(window.location.hash.slice(1));
   }
 }
 

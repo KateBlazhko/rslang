@@ -1,8 +1,9 @@
-import { BASELINK, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import Control from '../common/control';
 import icons from '../../assets/icons/sprite.svg';
 
 import SVG from '../common/svgElement';
+import BASELINK from '../constants/url';
 
 class StatisticAudio extends Control {
   container: Control<HTMLElement>;
@@ -32,10 +33,10 @@ class StatisticAudio extends Control {
     const Translate = new Control(el.node, 'span', '', word.wordTranslate);
 
     if (status) {
-      const svg = new SVG(img.node, 'icon__true', `${icons}#true`)
+      const svg = new SVG(img.node, 'icon__true', `${icons}#true`);
       el.node.classList.add('success');
     } else {
-      const svg = new SVG(img.node, 'icon__false', `${icons}#false`)
+      const svg = new SVG(img.node, 'icon__false', `${icons}#false`);
       el.node.classList.add('failed');
     }
     audioIcon.node.src = '../../assets/icons/volume.png';

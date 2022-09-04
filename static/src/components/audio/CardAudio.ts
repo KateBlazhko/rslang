@@ -1,6 +1,7 @@
-import { BASELINK, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import Control from '../common/control';
 import { randomWord } from '../common/shufflePage';
+import BASELINK from '../constants/url';
 
 class CardAudio extends Control {
   private containerBtn: Control<HTMLElement>;
@@ -28,7 +29,7 @@ class CardAudio extends Control {
     this.arrWord = arrWord;
     this.arrReqWord = arrReqWord;
     this.words = this.createWords();
-    this.createCard(value, arrWord);
+    this.createCard(value);
   }
 
   viewCard() {
@@ -61,11 +62,14 @@ class CardAudio extends Control {
         res.push(item);
       }
     }
-    return { successWord: res[Math.floor(Math.random() * res.length)], allWords: randomWord(res) };
+    const resObj = {
+      successWord: res[Math.floor(Math.random() * res.length)], allWords: randomWord(res),
+    };
+
+    return resObj;
   }
 
-  createCard(value: { word: number }, arrWord: Array<IWord>) {
-    this.createWords();
+  createCard(value: { word: number }) {
     const volume = new Audio(`${BASELINK}/${this.words.successWord.audio}`);
     volume.play();
     const img = new Control<HTMLImageElement>(this.volumeContainer.node, 'button', 'volume_button__audio');

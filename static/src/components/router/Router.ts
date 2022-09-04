@@ -7,6 +7,7 @@ import Logging from "../login/Logging";
 import Audio from "../audio/Audio";
 import AboutPage from "../about/aboutPage";
 import AdditionalWordsPage from "../AdditionalWords/AdditionalWords";
+import Book from '../book/Book';
 
 class Router {
   private location: Location;
@@ -15,8 +16,11 @@ class Router {
 
   private container: Control;
 
+  prevPage: { page: string; };
+
   constructor(private login: Logging) {
-    this.container = new Control(document.body, "main", "page");
+    this.container = new Control(document.body, 'main', 'page');
+    this.prevPage = { page: '' };
     this.location = window.location;
     this.setPage(this.location.hash.slice(1));
     this.hashChange();
@@ -24,52 +28,48 @@ class Router {
 
   public onGoPage = new Signal<string>();
 
+  public onDisable = new Signal<boolean>();
+
   private hashChange() {
     window.addEventListener("hashchange", () => {
       if (this.currentPage) this.currentPage.destroy();
       this.setPage(this.location.hash.slice(1));
+      this.prevPage.page = window.location.hash;
     });
   }
 
   private setPage(hash: string) {
+    const { page } = this.prevPage;
     const container = this.container.node;
+    this.onDisable.emit(false);
 
     if (hash) {
       this.onGoPage.emit(hash);
     }
 
     switch (hash) {
-      case "home":
-        container.innerHTML = "";
+      case 'home':
         this.currentPage = new HomePage(container, this.login);
         break;
-      case "about":
-        this.onGoPage.emit(hash);
+      case 'about':
         this.currentPage = new AboutPage(container);
+
         break;
-      case "book":
-        container.innerHTML = "<h1>Book</h1>";
-        break;
-      case "sprint":
+      case 'sprint':
         this.onGoPage.emit(hash);
-        this.currentPage = new Sprint(container, this.login, this.onGoPage);
+        this.currentPage = new Sprint(container, this.login, this.prevPage);
         break;
       case "audio":
         this.onGoPage.emit(hash);
-        this.currentPage = new Audio(container, this.login, this.onGoPage);
+        this.currentPage = new Audio(container, this.login, page);
         break;
-      case "statistics":
-        container.innerHTML = "";
+      case 'statistics':
         this.currentPage = new Statistic(container, this.login);
         break;
       case "additionalWords":
-        this.onGoPage.emit(hash);
         this.currentPage = new AdditionalWordsPage(container, this.login);
         break;
       default:
-        this.onGoPage.emit("home");
-        container.innerHTML = "";
-        this.currentPage = new HomePage(container, this.login);
     }
   }
 

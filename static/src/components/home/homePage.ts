@@ -1,6 +1,6 @@
 import ButtonHref from '../common/ButtonHref';
 import Control from '../common/control';
-import Logging from '../login//Logging';
+import Logging from '../login/Logging';
 
 enum TextInner {
   title = 'Go on a fun journey with us!',

@@ -100,8 +100,7 @@ class Logging {
         localStorage.setItem('user', JSON.stringify(user));
         this.successLog();
         this.saveState(user);
-        await this.createStats()
-
+        await this.createStats();
       } else {
         this.modal.callErrorWindow(res.status);
       }
@@ -109,35 +108,36 @@ class Logging {
   }
 
   async createStats() {
-    const date = adapterDate( new Date() )
+    const date = new Date();
+    // date.setDate(date.getDate() - 1)
 
     await Stats.updateStat(this.stateLog.userId, this.stateLog.token, {
       learnedWords: 0,
       optional: {
-        dateReg: date,
-        dateCurrent: date,
+        dateReg: adapterDate(date),
+        dateCurrent: adapterDate(date),
         sprint: {
-          newWords: 0, 
-          сountRightAnswer: 0, 
-          countError: 0, 
-          maxSeriesRightAnswer: 0
+          newWords: 0,
+          сountRightAnswer: 0,
+          countError: 0,
+          maxSeriesRightAnswer: 0,
         },
         audio: {
-          newWords: 0, 
-          сountRightAnswer: 0, 
-          countError: 0, 
-          maxSeriesRightAnswer: 0
+          newWords: 0,
+          сountRightAnswer: 0,
+          countError: 0,
+          maxSeriesRightAnswer: 0,
         },
         general: {
           newWords: {
-            [date]: 0
+            [adapterDate(date)]: 0,
           },
           learnedWords: {
-            [date]: 0
-          }
-        }
-      }
-    })
+            [adapterDate(date)]: 0,
+          },
+        },
+      },
+    });
   }
 
   successLog() {
@@ -175,11 +175,16 @@ class Logging {
       if (!this.stateLog.state) event.preventDefault();
     });
     if (!this.stateLog.state) {
-      this.profile.node.textContent = 'U';
+      this.profile.node.classList.remove('login')
+      // this.profile.node.textContent = 'U';
       if (window.location.hash.slice(1) === 'statistics') {
         window.location.hash = '#home';
       }
-    } else this.profile.node.textContent = 'A';
+    } else {
+      this.profile.node.classList.add('login')
+      // this.profile.node.textContent = 'A';
+
+    }
   }
 
   outModalBtnListen() {

@@ -1,7 +1,7 @@
 import Signal from '../common/signal';
 
 class SprintState {
-  private initiator: 'book' | 'header' = 'header';
+  private initiator: string = 'header';
 
   private soundPlay: boolean = true;
 
@@ -10,10 +10,10 @@ class SprintState {
   public onPreload = new Signal<number[]>();
 
   public setInitiator(page: string) {
-    this.initiator = page === 'book' ? 'book' : 'header';
+    this.initiator = page;
   }
 
-  public getInitiator(): 'book' | 'header' {
+  public getInitiator() {
     return this.initiator;
   }
 

@@ -1,9 +1,10 @@
 import Control from '../common/control';
-import { BASELINK, IWord } from '../api/Words';
+import { IWord } from '../api/Words';
 import SprintState from './sprintState';
 import SVG from '../common/svgElement';
 import icons from '../../assets/icons/sprite.svg';
 import StartPage from './startPage';
+import BASELINK from '../constants/url';
 
 // enum TextInner {
 //   titleResult = 'Йо-хо-хо! Вот это результат!',
@@ -11,6 +12,8 @@ import StartPage from './startPage';
 
 enum TextInner {
   titleResult = 'Yoo-hoo-hoo! What a result!',
+  titleText = 'It seems not to be anything to teach you.',
+
 }
 
 class ResultPage extends Control {
@@ -54,6 +57,11 @@ class ResultPage extends Control {
 
   private renderResult() {
     const answers = this.words.filter((_word, index) => this.results[index] !== undefined);
+
+    if (answers.length === 0) {
+      const text = new Control(this.tableWrap.node, 'span', 'result__text', TextInner.titleText);
+      return []
+    }
 
     return answers.map((word, index) => {
       const resultRow = new Control(this.tableWrap.node, 'div', 'result__row');

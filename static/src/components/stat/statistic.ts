@@ -35,24 +35,23 @@ class StatisticPage extends Control {
     this.currentStat = null;
 
     const buttonsDaily = new Control(buttonWrap.node, 'div', 'stat__button', TextInner.daily);
-    buttonsDaily.node.classList.add('active')
+    buttonsDaily.node.classList.add('active');
 
     const buttonsGeneral = new Control(buttonWrap.node, 'div', 'stat__button', TextInner.general);
 
     buttonsDaily.node.onclick = () => {
       this.switchStat(this.dailyStat);
-      buttonsDaily.node.classList.add('active')
-      buttonsGeneral.node.classList.remove('active')
-
+      buttonsDaily.node.classList.add('active');
+      buttonsGeneral.node.classList.remove('active');
     };
 
     buttonsGeneral.node.onclick = () => {
       this.switchStat(this.generalStat);
-      buttonsDaily.node.classList.remove('active')
-      buttonsGeneral.node.classList.add('active')
+      buttonsDaily.node.classList.remove('active');
+      buttonsGeneral.node.classList.add('active');
     };
 
-    this.init()
+    this.init();
   }
 
   private init() {

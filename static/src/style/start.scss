@@ -25,7 +25,7 @@
     gap: 2rem;
     flex-wrap: wrap;
 
-    width: 45%;
+    width: 48%;
     padding: 2rem;
 
     font-size: 3rem;
@@ -50,6 +50,10 @@
 
     span {
       text-align: start;
+    }
+
+    &:nth-child(4) {
+      justify-content: center;
     }
 
     @media (max-width: 1024px) {
@@ -86,22 +90,119 @@
     font-size: 3rem;
     font-weight: bold;
     line-height: 4rem;
-    color: $color-text;
-
-    background-color: $color-bg;
+    color: $color-bg;
 
     cursor: pointer;
     
-    transition: background-color .4s;
+    transition: all .4s;
+
+    &:nth-child(1) {
+      background: $color-level-english-1;
+      border-bottom: 3px solid $border-level-english-1;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-1;
+      }
+    }
+    &:nth-child(2) {
+      background: $color-level-english-2;
+      border-bottom: 3px solid $border-level-english-2;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-2;
+      }
+    }
+    &:nth-child(3) {
+      background: $color-level-english-3;
+      border-bottom: 3px solid $border-level-english-3;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-3;
+      }
+    }
+    &:nth-child(4) {
+      background: $color-level-english-4;
+      border-bottom: 3px solid $border-level-english-4;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-4;
+      }
+    }
+    &:nth-child(5) {
+      background: $color-level-english-5;
+      border-bottom: 3px solid $border-level-english-5;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-5;
+      }
+    }
+    &:nth-child(6) {
+      background: $color-level-english-6;
+      border-bottom: 3px solid $border-level-english-6;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-6;
+      }
+    }
     
-    &:hover {
-      color: $color-bg;
-
-      background-color: $color-shadow;
-    }
-
     &_pseudo {
-      cursor: default;
+      color: $color-text;
+
+      &:nth-child(1) {
+        background-color: $color-bg;
+        border-bottom: 3px solid $color-shadow;
+  
+        cursor: default;
+
+        &:hover {
+          background-color: $color-bg;
+          border-bottom: 3px solid $color-shadow;
+        }
+      }
+  
+      &:nth-child(2) {
+        background-color: $color-bg;
+        border-bottom: 3px solid $color-shadow;
+  
+        cursor: default;
+
+        &:hover {
+          background-color: $color-bg;
+          border-bottom: 3px solid $color-shadow;
+        }
+      }
     }
+
+    &_start {
+      
+      width: 10rem;
+      height: 5rem;
+
+      font-size: 3rem;
+
+      &:nth-child(1) {
+        background: $color-level-english-6;
+        border-bottom: 3px solid $border-level-english-6;
+  
+        &:hover {
+          transform: translateY(-5px);
+  
+          background-color: $border-level-english-6;
+        }
+      }
+    }
+    
   }
 }
