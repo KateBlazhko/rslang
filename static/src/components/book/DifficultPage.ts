@@ -53,7 +53,7 @@ class DifficultPage extends Control {
         `${BASELINK}/${word.audioExample}`,
       ];
 
-      const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay);
+      const card = new CardBook(main, word, sounds, this.user, BASELINK, this.onAudioPlay);
       card.onDeleteWord.add(this.checkIsEmpty.bind(this));
 
       card.difficultListen(word.id);

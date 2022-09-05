@@ -1,7 +1,7 @@
 import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
-import BASELINK from '../constants/url';
+// import BASELINK from '../constants/url';
 import { IStateLog } from '../login/Logging';
 import { adapterDate } from '../utils/functions';
 import Notification from '../common/notification';
@@ -21,11 +21,14 @@ class CardBook extends Control {
 
   UserWord: IUserWord | undefined;
 
+  img: Control<HTMLImageElement> | null = null
+
   constructor(
     parentNode: HTMLElement | null,
     word: IWord,
     private sounds: string[],
     user: IStateLog,
+    private baselink: string,
     public onAudioPlay: Signal<boolean>,
     public onMarkedWords?: Signal<Record<string, boolean>>,
   ) {
@@ -44,8 +47,15 @@ class CardBook extends Control {
   onDeleteWord = new Signal<string>();
 
   createCard() {
-    const img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
-    img.node.src = `${BASELINK}/${this.word.image}`;
+    this.img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
+    if (!this.baselink) {
+      this.img.node.src = `${this.word.image}`;
+
+    } else {
+      this.img.node.src = `${this.baselink}/${this.word.image}`;
+
+    }
+
     this.createButtons();
 
     const { description } = this;

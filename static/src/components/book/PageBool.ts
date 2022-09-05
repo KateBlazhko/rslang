@@ -109,6 +109,7 @@ class PageBook extends Control {
         word,
         sounds,
         this.user,
+        BASELINK,
         this.onAudioPlay,
         this.onMarkedWords,
       );

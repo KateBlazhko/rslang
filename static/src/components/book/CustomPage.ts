@@ -3,7 +3,7 @@ import ButtonHref from '../common/ButtonHref';
 import Control from '../common/control';
 import Signal from '../common/signal';
 import bookConfig from '../constants/bookConfig';
-import BASELINK from '../constants/url';
+import BASELINK, { CLOUDMEDIA } from '../constants/url';
 import { IStateLog } from '../login/Logging';
 import stopPlayAudio from '../utils/stopPlayAudio';
 import CardBook from './CardBook';
@@ -49,12 +49,13 @@ class CustomPage extends Control {
     const userWords = await Words.getUserWords(this.user.userId, this.user.token);
     words.forEach((word) => {
       const sounds = [
-        `${BASELINK}/${word.audio}`,
-        `${BASELINK}/${word.audioMeaning}`,
-        `${BASELINK}/${word.audioExample}`,
+        `${CLOUDMEDIA}/${word.audio}`,
+        `${CLOUDMEDIA}/${word.audioMeaning}`,
+        `${CLOUDMEDIA}/${word.audioExample}`,
       ];
 
-      const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay);
+      const card = new CardBook(main, word, sounds, this.user, '', this.onAudioPlay);
+
       card.onDeleteWord.add(this.checkIsEmpty.bind(this));
 
       card.difficultListen(word.id);
