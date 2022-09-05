@@ -3,7 +3,7 @@ import Control from "../common/control";
 import Input from "../common/Input";
 import Logging from "../login/Logging";
 import ErrorNewWord from "../utils/ErrorNewWord";
-import { FORM_INPUTS_FILE, FORM_INPUTS_TEXT } from "./formInputs";
+import { FORM_INPUTS_FILE, FORM_INPUTS_TEXT } from "./FormInputs";
 
 enum TextInner {
   title = "Additional Words",
