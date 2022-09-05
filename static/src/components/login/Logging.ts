@@ -3,7 +3,7 @@ import ButtonLogging from '../common/ButtonLogging';
 import Control from '../common/control';
 import ModalLog from './ModalLog';
 import Validator from '../utils/Validator';
-import { User, IAuth } from '../api/User';
+import { User, IAuth, IToken } from '../api/User';
 import StatisticPage from '../stat/statistic';
 import Stats from '../api/Stats';
 import { adapterDate } from '../utils/functions';
@@ -18,13 +18,15 @@ export interface IStateLog {
 class Logging {
   private container: Control<HTMLElement>;
 
-  private loginBtn: ButtonLogging;
+  public loginBtn: ButtonLogging;
 
   private profile: ButtonHref;
 
   private stateLog: IStateLog;
 
-  private modal: ModalLog;
+  public modal: ModalLog;
+
+  setPage: null | (() => void);
 
   constructor() {
     this.container = new Control<HTMLDivElement>(null, 'div', 'logging__container');
@@ -37,9 +39,17 @@ class Logging {
     this.addCallModal();
     this.outModalBtnListen();
     this.listenSubmit();
+    this.setPage = null;
   }
 
   public onLogin = new Signal<boolean>();
+
+  // eslint-disable-next-line class-methods-use-this, consistent-return
+  getEvent(func?: () => void) {
+    if (func) {
+      this.setPage = func;
+    }
+  }
 
   listenSubmit() {
     this.modal.formElements.form.node.addEventListener('click', (e) => {
@@ -79,6 +89,7 @@ class Logging {
         this.modal.callErrorWindow(res.status);
       }
     }
+    this.setPage!();
   }
 
   async registerUser(email: boolean, password: boolean, name: boolean) {
@@ -105,6 +116,7 @@ class Logging {
         this.modal.callErrorWindow(res.status);
       }
     }
+    this.setPage!();
   }
 
   async createStats() {
@@ -148,12 +160,33 @@ class Logging {
     this.accessStatistics();
   }
 
+  // eslint-disable-next-line class-methods-use-this, consistent-return
+  async getNewToken() {
+    const response = localStorage.getItem('user');
+    const user = JSON.parse(response!) as IAuth;
+
+    const res = await User.getToken(user.userId, user.refreshToken);
+    if (res instanceof Response) {
+      const newToken = await res.json() as IToken;
+      user.token = newToken.token;
+      user.refreshToken = newToken.refreshToken;
+      localStorage.setItem('user', JSON.stringify(user));
+      return user;
+    }
+    console.log('res');
+  }
+
   async checkStorageLogin() {
     const response = localStorage.getItem('user');
     if (response) {
-      const user = JSON.parse(response) as IAuth;
+      let user = JSON.parse(response) as IAuth;
       const req = await User.getUser(user.userId, user.token);
-      if (req.status === 200) {
+      if (req.status === 401) {
+        const newUs = await this.getNewToken();
+        if (newUs) user = newUs;
+        this.successLog();
+        this.saveState(user);
+      } else if (req.status === 200) {
         this.successLog();
         this.saveState(user);
       } else {
@@ -175,15 +208,14 @@ class Logging {
       if (!this.stateLog.state) event.preventDefault();
     });
     if (!this.stateLog.state) {
-      this.profile.node.classList.remove('login')
+      this.profile.node.classList.remove('login');
       // this.profile.node.textContent = 'U';
       if (window.location.hash.slice(1) === 'statistics') {
         window.location.hash = '#home';
       }
     } else {
-      this.profile.node.classList.add('login')
+      this.profile.node.classList.add('login');
       // this.profile.node.textContent = 'A';
-
     }
   }
 
@@ -194,9 +226,12 @@ class Logging {
       this.accessStatistics();
       localStorage.removeItem('user');
       this.modal.formElements.background.destroy();
+      window.location.hash = '#home';
       this.onLogin.emit(false);
     });
-    this.modal.noBtn.node.addEventListener('click', () => this.modal.formElements.background.destroy());
+    this.modal.noBtn.node.addEventListener('click', () => {
+      this.modal.formElements.background.destroy();
+    });
   }
 
   addCallModal() {

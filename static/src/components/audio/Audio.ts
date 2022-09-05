@@ -24,7 +24,7 @@ class Audio extends Control {
   ) {
     super(parentNode, 'div', 'audio__container', '');
     this.login = login;
-    this.bookPage = (page.includes('book') && page.split('/').length === 3) || (page.includes('difficult'));
+    this.bookPage = (page.split('/').length === 3) || (page.includes('difficult') || page.includes('custom'));
     this.startPage = new StartPageAudio(null, this.bookPage);
     this.prevPage = page;
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
@@ -35,8 +35,13 @@ class Audio extends Control {
   repeatListen() {
     this.node.innerHTML = '';
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);
+    if (this.prevPage.includes('book')) {
+      const btn = this.startPage.createBtnNewGame();
+      btn.node.addEventListener('click', () => {
+        this.prevPage = '#audio';
+      });
+    }
     this.renderPage('start');
-    this.startPage.createBtnDifficult(false);
   }
 
   startGame() {

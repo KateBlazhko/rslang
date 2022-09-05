@@ -19,6 +19,14 @@ interface IAuth {
   userId: string
   name: string
 }
+
+interface IToken {
+  message: string,
+  token: string,
+  refreshToken: string,
+  userId: string,
+  name: string
+}
 class User {
   static createUser = async (user: ICreateUser) => {
     const rawResponse = await fetch(`${BASELINK}/users`, {
@@ -67,6 +75,21 @@ class User {
       return new ErrorUser(rawResponse);
     }
   };
+
+  static getToken = async (userId: string, token: string) => {
+    const rawResponse = await fetch(`${BASELINK}/users/${userId}/tokens`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+    try {
+      return rawResponse;
+    } catch (e) {
+      return new ErrorUser(rawResponse);
+    }
+  };
 }
 
-export { User, IAuth };
+export { User, IAuth, IToken };
