@@ -57,7 +57,7 @@ class CustomPage extends Control {
 
       card.onDeleteWord.add(this.checkIsEmpty.bind(this));
 
-      card.difficultListen(word.id);
+      // card.difficultListen(word.id);
       this.allCards.push({ node: card, item: word });
       this.audioIcons.push(...card.audio);
       card.addUserFunctional(word, userWords);

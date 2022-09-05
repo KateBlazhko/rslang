@@ -48,7 +48,7 @@ class CardBook extends Control {
 
   createCard() {
     this.img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
-    if (!this.baselink) {
+    if (this.word.image.includes('cloudinary')) {
       this.img.node.src = `${this.word.image}`;
 
     } else {
