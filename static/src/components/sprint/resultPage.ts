@@ -60,7 +60,7 @@ class ResultPage extends Control {
 
     if (answers.length === 0) {
       const text = new Control(this.tableWrap.node, 'span', 'result__text', TextInner.titleText);
-      return []
+      return [];
     }
 
     return answers.map((word, index) => {

@@ -45,7 +45,7 @@ class StartPageAudio extends Control {
       </div>
       <div class='key-instruction-two'>
         <span>To get the next card, press:</span>
-        <div class='key'><span>Enter</span></div>
+        <div class='key'><span>Next</span></div>
       </div>
     `;
   }

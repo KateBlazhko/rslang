@@ -1,7 +1,7 @@
 import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
 import Signal from '../common/signal';
-import BASELINK from '../constants/url';
+// import BASELINK from '../constants/url';
 import { IStateLog } from '../login/Logging';
 import { adapterDate } from '../utils/functions';
 import Notification from '../common/notification';
@@ -21,11 +21,14 @@ class CardBook extends Control {
 
   UserWord: IUserWord | undefined;
 
+  img: Control<HTMLImageElement> | null = null
+
   constructor(
     parentNode: HTMLElement | null,
     word: IWord,
     private sounds: string[],
     user: IStateLog,
+    private baselink: string,
     public onAudioPlay: Signal<boolean>,
     public onMarkedWords?: Signal<Record<string, boolean>>,
   ) {
@@ -41,11 +44,18 @@ class CardBook extends Control {
     this.createCard();
   }
 
-  onDeleteWord = new Signal<string>()
+  onDeleteWord = new Signal<string>();
 
   createCard() {
-    const img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
-    img.node.src = `${BASELINK}/${this.word.image}`;
+    this.img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
+    if (this.word.image.includes('cloudinary')) {
+      this.img.node.src = `${this.word.image}`;
+
+    } else {
+      this.img.node.src = `${this.baselink}/${this.word.image}`;
+
+    }
+
     this.createButtons();
 
     const { description } = this;
@@ -56,7 +66,7 @@ class CardBook extends Control {
 
   createButtons() {
     const volume = new Control<HTMLImageElement>(this.buttonWrap.node, 'img', 'img__button');
-    volume.node.src = '../../assets/icons/volume.png';
+    volume.node.src = './assets/icons/volume.png';
     volume.node.addEventListener('click', async () => {
       this.onAudioPlay.emit(true);
 
@@ -233,7 +243,7 @@ class CardBook extends Control {
 
     if (userWord?.optional.dataGetNew) {
       user.node.classList.add('active');
-      user.node.title = 'Сheck game stats'
+      user.node.title = 'Сheck game stats';
       user.node.onclick = () => {
         const errors = userWord.optional.countError;
         const right = userWord.optional.сountRightAnswer;
@@ -270,7 +280,6 @@ class CardBook extends Control {
       </fieldset>
   
     `;
-
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -279,7 +288,7 @@ class CardBook extends Control {
       const target = event.target as HTMLElement;
       if (target.classList.contains('button_difficult')) {
         this.destroy();
-        this.onDeleteWord.emit(id)
+        this.onDeleteWord.emit(id);
       }
     });
   }

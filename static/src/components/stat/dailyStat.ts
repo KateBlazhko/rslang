@@ -28,7 +28,7 @@ class DailyStat extends Control {
     super(parentNode, 'div', 'stat__daily daily');
 
     this.buttonWrap = new Control(this.node, 'div', 'daily__button-wrap');
-    const buttonName = ['sprint', 'audio', 'book'];
+    const buttonName = ['sprint', 'audio', 'words'];
     const buttonList = buttonName.map((name) => this.drawButton(name));
 
     const [firstButton] = buttonList;
@@ -87,7 +87,7 @@ class DailyStat extends Control {
 
     this.drawStat(name);
 
-    if (name === 'book') {
+    if (name === 'words') {
       const gameStatSprint = stat.optional.sprint;
       const { countError: errorSprint, сountRightAnswer: rightSprint } = gameStatSprint;
       const gameStatAudio = stat.optional.audio;

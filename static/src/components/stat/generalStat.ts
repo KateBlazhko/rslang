@@ -134,7 +134,6 @@ class GeneralStat extends Control {
     learnedWordsData: number[],
   ) {
     const labels = Object.keys(newWords);
-    console.log(labels);
     const data = {
       labels,
       datasets: [

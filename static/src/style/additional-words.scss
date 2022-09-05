@@ -2,7 +2,8 @@
   width: 100%;
   padding: 2rem;
   background-size: cover;
-  display: flex;
+  @include flexCenter();
+
   flex-direction: column;
 
   //   &__wrap {
@@ -51,6 +52,7 @@
   }
 
   &__title-text {
+    align-self: start;
     width: 100%;
     align-self: start;
     font-size: 3rem;
@@ -64,15 +66,19 @@
     flex-direction: column;
     gap: 16px;
     align-items: center;
+    max-width: 100rem;
+    width: 100%;
+
     color: $color-text;
     background: $color-bg;
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 4rem;
+    border-bottom: 5px solid $color-scroll;
+    padding: 4rem;
     font-size: 3rem;
     box-shadow: $element-shadow;
 
     label {
-      width: 50%;
+      width: 100%;
       display: flex;
       flex-direction: column;
       row-gap: 10px;
@@ -119,25 +125,30 @@
     }
 
     button {
-      width: 50%;
+      width: 15rem;
     }
   }
 
   &__submitBtn {
     width: 100%;
     border: none;
-    border-radius: 5px;
+    border-radius: $button-border-radius;
+    border-bottom: 3px solid $border-level-english-2;
+
     box-shadow: $element-shadow;
-    font-size: 20px;
-    height: 30px;
+    font-size: 3rem;
+    color: $color-bg;
+    height: 5rem;
     padding: 0px 6px;
     font-weight: 600;
     outline: none;
     transition: 0.3s;
 
+    background: $color-level-english-2;
+
     &:hover {
       cursor: pointer;
-      opacity: 0.7;
+      background: $border-level-english-2;
     }
 
     &:active {

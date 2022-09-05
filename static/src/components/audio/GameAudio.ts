@@ -6,6 +6,7 @@ import Logging, { IStateLog } from '../login/Logging';
 import CardAudio from './CardAudio';
 import StatisticAudio from './StatisticAudio';
 import Stats from '../api/Stats';
+import bookConfig from '../constants/bookConfig';
 
 interface ICardAudio {
     value: number;
@@ -37,7 +38,7 @@ class GameAudio extends Control {
     this.repeat = new Control<HTMLImageElement>(this.node, 'img', 'arrow_img', '');
     this.startPage = start;
     this.progress = new Control(this.node, 'div', 'audio_call__progress', 'Your Progress');
-    this.repeat.node.src = '../../assets/icons/arrow.png';
+    this.repeat.node.src = './assets/icons/arrow.png';
     this.arrWords = [];
     this.randomWords = [];
     this.arrWordsStatus = [];
@@ -93,7 +94,7 @@ class GameAudio extends Control {
       this.count = this.arrWords.length;
       this.value.step = 100 / this.count;
     } else if (prevPage.split('/').length === 2 && prevPage.includes('custom')) {
-      this.arrWords = await Words.getCustomWords(stateLog);
+      this.arrWords = await Words.getCustomWords(bookConfig.numberCustomGroup);
       this.count = this.arrWords.length;
       this.value.step = 100 / this.count;
     } else if (prevPage.includes('book') && prevPage.split('/').length === 1) {
@@ -147,8 +148,8 @@ class GameAudio extends Control {
   }
 
   listenKey(card: CardAudio, key: string) {
-    const success = new Audio('../../assets/sound/ok.mp3');
-    const fail = new Audio('../../assets/sound/fail.mp3');
+    const success = new Audio('./assets/sound/ok.mp3');
+    const fail = new Audio('./assets/sound/fail.mp3');
     const successWord = card.resultWords.find((el) => el.word.id === card.words.successWord.id);
 
     if (card.resultWords.map((i) => i.value).includes(+key)) {
@@ -174,8 +175,8 @@ class GameAudio extends Control {
   }
 
   listenGame(item: ICardAudio, card: CardAudio) {
-    const success = new Audio('../../assets/sound/ok.mp3');
-    const fail = new Audio('../../assets/sound/fail.mp3');
+    const success = new Audio('./assets/sound/ok.mp3');
+    const fail = new Audio('./assets/sound/fail.mp3');
     const successWord = card.resultWords.find((el) => el.word.id === card.words.successWord.id);
 
     if (item.word.id === card.words.successWord.id) {
@@ -196,6 +197,7 @@ class GameAudio extends Control {
   }
 
   async saveWordsUser() {
+    let newWords = 0;
     const stateLog = await this.login.checkStorageLogin();
     if (stateLog.state) {
       const userWordsAll = await Words.getUserWords(stateLog.userId, stateLog.token);
@@ -203,12 +205,16 @@ class GameAudio extends Control {
       await Promise.all(this.arrWordsStatus.map((word) => {
         const userWord = userWordsAll.find((item) => item.optional.wordId === word.word.id);
         if (userWord) {
+          if (userWord.optional.dataGetNew === undefined) {
+            newWords += 1;
+          }
           return Words.updateWordStat(stateLog, userWord, word.status);
         }
+        newWords += 1;
         return Words.createWordStat(stateLog, { wordId: word.word.id, answer: word.status });
       }));
 
-      const gameStat = this.gameStatistic(this.arrWordsStatus, userWordsAll);
+      const gameStat = this.gameStatistic(this.arrWordsStatus, userWordsAll, newWords);
       const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'audio');
     }
   }
@@ -221,11 +227,15 @@ class GameAudio extends Control {
     document.onkeydown = () => {};
   }
 
-  gameStatistic(arrWord: { word: IWord, status: boolean }[], userWords: IUserWord[]) {
-    const map = userWords.map((el) => el.optional.wordId);
-    const res = arrWord.filter((el) => !map.includes(el.word.id));
+  gameStatistic(
+    arrWord: { word: IWord, status: boolean }[],
+    userWords: IUserWord[],
+    newWords: number,
+  ) {
+    // const map = userWords.map((el) => el.optional.wordId);
+    // const res = arrWord.filter((el) => !map.includes(el.word.id));
     return {
-      newWords: res.length,
+      newWords,
       сountRightAnswer: arrWord.filter((el) => el.status === true).length,
       countError: arrWord.filter((el) => el.status === false).length,
       maxSeriesRightAnswer: seriesSuccess(this.arrWordsStatus),

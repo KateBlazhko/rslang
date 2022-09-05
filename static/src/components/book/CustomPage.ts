@@ -2,7 +2,7 @@ import Words, { IWord } from '../api/Words';
 import ButtonHref from '../common/ButtonHref';
 import Control from '../common/control';
 import Signal from '../common/signal';
-import BASELINK from '../constants/url';
+import bookConfig from '../constants/bookConfig';
 import { IStateLog } from '../login/Logging';
 import stopPlayAudio from '../utils/stopPlayAudio';
 import CardBook from './CardBook';
@@ -25,9 +25,9 @@ class CustomPage extends Control {
 
   audioIcons: HTMLImageElement[] = [];
 
-  words: IWord[] = []
+  words: IWord[] = [];
 
-  main: Control | null = null
+  main: Control | null = null;
 
   arrHref: Array<ButtonHref> = [];
 
@@ -35,6 +35,7 @@ class CustomPage extends Control {
     parentNode: HTMLElement | null,
     user: IStateLog,
     public onAudioPlay: Signal<boolean>,
+    private onDisable: Signal<boolean>,
   ) {
     super(parentNode, 'div', 'page_book_container');
     this.user = user;
@@ -47,15 +48,16 @@ class CustomPage extends Control {
     const userWords = await Words.getUserWords(this.user.userId, this.user.token);
     words.forEach((word) => {
       const sounds = [
-        `${BASELINK}/${word.audio}`,
-        `${BASELINK}/${word.audioMeaning}`,
-        `${BASELINK}/${word.audioExample}`,
+        `${word.audio}`,
+        `${word.audioMeaning}`,
+        `${word.audioExample}`,
       ];
 
-      const card = new CardBook(main, word, sounds, this.user, this.onAudioPlay);
-      card.onDeleteWord.add(this.checkIsEmpty.bind(this))
+      const card = new CardBook(main, word, sounds, this.user, '', this.onAudioPlay);
 
-      card.difficultListen(word.id);
+      card.onDeleteWord.add(this.checkIsEmpty.bind(this));
+
+      // card.difficultListen(word.id);
       this.allCards.push({ node: card, item: word });
       this.audioIcons.push(...card.audio);
       card.addUserFunctional(word, userWords);
@@ -64,11 +66,11 @@ class CustomPage extends Control {
 
   async createPage(user: IStateLog) {
     const loader = new Loader(this.node);
-    this.createHrefBtn()
+    this.createHrefBtn();
     this.main = new Control(this.node, 'div', 'container_card');
-    this.words = await this.getWords(user);
+    this.words = await this.getWords();
     this.createCards(this.main.node, this.words);
-    this.checkIsEmpty()
+    this.checkIsEmpty();
     loader.destroy();
   }
 
@@ -82,7 +84,6 @@ class CustomPage extends Control {
   }
 
   setDisable(isDisable: boolean) {
-
     if (isDisable) {
       this.arrHref.forEach((button) => {
         button.node.classList.add('disable');
@@ -96,22 +97,22 @@ class CustomPage extends Control {
 
   checkIsEmpty(id?: string) {
     if (id) {
-      this.words = this.words.filter(item => item.id !== id)
+      this.words = this.words.filter((item) => item.id !== id);
     }
 
     if (this.words.length === 0) {
-      if (this.main)
-        this.main.node.innerHTML = '<span class="no_cards">You haven\'t added custom words yet!!!</span>';
-        this.setDisable(true)
+      if (this.main) this.main.node.innerHTML = '<span class="no_cards">You haven\'t added custom words yet</span>';
+      this.setDisable(true);
+      this.onDisable.emit(true);
     } else {
-      this.setDisable(false)
-
+      this.setDisable(false);
+      this.onDisable.emit(false);
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async getWords(user: IStateLog) {
-    const res = await Words.getCustomWords(user);
+  async getWords() {
+    const res = await Words.getCustomWords(bookConfig.numberCustomGroup);
     return res;
   }
 

@@ -70,11 +70,13 @@ class Sprint extends Control {
         if (stateLog.state) {
           if (group === bookConfig.numberDifficultGroup) {
             this.words = await Sprint.getDifficultWord(stateLog);
-          } else  if (page) {
+          } else if (group === bookConfig.numberCustomGroup) {
+            this.words = await Sprint.getCustomWord(group);
+          } else if (page) {
             this.words = await this.getAggregatedWords(words);
-            } else {
-              this.words = await this.getWords(group);
-            }
+          } else {
+            this.words = await this.getWords(group);
+          }
         } else {
           this.words = await this.getWords(group, page);
         }
@@ -105,9 +107,13 @@ class Sprint extends Control {
     return Words.adapterAggregatedWords(res);
   }
 
-  private async getWords(group: number, page?: number) {
-    console.log('this.words');
+  private static async getCustomWord(group: number) {
+    const words: IWord[] = [];
+    const res = await Words.getCustomWords(group);
+    return res;
+  }
 
+  private async getWords(group: number, page?: number) {
     try {
       if (page) {
         const words = await Words.getWords({
@@ -165,6 +171,9 @@ class Sprint extends Control {
       const recordWordResult = await Promise.all(wordsStat.map((word) => {
         const userWord = userWordsAll.find((item) => item.optional.wordId === word.wordId);
         if (userWord) {
+          if (userWord.optional.dataGetNew === undefined) {
+            gameStat.newWords += 1;
+          }
           return Words.updateWordStat(stateLog, userWord, word.answer);
         }
         gameStat.newWords += 1;

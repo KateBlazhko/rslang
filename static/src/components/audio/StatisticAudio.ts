@@ -39,7 +39,7 @@ class StatisticAudio extends Control {
       const svg = new SVG(img.node, 'icon__false', `${icons}#false`);
       el.node.classList.add('failed');
     }
-    audioIcon.node.src = '../../assets/icons/volume.png';
+    audioIcon.node.src = './assets/icons/volume.png';
   }
 
   createStatistic(arr: Array<{word: IWord, status: boolean}>) {
