@@ -18,7 +18,8 @@ const enum ButtonHrefContent {
   book = 'Book',
   sprint = 'Sprint',
   audio = 'Audio',
-  additionalWords = 'Add Words'
+  additionalWords = 'Add Words',
+  title = 'RS Lang'
 }
 
 class Header extends Control {
@@ -43,7 +44,7 @@ class Header extends Control {
     this.logging = login;
     this.getAllElementsHeader = {};
     this.arrHref = [];
-    const title = new Control(this.node, 'h1', 'header__title', 'RSS Lang');
+    const title = new ButtonHref(this.node, '#home', ButtonHrefContent.title, 'header__title');
     this.nav = new Control(this.node, 'nav', 'navbar');
     this.createHeader();
     this.burger = new Burger(this.node);
@@ -53,8 +54,7 @@ class Header extends Control {
   }
 
   createHeader() {
-    // const nav = new Control(this.node, 'nav', 'navbar');
-    
+   
     const home = new ButtonHref(this.nav.node, '#home', ButtonHrefContent.home);
     const about = new ButtonHref(this.nav.node, '#about', ButtonHrefContent.about);
     const book = new ButtonHref(this.nav.node, '#book', ButtonHrefContent.book);
