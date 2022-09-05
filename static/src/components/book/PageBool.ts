@@ -130,9 +130,14 @@ class PageBook extends Control {
             [word.id]: isMarked,
           };
         }
-        card.addUserFunctional(word, userWords);
+        if (this.user.state) {
+          card.addUserFunctional(word, userWords);
+        }
       } else {
-        card.addUserFunctional(word);
+        // eslint-disable-next-line no-lonely-if
+        if (this.user.state) {
+          card.addUserFunctional(word);
+        }
       }
     });
   }

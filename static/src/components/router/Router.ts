@@ -7,6 +7,7 @@ import Logging from '../login/Logging';
 import Audio from '../audio/Audio';
 import AboutPage from '../about/aboutPage';
 import Book from '../book/Book';
+import Validator from '../utils/Validator';
 
 class Router {
   private location: Location;
@@ -23,6 +24,12 @@ class Router {
     this.location = window.location;
     this.setPage(this.location.hash.slice(1));
     this.hashChange();
+    this.login.getEvent(this.listenLogin.bind(this));
+  }
+
+  listenLogin() {
+    if (this.currentPage) this.currentPage.destroy();
+    this.setPage(this.location.hash.slice(1));
   }
 
   public onGoPage = new Signal<string>();

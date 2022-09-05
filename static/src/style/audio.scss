@@ -213,6 +213,14 @@ $color-button-start-border: #63387C;
     }
 
     .audio_container__btn {
+
+      .new-game {
+        width: 220px;
+        font-size: 32px;
+        background: $audio_btn_difficult-2 !important;
+
+      }
+
       @include flexCenter();
       gap: 2rem;
 
