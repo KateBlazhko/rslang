@@ -18,7 +18,7 @@ const enum ButtonHrefContent {
   book = 'Book',
   sprint = 'Sprint',
   audio = 'Audio',
-  additionalWords = 'Additional words'
+  additionalWords = 'Add Words'
 }
 
 class Header extends Control {

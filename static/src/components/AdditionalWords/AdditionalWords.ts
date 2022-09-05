@@ -6,7 +6,7 @@ import ErrorNewWord from "../utils/ErrorNewWord";
 import { FORM_INPUTS_FILE, FORM_INPUTS_TEXT } from "./FormInputs";
 
 enum TextInner {
-  title = "Additional Words",
+  title = "Custom words",
   titleText = "Add your custom word to the app platform and other users also using its ability to master!",
   textSubmit = "Create",
   maxInputLengthWarning = "The maximum length of this field can be 150 characters",
