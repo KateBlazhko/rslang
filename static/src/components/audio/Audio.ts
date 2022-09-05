@@ -24,7 +24,7 @@ class Audio extends Control {
   ) {
     super(parentNode, 'div', 'audio__container', '');
     this.login = login;
-    this.bookPage = (page.split('/').length === 3) || (page.includes('difficult'));
+    this.bookPage = (page.split('/').length === 3) || (page.includes('difficult') || page.includes('custom'));
     this.startPage = new StartPageAudio(null, this.bookPage);
     this.prevPage = page;
     this.game = new GameAudio(this.repeatListen.bind(this), this.login);

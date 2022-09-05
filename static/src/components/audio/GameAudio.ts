@@ -82,7 +82,7 @@ class GameAudio extends Control {
   }
 
   async game(difficult: string, prevPage: string) {
-    this.randomWords = await GameAudio.getAllWords('5');
+    this.randomWords = await GameAudio.getAllWords((+difficult === 5 ? '4' : '5'));
     const stateLog = await this.login.checkStorageLogin();
     if (!prevPage.includes('book')) {
       this.arrWords = await GameAudio.getAllWords(difficult);
@@ -90,6 +90,10 @@ class GameAudio extends Control {
       this.value.step = 100 / this.count;
     } else if (prevPage.split('/').length === 2 && prevPage.includes('difficult')) {
       this.arrWords = await this.getDifficultWord(stateLog);
+      this.count = this.arrWords.length;
+      this.value.step = 100 / this.count;
+    } else if (prevPage.split('/').length === 2 && prevPage.includes('custom')) {
+      this.arrWords = await Words.getCustomWords(stateLog);
       this.count = this.arrWords.length;
       this.value.step = 100 / this.count;
     } else if (prevPage.includes('book') && prevPage.split('/').length === 1) {
@@ -113,28 +117,6 @@ class GameAudio extends Control {
 
     this.createCard();
   }
-
-  // static async pageWords(difficult: string, page: string) {
-  //   let thisPage = +page;
-  //   const words = [];
-  //   words.push(...await GameAudio.getAllWords(difficult, `${thisPage}`));
-  //   if (words.length < 19) {
-  //     thisPage = thisPage > 0 ? thisPage - 1 : thisPage = 29;
-  //     words.push(...await GameAudio.getAllWords(difficult, `${thisPage}`));
-  //   }
-  //   return words;
-  // }
-
-  // static async getAggWords(stateLog: IStateLog, group: number, page: number) {
-  //   let thisPage = page;
-  //   const words = [];
-  //   words.push(...await GameAudio.getAggregatedWords(stateLog, +group, thisPage));
-  //   if (words.length < 19) {
-  //     thisPage = thisPage > 0 ? thisPage - 1 : thisPage = 29;
-  //     words.push(...await GameAudio.getAggregatedWords(stateLog, +group, thisPage));
-  //   }
-  //   return words;
-  // }
 
   private static async getAggregatedWords(stateLog: IStateLog, group: number, page: number) {
     const aggregatedWords = await Words.getNoLearnWords(stateLog, group);

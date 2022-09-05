@@ -216,6 +216,9 @@ $color-button-start-border: #63387C;
 
       .new-game {
         width: 220px;
+        font-size: 32px;
+        background: $audio_btn_difficult-2 !important;
+
       }
 
       @include flexCenter();
