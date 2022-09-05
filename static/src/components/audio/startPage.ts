@@ -51,7 +51,7 @@ class StartPageAudio extends Control {
   }
 
   createBtnDifficult(draw: boolean): void {
-    if (!draw) {
+    if (!draw && this.draw) {
       for (let i = 1; i <= 6; i += 1) {
         const btn = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', '', `${i}`);
         this.arrBtn.push({
@@ -67,8 +67,19 @@ class StartPageAudio extends Control {
           this.addActive(item.node);
         });
       });
-      this.draw = true;
+      this.draw = false;
     }
+  }
+
+  createBtnNewGame() {
+    this.containerBtn.node.innerHTML = '';
+    const button = new Control(this.containerBtn.node, 'button', 'new-game', 'Choice Group');
+    button.node.addEventListener('click', () => {
+      this.draw = true;
+      this.createBtnDifficult(false);
+      button.destroy();
+    });
+    return button;
   }
 
   private addActive(node: HTMLButtonElement): void {
