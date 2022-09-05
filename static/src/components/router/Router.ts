@@ -1,11 +1,12 @@
-import Sprint from '../sprint/sprint';
-import Statistic from '../stat/statistic';
-import Signal from '../common/signal';
-import Control from '../common/control';
-import HomePage from '../home/homePage';
-import Logging from '../login/Logging';
-import Audio from '../audio/Audio';
-import AboutPage from '../about/aboutPage';
+import Sprint from "../sprint/sprint";
+import Statistic from "../stat/statistic";
+import Signal from "../common/signal";
+import Control from "../common/control";
+import HomePage from "../home/homePage";
+import Logging from "../login/Logging";
+import Audio from "../audio/Audio";
+import AboutPage from "../about/aboutPage";
+import AdditionalWordsPage from "../AdditionalWords/AdditionalWords";
 import Book from '../book/Book';
 import Validator from '../utils/Validator';
 
@@ -37,7 +38,7 @@ class Router {
   public onDisable = new Signal<boolean>();
 
   private hashChange() {
-    window.addEventListener('hashchange', () => {
+    window.addEventListener("hashchange", () => {
       if (this.currentPage) this.currentPage.destroy();
       this.setPage(this.location.hash.slice(1));
       this.prevPage.page = window.location.hash;
@@ -53,15 +54,6 @@ class Router {
       this.onGoPage.emit(hash);
     }
 
-    if (hash.includes('book')) {
-      this.onGoPage.emit(hash);
-      this.currentPage = new Book(container, this.login, hash, this.onDisable);
-    }
-
-    if (window.location.hash.length === 0) {
-      window.location.hash = '#home';
-    }
-
     switch (hash) {
       case 'home':
         this.currentPage = new HomePage(container, this.login);
@@ -74,12 +66,15 @@ class Router {
         this.onGoPage.emit(hash);
         this.currentPage = new Sprint(container, this.login, this.prevPage);
         break;
-      case 'audio':
+      case "audio":
         this.onGoPage.emit(hash);
         this.currentPage = new Audio(container, this.login, page);
         break;
       case 'statistics':
         this.currentPage = new Statistic(container, this.login);
+        break;
+      case "additionalWords":
+        this.currentPage = new AdditionalWordsPage(container, this.login);
         break;
       default:
     }
