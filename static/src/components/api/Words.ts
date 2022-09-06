@@ -390,7 +390,6 @@ class Words {
       if (aggregatedWordsAll.length < 100 && page > 0) {
         const pageList = [...Array(page).keys()];
         const pageIndex = pageList.length - 1;
-
         aggregatedWordsAll.push(...await Words.addAggregatedWordsFromOtherPages(
           aggregatedWordsAll.length,
           pageList,

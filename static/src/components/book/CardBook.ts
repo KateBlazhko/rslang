@@ -286,7 +286,7 @@ class CardBook extends Control {
   difficultListen(id: string) {
     this.node.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
-      if (target.classList.contains('button_difficult')) {
+      if (target.classList.contains('button_difficult') || target.classList.contains('button_studied')) {
         this.destroy();
         this.onDeleteWord.emit(id);
       }

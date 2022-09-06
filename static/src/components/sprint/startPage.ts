@@ -37,6 +37,7 @@ class StartPage extends Control {
     super(parentNode, 'div', 'sprint__start start');
 
     this.renderStartPage();
+
   }
 
   private renderStartPage() {
@@ -56,6 +57,7 @@ class StartPage extends Control {
       }
 
       if (prevPage.split('/').length >= 3) {
+
         const [, group, page] = prevPage.slice(1).split('/');
         this.startFromBook(+group, +page);
       }
@@ -84,11 +86,12 @@ class StartPage extends Control {
   }
 
   private startFromBook(group: number, page?: number) {
+
     const fourth = new Control(this.node, 'div', 'start__desription start__desription_even', TextInner.fourthFromBook);
 
     const button = new ButtonAnswer(fourth.node, 'start__button start__button_start', TextInner.buttonFromBook);
     button.node.onclick = () => {
-      if (page) {
+      if (page !== undefined) {
         this.state.onPreload.emit([group, page]);
       } else {
         this.state.onPreload.emit([group]);
