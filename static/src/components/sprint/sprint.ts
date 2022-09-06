@@ -117,7 +117,7 @@ class Sprint extends Control {
 
   private async getWords(group: number, page?: number) {
     try {
-      if (page) {
+      if (page !== undefined) {
         const words = await Words.getWords({
           group: group.toString(),
           page: page.toString(),
@@ -126,7 +126,9 @@ class Sprint extends Control {
         return randomSort(await Words.checkWords(words, group, page)) as IWord[];
       }
 
-      const randomPage = randomSort([...Array(bookConfig.maxPage).keys()]).slice(0, 15) as number[];
+      // const randomPage = randomSort([...Array(bookConfig.maxPage).keys()]).slice(0, 15) as number[];
+      const randomPage = randomSort([...Array(bookConfig.maxPage).keys()]) as number[];
+      
       const wordsAll = await Promise.all(randomPage.map((key) => Words.getWords({
         group: group.toString(),
         page: key.toString(),
