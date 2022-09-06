@@ -76,7 +76,6 @@ class Sprint extends Control {
           } else if (page !== undefined) {
 
             this.words = await this.getAggregatedWords(words);
-            console.log(this.words)
           } else {
             this.words = await this.getWords(group);
           }
