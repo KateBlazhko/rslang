@@ -1,0 +1,277 @@
+$color-points: #966AAD;
+$color-word: #000000;
+
+// $color-border-svg: #AF2137;
+// // $color-main-svg: #EF4B6D;
+// $color-average: #e0677d;
+// // $color-average: #EF4055;
+// $color-average: #F69EB0;
+
+// $color-border-svg: #63387C;
+// // $color-main-svg: #B08DC1;
+// $color-average: #C5A3CD;
+// $color-average: #966AAD;
+// // $color-average: #8857A4;
+
+// $color-border-svg: #017347;
+// // $color-main-svg: #98D2AE;
+// // $color-average: #5DBF89;
+// $color-average: #1f9465;
+// $color-average: #79bc90;
+// // $color-average: #80C999;
+// // $color-average: #27B67C;
+// // $color-border-svg: #007E4E;
+
+.sprint {
+  position: relative;
+  flex-grow: 1;
+  @include flexCenter();
+  flex-wrap: wrap;
+  
+  width: 100%;
+  height: 100;
+
+  padding: 2rem;
+
+  background-image: url('./assets/img/sprint-bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  &__wrap {
+    position: relative;
+    @include flexCenter();
+    flex-wrap: wrap;
+    
+    max-width: 1920px;
+    width: 100%;
+    padding: 2rem;
+  }
+
+  &__preloader {
+    color: $color-bg;
+    font-size: 3rem;
+  }
+
+  &__game {
+    position: relative;
+    z-index: 2;
+    @include flexCenter();
+    flex-wrap: wrap;
+    gap: 10px;
+
+    width: 50%;
+    padding: 2rem 0;
+    border-radius: 5rem;
+    border-bottom: 5px solid $color-scroll;
+
+    background-color: $color-bg;
+
+    @media (max-width: 1024px) {
+      width: 65%;
+    }
+
+    @media (max-width: 768px) {
+      width: 90%;
+    }
+  }
+
+  &__timer-wrap {
+    @include flexCenter();
+    width: 5rem;
+    height: 5rem;
+    border: 1px solid transparent;
+
+    border-radius: 50%;
+
+    &.finishing {
+      border: 1px solid $color-button-false-hover;
+    }
+
+    span {
+      text-align: center; 
+      font-size: 3rem;
+      color: $color-button-false-hover;
+      line-height: 5rem;
+    }
+  }
+
+  &__indicator-wrap{
+    @include flexCenter();
+    gap: 10px;
+
+    width: 100%;
+    padding-top: 2rem;
+  }
+  
+  &__indicator {
+    width: 5rem;
+    height: 5rem;
+
+    filter: none;
+    -webkit-filter: grayscale(0);
+
+    &.default {
+      filter: $filter-color;
+      -webkit-filter: grayscale(1);
+      transition: all 0.5s ease-in-out; 
+    }
+
+  }
+
+  &__indicator:first-child {
+    width: 2.5rem;
+  }
+
+  &__rate-wrap {
+    @include flexCenter();
+    gap: 1rem;
+    width: 100%;
+    min-height: 6rem;
+  }
+
+  &__rate {
+    width: 6rem;
+    height: 6rem;
+    animation: appearance 0.5s linear forwards;
+  }
+
+  &__points-wrap {
+    @include flexCenter();
+    width: 100%;
+  }
+
+  &__points {
+    font-size: 4rem;
+    color: $color-points
+  }
+
+  &__question-wrap {
+    @include flexCenter();
+    width: 100%;
+    min-height: 20rem;
+  }
+
+  .question {
+    @include flexCenter();
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+
+ 
+    &__word {
+      font-size: 3rem;
+      color: $color-word
+    }
+  }
+
+  &__button-wrap {
+    @include flexCenter();
+    gap: 2rem;
+    width: 100%;
+  }
+
+  &__button {
+    width: 16rem;
+    height: 4.5rem;
+
+    box-shadow: $element-shadow;
+    border-radius: $button-border-radius * 1.2;
+
+    text-align: center;
+    color: $color-bg;
+    font-size: 2.5rem;
+    line-height: 4.3rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: all 0.4s;
+
+    &_true {
+      border-bottom: 4px solid $color-button-true-hover;
+
+      background-color: $color-button-true;
+
+      &:hover {
+        background-color: $color-button-true-hover;
+      }
+    }
+
+    &_false {
+      border-bottom: 4px solid $color-button-false-hover;
+
+      background-color: $color-button-false;
+
+      &:hover {
+        background-color: $color-button-false-hover;
+      }
+    }
+
+    &_return {
+      position: absolute;
+      top: 3%;
+      right: 3%;
+
+      width: 5rem;
+      height: 5rem;
+
+      box-shadow: none;
+
+      background-image: url('./assets/icons/arrow.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  &__animation-wrap {
+    position: absolute;
+    overflow: hidden;
+    z-index: 1;
+    background: $color-water;
+    width: 100%;
+    bottom: 0;
+    animation: wipe 60s linear forwards;
+  }
+}
+
+.sound {
+  display: block;
+  width: 5rem;
+  height: 5rem;
+
+  cursor: pointer;
+
+  &__wrap {
+    position: absolute;
+    top: 3%;
+    left: 3%;
+
+    transition: all 0.5s linear;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+@keyframes wipe {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+@keyframes appearance {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

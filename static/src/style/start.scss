@@ -1,0 +1,227 @@
+.start {
+  @include flexCenter();
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  width: 100%;
+  height: 100%;
+
+  &__title {
+    width: 100%;
+
+    align-self: start;
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text;
+  }
+
+  &__desription {
+    position: relative;
+    @include flexCenter();
+    justify-content: start;
+
+    gap: 2rem;
+    flex-wrap: wrap;
+
+    width: 55%;
+    padding: 2rem;
+
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text;
+
+    box-shadow: $element-shadow;
+    background-color: $color-bg;
+
+    &_odd {
+      align-self: start;
+
+      border-radius:  0 2rem 2rem 2rem;
+    }
+    
+
+    &_even {
+      align-self: end;
+
+      border-radius:  2rem 0 2rem 2rem;
+    }
+
+    span {
+      text-align: start;
+    }
+
+    &:nth-child(4) {
+      justify-content: center;
+    }
+
+    @media (max-width: 1024px) {
+      width: 65%;
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  &__button-wrap {
+    @include flexCenter();
+    gap: 1rem;
+
+    width: 100%;
+
+    &_pseudo {
+      width: auto;
+    }
+  }
+  
+
+  &__button {
+    @include flexCenter();
+
+    width: 6rem;
+    height: 6rem;
+    border-radius: $button-border-radius;
+    border-bottom: $button-border-bottom solid $color-shadow;
+    box-shadow: $element-shadow;
+
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 4rem;
+    color: $color-bg;
+
+    cursor: pointer;
+    
+    transition: all .4s;
+
+    &:nth-child(1) {
+      background: $color-level-english-1;
+      border-bottom: 3px solid $border-level-english-1;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-1;
+      }
+    }
+    &:nth-child(2) {
+      background: $color-level-english-2;
+      border-bottom: 3px solid $border-level-english-2;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-2;
+      }
+    }
+    &:nth-child(3) {
+      background: $color-level-english-3;
+      border-bottom: 3px solid $border-level-english-3;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-3;
+      }
+    }
+    &:nth-child(4) {
+      background: $color-level-english-4;
+      border-bottom: 3px solid $border-level-english-4;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-4;
+      }
+    }
+    &:nth-child(5) {
+      background: $color-level-english-5;
+      border-bottom: 3px solid $border-level-english-5;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-5;
+      }
+    }
+    &:nth-child(6) {
+      background: $color-level-english-6;
+      border-bottom: 3px solid $border-level-english-6;
+
+      &:hover {
+        transform: translateY(-5px);
+
+        background-color: $border-level-english-6;
+      }
+    }
+    
+    &_pseudo {
+      color: $color-text;
+
+      &:nth-child(1) {
+        background-color: $color-bg;
+        border-bottom: 3px solid $color-shadow;
+  
+        cursor: default;
+
+        &:hover {
+          background-color: $color-bg;
+          border-bottom: 3px solid $color-shadow;
+        }
+      }
+  
+      &:nth-child(2) {
+        background-color: $color-bg;
+        border-bottom: 3px solid $color-shadow;
+  
+        cursor: default;
+
+        &:hover {
+          background-color: $color-bg;
+          border-bottom: 3px solid $color-shadow;
+        }
+      }
+    }
+
+    &_start {
+      
+      width: 10rem;
+      height: 5rem;
+
+      font-size: 3rem;
+
+      &:nth-child(1) {
+        background: $color-level-english-6;
+        border-bottom: 3px solid $border-level-english-6;
+  
+        &:hover {
+          transform: translateY(-5px);
+  
+          background-color: $border-level-english-6;
+        }
+      }
+    }
+
+    &_choice {
+      
+      width: 20rem;
+      height: 5rem;
+
+      font-size: 3rem;
+
+      &:nth-child(1) {
+        background: $color-level-english-6;
+        border-bottom: 3px solid $border-level-english-6;
+  
+        &:hover {
+          transform: translateY(-5px);
+  
+          background-color: $border-level-english-6;
+        }
+      }
+    }
+    
+  }
+}

@@ -1,0 +1,256 @@
+.home {
+  @include flexCenter();
+  flex-wrap: wrap;
+
+  max-width: 160rem;
+  max-height: 220rem;
+  width: 100%;
+  padding: 2rem;
+  margin: 0 auto;
+
+  &__title-wrap {
+    @include flexCenter();
+    width: 50%;
+    padding: 2rem;
+
+    border-radius:  2rem 2rem 2rem 0;
+
+    box-shadow: $element-shadow;
+    background-color: $color-bg;
+
+    @media (max-width: 768px) {
+      width: 70%;
+    }
+  }
+
+  &__title {
+    // font-family: 'DynaPuff', cursive;
+    font-size: 3rem;
+    color: $color-text;
+    text-align: center;
+
+    @media (max-width: 1024px) {
+      font-size: 4rem;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 3.5rem;
+    }
+  }
+
+  &__canvas-wrap {
+    position: relative;
+
+    width: 100%;
+    height: 190em;
+  }
+
+  &__canvas {
+    position: absolute;
+    top: 0%;
+    right: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    // background-image: url('./assets/img/water.png');
+    // background-size: cover;
+    // background-repeat: no-repeat;
+  }
+
+  &__icon {
+    position: absolute;
+  
+    @include flexCenter();
+    width: 15rem;
+    height: 15rem;
+
+    box-shadow: $element-shadow;
+
+    border-radius: 50%;
+  
+    background-color: $color-bg;
+
+    cursor: pointer;
+
+    &_sprint {
+      top: 13%;
+      left: 40%;
+    }
+
+    &_audio {
+      top: 27%;
+      left: 70%;
+
+      @media (max-width: 768px) {
+        left: 63%;
+      }
+    }
+
+    &_book {
+      top: 43%;
+      left: 18%;
+
+
+      @media (max-width: 768px) {
+        left: 14%;
+      }
+
+      @media (max-width: 500px) {
+        left: 10%;
+      }
+    }
+
+    &_stat {
+      top: 60%;
+      left: 53%;
+
+      @media (max-width: 768px) {
+        left: 46%;
+      }
+    }
+
+  }
+
+  &__team {
+    position: absolute;
+
+    @include flexCenter();
+
+    width: 35rem;
+    height: 20rem;
+
+    top: 88%;
+    left: 1%;
+  }
+
+  &__img {
+    display: block;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+
+    object-fit: contain;
+
+    transition: all 0.5s linear;
+
+    &:hover {
+      width: 100%;
+      height: 100%;
+    }
+
+    &_team {
+      width: 90%;
+      height: 90%;
+      border-radius: 0;
+
+      object-fit: cover;
+    }
+  }
+
+  &__text {
+    position: absolute;
+
+    @include flexCenter();
+    justify-content: start;
+
+    gap: 2rem;
+    flex-wrap: wrap;
+
+    padding: 2rem;
+
+    border-radius:  2rem 2rem 2rem 0;
+
+
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text;
+
+    box-shadow: $element-shadow;
+    background-color: $color-bg;
+
+    span {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    &_sprint {
+      top: 8%;
+      left: 48%;
+    }
+
+    &_audio {
+      border-radius:  2rem 2rem 0 2rem;
+
+      top: 22%;
+      left: 65%;
+    }
+
+    &_book {
+      border-radius: 2rem 2rem 0 2rem;
+      top: 38%;
+      left: 14%;
+    }
+
+    &_team {
+      @include flexCenter();
+      justify-content: start;
+      flex-wrap: wrap;
+      top: 79%;
+      left: 17%; 
+
+      width: 38%;
+
+      @media (max-width: 1024px) {
+        width: 60%;
+      }
+      
+      @media (max-width: 768px) {
+        width: 80%;
+      }
+
+      h3 {
+        width: 100%;
+      }
+
+      span {
+        text-align: start;
+        font-weight: normal;
+      }
+    }
+
+    &_stat {
+      border-radius: 2rem 2rem 2rem 0;
+
+      top: 55%;
+      left: 60%;
+    }
+  }
+
+  &__island {
+    position: absolute;
+
+    width: 250px;
+    height: 210px;
+
+    &_left {
+      top: 20%;
+      left: 20%;
+
+      @media (max-width: 768px) {
+        left: 5%;
+      }
+    }
+
+    &_right {
+      top: 40%;
+      left: 60%;
+
+      @media (max-width: 768px) {
+        left: 45%;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es2021",
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true
+  },
+  "include": ["src/**/*", "./module.d.ts"],
+  // "files": ["src/index.ts", "./module.d.ts"]
+}

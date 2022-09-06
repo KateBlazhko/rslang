@@ -1,0 +1,105 @@
+$color-points: #966AAD;
+$color-word: #000000;
+$filter-color: #808080;
+
+$color-table: #f5a51c;
+
+
+.result {
+  position: relative;
+
+  @include flexCenter();
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  width: 50%;
+  min-width: 48rem;
+  padding: 2rem;
+  border-radius: 5rem;
+  border-bottom: 5px solid $color-scroll;
+
+  background-color: $color-bg;
+
+  @media (max-width: 1024px) {
+    width: 65%;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
+  &__title {
+    width: 100%;
+
+    text-align: center;
+    font-size: 2.5rem;
+    color: $color-text
+  }  
+
+  &__text {
+    text-align: center;
+    font-size: 2rem;
+    color: $color-text
+  }
+
+  &__table {
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 5rem;
+    justify-content: center;  
+    gap: 0.1rem;
+
+    width: 100%;
+    padding: 0.1rem;
+    max-height: 70vh;
+    box-shadow: 0 0 3px $color-scroll;
+
+    &::-webkit-scrollbar {
+      width: 8px;               /* ширина scrollbar */
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $color-bg; 
+      // border-radius: 10px;
+      // border: 1px solid $color-scroll;       /* цвет дорожки */
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-scroll;    /* цвет плашки */
+      border-radius: 20px;       /* закругления плашки */
+    }
+  }
+
+  &__row {
+    @include flexCenter();
+    justify-content: start;
+    gap: 2rem;
+
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 3rem;
+    box-shadow: 0 0 3px $color-scroll;
+
+    background-color: $color-bg;
+
+    span {
+      font-size: 2rem;
+    }
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+
+      cursor: pointer;
+    }
+  }
+
+  &__true {
+    stroke: $color-button-true;
+    fill: $color-bg
+  }
+
+  &__false {
+    fill: $color-button-false;
+  }
+}
+
+

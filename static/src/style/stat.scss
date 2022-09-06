@@ -1,0 +1,235 @@
+.stat {
+  @include flexCenter();
+  flex-direction: column;
+  gap: 7rem;
+
+  width: 100%;
+  padding: 3rem 3rem 5rem 2rem;
+
+  &__inner {
+    @include flexCenter();
+
+    width: 100%;
+  }
+
+  &__button-wrap {
+    align-self: end;
+    @include flexCenter();
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    width: 50%;
+    padding: 2rem;
+    border-radius:  2rem 0 2rem 2rem;
+
+    box-shadow: $element-shadow;
+    background-color: $color-bg;
+
+    @media (max-width: 600px) {
+      width: 70%;
+
+    }
+    
+  }
+
+  &__description {
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text;
+  }
+
+  &__button {
+    @include flexCenter();
+
+    width: 17rem;
+    height: 4.8rem;
+
+    border-radius: $button-border-radius;
+
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: all 0.4s;
+
+    &:nth-child(2) {
+      color: $color-button-true-hover;
+
+      border-bottom: 4px solid $color-button-true-hover;
+      box-shadow: 0 0 3px $color-button-true-hover;
+      background-color: $color-bg;
+
+      &:hover {
+        color: $color-bg;
+  
+        background-color: $color-button-true;
+      }
+  
+      &.active {
+        color: $color-bg;
+  
+        background-color: $color-button-true-hover;
+      }
+    }
+
+    &:nth-child(3) {
+      color: $color-button-false-hover;
+
+      border-bottom: 4px solid $color-button-false-hover;
+      box-shadow: 0 0 3px $color-button-false-hover;
+      background-color: $color-bg;
+
+      &:hover {
+        color: $color-bg;
+  
+        background-color: $color-button-false;
+      }
+  
+      &.active {
+        color: $color-bg;
+  
+        background-color: $color-button-false-hover;
+      }
+    }
+ 
+  }
+}
+
+.daily {
+  display: grid;
+  grid-template-columns: 10rem 30rem;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+
+  &__button-wrap {
+    @include flexCenter();
+    flex-direction: column;
+    gap: 7rem;
+
+    width: 100%;
+  }
+
+  &__icon {
+    position: relative;
+
+    @include flexCenter();
+    width: 10rem;
+    height: 10rem;
+    
+    box-shadow: $element-shadow;
+    
+    border-radius: 50%;
+    background-color: $color-bg;
+    
+    cursor: pointer;
+
+    &.active .daily__img {
+      width: 100%;
+      height: 100%;
+    }
+
+  }
+
+  &__img {
+    display: block;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    
+    object-fit: contain;
+    
+    transition: all 0.5s linear;
+    
+    &:hover {
+    width: 100%;
+    height: 100%;
+    }
+
+  }
+
+  &__text {  
+    position: absolute;
+    top: -60%;
+    left: -70%;
+ 
+    @include flexCenter();
+    justify-content: start;
+
+    padding: 1rem;
+
+    border-radius:  2rem 2rem 0 2rem;
+
+    font-size: 3rem;
+    text-align: start;
+    color: $color-text;
+
+    box-shadow: $element-shadow;
+    background-color: $color-bg;
+
+    @media (max-width: 600px) {
+      left: 0%;
+    }
+
+    span {
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+
+  &__stat-wrap {
+    @include flexCenter();
+    flex-wrap: wrap;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 4rem;
+    border-bottom: 5px solid $color-scroll;
+
+    box-shadow: $element-shadow;
+
+    background-color: $color-bg;
+  }
+
+  &__item {
+    @include flexCenter();
+    width: 100%;
+
+    font-size: 2rem;
+    text-align: center;
+    color: $color-text;
+  }
+
+  &__name {
+    width: 100%;
+    font-size: 3rem;
+    text-align: center;
+    color: $color-text;
+  }
+
+
+}
+
+.general {
+  @include flexCenter();
+  flex-direction: column;
+  gap: 7rem;
+
+  width: 100%;
+  padding: 1rem;
+
+  &__chart-wrap {
+    @include flexCenter();
+    flex-wrap: wrap;
+    width: 95%;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 4rem;
+    border-bottom: 5px solid $color-scroll;
+
+    box-shadow: $element-shadow;
+
+    background-color: $color-bg;
+  }
+}

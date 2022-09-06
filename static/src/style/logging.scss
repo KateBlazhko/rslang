@@ -1,0 +1,56 @@
+$button-log-in-color: #79bc90;
+$button-log-in-border: #1f9465;
+$button-log-out-color: #F69EB0;
+$button-log-out-border: #e0677d;
+
+.logging__container {
+  width: 160px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  order: 1;
+  z-index: 10;
+
+  .profile {
+    width: 50px;
+    height: 50px;
+    @include flexCenter();
+    border-radius: 50%;
+
+    background-image: url('./assets/icons/statIcon.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    filter: $filter-color;
+      -webkit-filter: grayscale(1);
+      transition: all 0.5s ease-in-out; 
+
+    &.login {
+      filter: none;
+      -webkit-filter: grayscale(0);
+    }
+  }
+
+  button {
+    border: none;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 7px 0px;
+    width: 100px;
+    color: $color-bg;
+    border-radius: $button-border-radius;
+    cursor: pointer;
+  }
+
+  .button__log_in {
+    background-color: $button-log-in-color;
+    border-bottom: 3px solid $button-log-in-border;
+  }
+
+  .button__log_out {
+    background-color: $button-log-out-color;
+    border-bottom: 3px solid $button-log-out-border;
+  }
+}

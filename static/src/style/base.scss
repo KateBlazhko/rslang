@@ -1,0 +1,31 @@
+$color-water: #8ae4ff80;
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+
+  font-family: 'Nunito', sans-serif;
+
+}
+
+.page {
+  flex-grow: 1;
+  display: flex;
+  align-items: stretch;
+
+  background-color: $color-water;
+
+}
