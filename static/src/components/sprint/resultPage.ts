@@ -52,7 +52,7 @@ class ResultPage extends Control {
 
     this.renderSoundIcons(this.state.getSoundPlay());
 
-    document.onkeydown = (e) => false;
+    // document.onkeydown = (e) => false;
   }
 
   private renderResult() {
