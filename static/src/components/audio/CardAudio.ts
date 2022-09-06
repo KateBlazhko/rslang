@@ -97,7 +97,7 @@ class CardAudio extends Control {
 
     img.node.addEventListener('click', () => volume.play());
     this.words.allWords.forEach((item, index) => {
-      const word = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', 'btn_word__audio', `${item.word}`);
+      const word = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', 'btn_word__audio', `${item.wordTranslate}`);
       const number = new Control<HTMLSpanElement>(null, 'span', '', `${index + 1}`);
       word.node.prepend(number.node);
       this.resultWords.push({

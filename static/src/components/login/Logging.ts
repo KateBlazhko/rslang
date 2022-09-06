@@ -172,7 +172,6 @@ class Logging {
       localStorage.setItem('userDream', JSON.stringify(user));
       return user;
     }
-    console.log('res');
   }
 
   async checkStorageLogin() {

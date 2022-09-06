@@ -104,7 +104,14 @@ class GamePage extends Control {
 
     this.buttonList = this.renderButtons();
 
+    document.addEventListener('keydown', this.pressKey);
+
     this.init();
+  }
+
+  private pressKey =  (e: KeyboardEvent) => {
+    if (e.code === 'ArrowLeft') this.onGetAnswer(false);
+    if (e.code === 'ArrowRight') this.onGetAnswer(true);
   }
 
   private async init() {
@@ -121,10 +128,10 @@ class GamePage extends Control {
       };
     });
 
-    document.onkeydown = (e) => {
-      if (e.code === 'ArrowLeft') this.onGetAnswer(false);
-      if (e.code === 'ArrowRight') this.onGetAnswer(true);
-    };
+    // document.onkeydown = (e) => {
+    //   if (e.code === 'ArrowLeft') this.onGetAnswer(false);
+    //   if (e.code === 'ArrowRight') this.onGetAnswer(true);
+    // };
 
     this.timer.start(TIME);
     this.timer.onTimeFinishing = () => {
@@ -313,6 +320,8 @@ class GamePage extends Control {
 
   private finish() {
     this.onFinish.emit([this.wordsStat, this.gameStat]);
+    document.removeEventListener('keydown', this.pressKey);
+
     this.destroy();
     const resultPage = new ResultPage(this.parentNode, this.state, this.words, this.results);
   }

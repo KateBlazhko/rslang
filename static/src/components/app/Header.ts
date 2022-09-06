@@ -94,7 +94,7 @@ class Header extends Control {
     });
     document.addEventListener('click', (event) => {
       const t = event.target as HTMLElement;
-      if (!t.className.includes('navbar') && !t.className.includes('burger')) {
+      if (t.className.includes && !t.className.includes('navbar') && !t.className.includes('burger')) {
         this.nav.node.classList.remove('active');
         this.burger.node.classList.remove('active');
       }
