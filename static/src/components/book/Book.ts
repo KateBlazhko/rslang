@@ -65,6 +65,11 @@ class Book extends Control {
       this.createHrefBtn(user);
     }
   }
+
+  destroy(): void {
+    this.onAudioPlay.emit(false)
+    super.destroy()
+  }
 }
 
 export default Book;

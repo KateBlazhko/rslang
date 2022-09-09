@@ -9,7 +9,7 @@ import Notification from '../common/notification';
 class CardBook extends Control {
   word: IWord;
 
-  audio: HTMLImageElement[];
+  audio: HTMLImageElement[] = [];
 
   description: Control;
 
@@ -22,6 +22,12 @@ class CardBook extends Control {
   UserWord: IUserWord | undefined;
 
   img: Control<HTMLImageElement> | null = null
+
+  isAudioPlay: boolean = false
+
+  track: HTMLAudioElement | null = null
+
+  tracksAll: HTMLAudioElement[] = []
 
   constructor(
     parentNode: HTMLElement | null,
@@ -36,15 +42,24 @@ class CardBook extends Control {
     this.user = user;
     this.sounds = sounds;
     this.word = word;
-    this.audio = [];
     this.UserWord = undefined;
     this.imageWrap = new Control(this.node, 'div', 'img-wrap');
     this.buttonWrap = new Control(this.node, 'div', 'button-wrap');
     this.description = new Control(this.node, 'div', 'description');
+    this.onAudioPlay.add(this.setIsAudioPlay.bind(this))
+    this.onAudioPlay.add(this.stopAudio.bind(this))
     this.createCard();
   }
 
   onDeleteWord = new Signal<string>();
+
+  setIsAudioPlay(value: boolean) {
+    this.isAudioPlay = value
+  }
+
+  getIsAudioPlay() {
+    return this.isAudioPlay
+  }
 
   createCard() {
     this.img = new Control<HTMLImageElement>(this.imageWrap.node, 'img', 'img__word');
@@ -68,28 +83,42 @@ class CardBook extends Control {
     const volume = new Control<HTMLImageElement>(this.buttonWrap.node, 'img', 'img__button');
     volume.node.src = './assets/icons/volume.png';
     volume.node.addEventListener('click', async () => {
+
       this.onAudioPlay.emit(true);
 
-      const firstSound = new Audio(this.sounds[0]);
-      const secondSound = new Audio(this.sounds[1]);
-      const thirdSound = new Audio(this.sounds[2]);
+      this.tracksAll = this.sounds.map(sound => {
+        return new Audio(sound)
+      })
 
-      await firstSound.play();
+      this.track = this.tracksAll[0]
+      this.track.play()
 
-      setTimeout(async () => {
-        await secondSound.play();
+      this.tracksAll.forEach((track, i, array) => {
+        track.addEventListener('ended', this.playNextTrack.bind(this, array, i));
+      })
 
-        setTimeout(async () => {
-          await thirdSound.play();
-
-          setTimeout(() => {
-            this.onAudioPlay.emit(false);
-          }, thirdSound.duration * 1000);
-        }, (firstSound.duration + secondSound.duration) * 1000);
-      }, firstSound.duration * 1000);
     });
     this.audio.push(volume.node);
   }
+
+  playNextTrack(audio: HTMLAudioElement[], i: number) {
+
+    if (i === audio.length - 1) {
+      this.onAudioPlay.emit(false);
+      return
+    }
+
+    if (this.getIsAudioPlay() && audio[i].duration === audio[i].currentTime) {
+      this.track = audio[i + 1]
+      this.track.play()
+    }
+    
+  }
+
+  stopAudio() {
+    this.track?.pause()
+  }
+
 
   createTitle(node: HTMLElement) {
     const container = new Control(node, 'div', 'title');
