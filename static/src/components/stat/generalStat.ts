@@ -34,7 +34,6 @@ class GeneralStat extends Control {
 
   private async recordToStat(stateLog: IStateLog, dataRegString: string, general: IGeneral) {
     const date = new Date();
-    const dataReg = new Date(dataRegString);
 
     const { newWords, learnedWords } = general;
 
@@ -42,18 +41,17 @@ class GeneralStat extends Control {
       ...(await this.dateLoop(
         stateLog,
         GeneralStat.getCountNewWordsByDate,
-        dataReg,
+        new Date(dataRegString),
         date,
         newWords,
         {},
       )),
     };
-
     const learnedWordsStats = {
       ...(await this.dateLoop(
         stateLog,
         GeneralStat.getCountLearnedWordsByDate,
-        dataReg,
+        new Date(dataRegString),
         date,
         learnedWords,
         {},
@@ -64,7 +62,7 @@ class GeneralStat extends Control {
 
     const userStatNew = await Stats.getStats(stateLog.userId, stateLog.token);
     const { optional: { general: generalNew } } = userStatNew;
-    this.drawСhartNewWords(generalNew);
+    this.drawСhart(generalNew);
   }
 
   private async dateLoop(
@@ -75,6 +73,7 @@ class GeneralStat extends Control {
     general: GeneralItem,
     newGeneralStats: GeneralItem,
   ): Promise<GeneralItem> {
+
     if (!index) {
       return newGeneralStats;
     }
@@ -108,7 +107,7 @@ class GeneralStat extends Control {
     return words.length;
   }
 
-  private drawСhartNewWords(general: IGeneral) {
+  private drawСhart(general: IGeneral) {
     const canvas = new Control<HTMLCanvasElement>(this.chart.node, 'canvas', 'stat__canvas');
     const ctx = canvas.node.getContext('2d');
     canvas.node.width = DEFAULTWIDTH
@@ -116,14 +115,15 @@ class GeneralStat extends Control {
 
     const { newWords, learnedWords } = general;
 
-    const learnedWordsData = GeneralStat.getDataAboutLearnedWords(learnedWords);
+    const learnedWordsData = GeneralStat.getDataAboutLearnedWords(GeneralStat.sortData(learnedWords));
 
     if (ctx) {
-      GeneralStat.drawLineChart(ctx, newWords, learnedWordsData);
+      GeneralStat.drawLineChart(ctx, GeneralStat.sortData(newWords), learnedWordsData);
     }
   }
 
   private static getDataAboutLearnedWords(learnedWords: GeneralItem) {
+
     return Object.values(learnedWords)
       .map((value, index, array) => {
         const sumPrevItems = array
@@ -131,6 +131,21 @@ class GeneralStat extends Control {
           .reduce((sum, item) => sum + item, 0);
         return value + sumPrevItems;
       });
+  }
+
+  private static sortData(data: GeneralItem) {
+    const arr = Object.entries(data)
+    const sortArr = [...arr].sort((a, b) => {
+      const [keyA] = a
+      const [keyB] = b
+
+      const numberA = Number(keyA.split('-').join(''))
+      const numberB = Number(keyB.split('-').join(''))
+
+      return numberA - numberB
+    })
+
+    return Object.fromEntries(sortArr)
   }
 
   private static drawLineChart(

@@ -26,7 +26,8 @@ class DailyStat extends Control {
     private login: Logging,
   ) {
     super(parentNode, 'div', 'stat__daily daily');
-
+    this.initStat()
+    
     this.buttonWrap = new Control(this.node, 'div', 'daily__button-wrap');
     const buttonName = ['sprint', 'audio', 'words'];
     const buttonList = buttonName.map((name) => this.drawButton(name));
@@ -65,29 +66,39 @@ class DailyStat extends Control {
 
   private static async checkStat(dataCurrent: string, stateLog: IStateLog) {
     const userStat = await Stats.getStats(stateLog.userId, stateLog.token);
+    const sprintStat = userStat.optional.sprint
+    const audioStat = userStat.optional.audio
 
-    const isSameDate = userStat.optional.dateCurrent === dataCurrent;
-    if (isSameDate) {
-      return userStat;
+    if (sprintStat.dateLast !== dataCurrent) {
+      const resultResetStat = await Stats.resetStat(stateLog, userStat, dataCurrent, 'sprint');
     }
-    const resultResetStat = await Stats.resetStat(stateLog, userStat, dataCurrent);
-    const userStatNew = await Stats.getStats(stateLog.userId, stateLog.token);
-    return userStatNew;
+
+    if (audioStat.dateLast !== dataCurrent) {
+      const resultResetStat = await Stats.resetStat(stateLog, userStat, dataCurrent, 'audio');
+    }
+  }
+
+  private async initStat() {
+    const stateLog = await this.login.checkStorageLogin();
+    const date = adapterDate(new Date());
+
+    const stat = await DailyStat.checkStat(date, stateLog);
+    return stat
   }
 
   private async getStat(name: string) {
     const stateLog = await this.login.checkStorageLogin();
     const date = adapterDate(new Date());
 
-    DailyStat.checkStat(date, stateLog);
+    const stat = await Stats.getStats(stateLog.userId, stateLog.token);
 
-    const stat = await DailyStat.checkStat(date, stateLog);
-    const learnedWords = await Words.getLearnedWordsByDate(stateLog, date);
-    const newWordsAll = await Words.getNewWordsByDate(stateLog, date);
 
     this.drawStat(name);
 
     if (name === 'words') {
+      const learnedWords = await Words.getLearnedWordsByDate(stateLog, date);
+      const newWordsAll = await Words.getNewWordsByDate(stateLog, date);
+
       const gameStatSprint = stat.optional.sprint;
       const { countError: errorSprint, сountRightAnswer: rightSprint } = gameStatSprint;
       const gameStatAudio = stat.optional.audio;
