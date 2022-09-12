@@ -14,15 +14,27 @@ $color-button-start-border: #63387C;
   z-index: 100;
   background-color: $color-bg;
 
+  @media (max-width: 400px) {
+    padding: 0 10px;
+
+    gap: 0.5rem;
+  }
+
   &__title {
     color: $color-text;
     font-size: 3.5rem;
     text-decoration: none;
     font-weight: bold;
+    text-align: center;
 
     @media (max-width: 1024px) {
       position: absolute;
       left: 2%;
+    }
+
+    @media (max-width: 400px) {
+      width: 80px;
+      font-size: 3rem;
     }
   }
 

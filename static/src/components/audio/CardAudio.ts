@@ -41,7 +41,7 @@ class CardAudio extends Control {
     container.node.innerHTML += `
     <div class="image_preview">
       <img src='${BASELINK}/${this.words.successWord.image}'>
-      <h3>${this.words.successWord.wordTranslate} <span><h3>${this.words.successWord.transcription}</h3></span></h3>
+      <h3>${this.words.successWord.word} <span><h3>${this.words.successWord.transcription}</h3></span></h3>
     </div>
     <div class='example'>
       <fieldset>
@@ -97,9 +97,11 @@ class CardAudio extends Control {
 
     img.node.addEventListener('click', () => volume.play());
     this.words.allWords.forEach((item, index) => {
-      const word = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', 'btn_word__audio', `${item.wordTranslate}`);
-      const number = new Control<HTMLSpanElement>(null, 'span', '', `${index + 1}`);
-      word.node.prepend(number.node);
+      const word = new Control<HTMLButtonElement>(this.containerBtn.node, 'button', 'button');
+      const number = new Control<HTMLSpanElement>(word.node, 'span', 'button__number', `${index + 1}`);
+      const text = new Control<HTMLSpanElement>(word.node, 'span', 'button__text', item.wordTranslate);
+
+      // word.node.prepend(number.node);
       this.resultWords.push({
         node: word.node,
         value: index + 1,

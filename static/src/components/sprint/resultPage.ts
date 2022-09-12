@@ -17,15 +17,12 @@ enum TextInner {
 }
 
 class ResultPage extends Control {
-  // private settingsSoundWrap: Control;
 
   private buttonReturn: Control;
 
   private tableWrap: Control;
 
   private settingsSound: SVG | null = null;
-
-  // private wordSoundList: SVG[] = [];
 
   private wordSoundList: Control<HTMLImageElement>[] = [];
 
@@ -59,7 +56,7 @@ class ResultPage extends Control {
     const answers = this.words.filter((_word, index) => this.results[index] !== undefined);
 
     if (answers.length === 0) {
-      const text = new Control(this.tableWrap.node, 'span', 'result__text', TextInner.titleText);
+      const text = new Control(this.tableWrap.node, 'span', 'result__no-answers', TextInner.titleText);
       return [];
     }
 

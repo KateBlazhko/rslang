@@ -77,6 +77,10 @@
     &_sprint {
       top: 13%;
       left: 40%;
+
+      @media (max-width: 500px) {
+        left: 50%;
+      }
     }
 
     &_audio {
@@ -85,6 +89,15 @@
 
       @media (max-width: 768px) {
         left: 63%;
+      }
+
+      @media (max-width: 500px) {
+        left: 58%;
+      }
+
+      @media (max-width: 400px) {
+        top: 29%;
+        left: 44%;    
       }
     }
 
@@ -98,7 +111,11 @@
       }
 
       @media (max-width: 500px) {
-        left: 10%;
+        left: 6%;
+      }
+
+      @media (max-width: 500px) {
+        left: 0%;
       }
     }
 
@@ -108,6 +125,14 @@
 
       @media (max-width: 768px) {
         left: 46%;
+      }
+
+      @media (max-width: 500px) {
+        left: 40%;
+      }
+
+      @media (max-width: 400px) {
+        left: 25%;
       }
     }
 
@@ -123,6 +148,17 @@
 
     top: 88%;
     left: 1%;
+
+    @media (max-width: 500px) {
+      top: 89%;
+    }
+
+    @media (max-width: 400px) {
+      width: 29rem;
+      height: 16rem;
+
+      top: 91%;
+    }
   }
 
   &__img {
@@ -178,6 +214,10 @@
     &_sprint {
       top: 8%;
       left: 48%;
+
+      @media (max-width: 500px) {
+        left: 57%;
+      }
     }
 
     &_audio {
@@ -185,12 +225,24 @@
 
       top: 22%;
       left: 65%;
+
+      @media (max-width: 400px) {
+        top: 24%;
+        left: 20%;  
+      }
     }
 
     &_book {
       border-radius: 2rem 2rem 0 2rem;
       top: 38%;
       left: 14%;
+
+      @media (max-width: 400px) {
+        border-radius: 2rem 2rem 2rem 0;
+
+        top: 38.5%;
+        left: 40%;  
+      }
     }
 
     &_team {
@@ -225,6 +277,14 @@
 
       top: 55%;
       left: 60%;
+
+      @media (max-width: 768px) {
+        left: 50%;
+      }
+
+      @media (max-width: 400px) {
+        left: 42%;
+      }
     }
   }
 
@@ -233,6 +293,15 @@
 
     width: 250px;
     height: 210px;
+
+    @media (max-width: 500px) {
+      width: 200px;
+      height: 180px;
+    }
+
+    @media (max-width: 400px) {
+      display: none;
+    }
 
     &_left {
       top: 20%;
@@ -250,6 +319,11 @@
       @media (max-width: 768px) {
         left: 45%;
       }
+
+      @media (max-width: 500px) {
+        left: 50%;
+      }
+
     }
   }
 }

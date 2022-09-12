@@ -54,7 +54,7 @@ class HomePage extends Control {
     ctx.canvas.height = this.canvasWrap.node.clientHeight;
 
     HomePage.drawWay(ctx, s);
-    HomePage.drawImg(ctx, './assets/img/ship.png', 30, 60, 150, 210);
+    HomePage.drawImg(ctx, './assets/img/ship.png', 0, 20, 150, 210);
   }
 
   private windowResize(ctx: CanvasRenderingContext2D) {

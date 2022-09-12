@@ -277,8 +277,8 @@ class CardBook extends Control {
         const errors = userWord.optional.countError;
         const right = userWord.optional.сountRightAnswer;
         const text = `
-        You answered this word wrong ${errors} times \n
-        You answered this word correctly ${right} times
+        Fail: ${errors}
+        Success: ${right}
         `;
 
         const notification = new Notification(this.node, 'notification', text);

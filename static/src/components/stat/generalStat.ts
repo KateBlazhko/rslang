@@ -5,6 +5,9 @@ import Control from '../common/control';
 import Logging, { IStateLog } from '../login/Logging';
 import { adapterDate } from '../utils/functions';
 
+const DEFAULTWIDTH = 600
+const DEFAULTHEIGHT = 400
+
 Chart.register(...registerables);
 
 class GeneralStat extends Control {
@@ -108,6 +111,8 @@ class GeneralStat extends Control {
   private drawСhartNewWords(general: IGeneral) {
     const canvas = new Control<HTMLCanvasElement>(this.chart.node, 'canvas', 'stat__canvas');
     const ctx = canvas.node.getContext('2d');
+    canvas.node.width = DEFAULTWIDTH
+    canvas.node.height = DEFAULTHEIGHT
 
     const { newWords, learnedWords } = general;
 
@@ -145,7 +150,7 @@ class GeneralStat extends Control {
           tension: 0.1,
         },
         {
-          label: 'The increase in the total number of learned words',
+          label: 'The increase of learned words',
           data: learnedWordsData,
           fill: false,
           borderColor: '#e0677d',
