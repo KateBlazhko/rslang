@@ -1,6 +1,6 @@
 import Words, { IUserWord, IWord } from '../api/Words';
 import Control from '../common/control';
-import randomSort from '../utils/functions';
+import randomSort, { adapterDate } from '../utils/functions';
 import { shufflePage, shuffleArrayPage, seriesSuccess } from '../common/shufflePage';
 import Logging, { IStateLog } from '../login/Logging';
 import CardAudio from './CardAudio';
@@ -214,7 +214,7 @@ class GameAudio extends Control {
         return Words.createWordStat(stateLog, { wordId: word.word.id, answer: word.status });
       }));
 
-      const gameStat = this.gameStatistic(this.arrWordsStatus, userWordsAll, newWords);
+      const gameStat = this.gameStatistic(this.arrWordsStatus, newWords);
       const recordGameResult = await Stats.recordGameStats(stateLog, gameStat, 'audio');
     }
   }
@@ -229,7 +229,6 @@ class GameAudio extends Control {
 
   gameStatistic(
     arrWord: { word: IWord, status: boolean }[],
-    userWords: IUserWord[],
     newWords: number,
   ) {
     // const map = userWords.map((el) => el.optional.wordId);
@@ -239,6 +238,7 @@ class GameAudio extends Control {
       сountRightAnswer: arrWord.filter((el) => el.status === true).length,
       countError: arrWord.filter((el) => el.status === false).length,
       maxSeriesRightAnswer: seriesSuccess(this.arrWordsStatus),
+      dateLast: adapterDate(new Date())
     };
   }
 

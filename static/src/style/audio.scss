@@ -18,7 +18,7 @@ $color-button-start-border: #63387C;
 
 .audio__container {
   width: 100%;
-  padding: 2rem;
+  padding: 1rem;
   background: url('./assets/img/background-audio.jpg');
   background-size: cover;
   display: flex;
@@ -225,6 +225,10 @@ $color-button-start-border: #63387C;
       gap: 2rem;
 
       width: 100%;
+
+      @media (max-width: 400px) {
+        gap: 1rem;
+      }
       
       button {
         width: 7rem;
@@ -287,19 +291,35 @@ $color-button-start-border: #63387C;
   }
 
   .game__page__audio {
-    width: 70%;
-    min-width: 470px;
+    width: 80%;
+    min-width: 400px;
+    max-width: 900px;
     position: relative;
-    height: 500px;
+    height: 550px;
     background: $color-bg;
     border-radius: 50px;
     box-shadow: $element-shadow;
     border-bottom: 5px solid $color-scroll;
-    padding: 20px 0px;
-    margin-top: 20px;
+    padding: 20px;
+    margin-top: 45px;
 
-    @media(max-width: 930px) {
-      height: 550px;
+    @media (max-width: 768px) {
+      min-width: 400px;
+    }
+
+    @media (max-width: 550px) {
+      margin-top: 50px;
+
+      width: 100%;
+    }
+
+    @media (max-width: 410px) {
+      padding: 10px;
+      min-width: 370px;
+    }
+
+    @media (max-width: 380px) {
+      min-width: 310px;
     }
 
     .arrow_img {
@@ -324,57 +344,68 @@ $color-button-start-border: #63387C;
       margin: 0 auto;
       border-radius: 30px;
       box-shadow: $element-shadow;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include flexCenter();
+
       font-size: 20px;
       font-weight: 800;
       color: $color-bg;
     }
 
     .audio_call__card {
-      width: 100%;
-      height: 100%;
       position: relative;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+
+      @include flexCenter();
+      justify-content: start;
       flex-direction: column;
-      row-gap: 30px;
+      gap: 2rem;
+      width: 100%;
+      height: 90%;
+      padding-top: 2rem;
+
+      @media (max-width: 768px) {
+        flex-direction: row;
+        justify-content: space-between;
+
+      }
+
+      @media (max-width: 410px) {
+        gap: 1rem;
+      }
 
       .container__volume {
-        display: flex;
+        @include flexCenter();
+        
         width: 90%;
-        justify-content: center;
-        align-items: center;
         column-gap: 20px;
         height: 200px;
-        margin-top: 30px;
 
-        @media (max-width: 600px) {
-          height: 220px;
-          margin-top: 10px;
+        @media (max-width: 768px) {
+          flex-wrap: wrap;
+          justify-content: start;
+          gap: 1rem;
+          width: 40%;
+          height: 100%;
         }
 
         .content {
-          width: 80%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          flex-wrap: wrap;
-          height: 100%;
+          width: 100%;
+          @include flexCenter();
+          gap: 2rem;
+
+          @media (max-width: 768px) {
+            flex-wrap: wrap;
+            width: 100%;
+          }
 
           .image_preview {
-            width: 35%;
+            width: 40%;
+            max-width: 20rem;
             box-shadow: 0 0 3px $color-scroll;
             border-radius: 7px;
-            padding-bottom: 10px;
-            margin-left: auto;
 
-            @media (max-width: 600px) {
-              margin-left: 0;
-              margin: 20px 0;
+            @media (max-width: 768px) {
+              width: 100%;
+              max-width: none;
             }
 
             img {
@@ -390,9 +421,19 @@ $color-button-start-border: #63387C;
               font-size: 16px;
               font-weight: 700;
 
+              @media (max-width: 380px) {
+                font-size: 15px;
+              }
+
               span {
                 color: rebeccapurple;
               }
+            }
+          }
+
+          .example {
+            @media (max-width: 768px) {
+              width: 100%;
             }
           }
 
@@ -418,13 +459,17 @@ $color-button-start-border: #63387C;
             @media (max-width: 860px) {
               width: 140px;
             }
+
+            @media (max-width: 768px) {
+              width: 100%;
+            }
           }
         }        
       }
 
       .volume_button__audio {
-        width: 120px;
-        height: 120px;
+        width: 6rem;
+        height: 6rem;
         background: url(./assets/icons/volume.png);
         background-position: center;
         background-repeat: no-repeat;
@@ -433,17 +478,12 @@ $color-button-start-border: #63387C;
         box-shadow: 0 0 3px $color-scroll;
         border-radius: 50%;
         cursor: pointer;
-
-        @media(max-width: 750px) {
-          width: 70px;
-          height: 70px;
-        }
       }
 
       .button_next {
         position: absolute;
         margin: 0 auto;
-        bottom: 20px;
+        bottom: 0%;
         border-radius: $button-border-radius;
         background-color: $color-bg;
         font-size: 24px;
@@ -456,6 +496,11 @@ $color-button-start-border: #63387C;
         cursor: pointer;
         transition: .2s;
 
+        @media (max-width: 768px) {
+          bottom: 0%;
+          right: 0%;
+        }
+
         &:hover {
           background: $color-button-start;
           border-bottom: 3px solid $color-button-start-border; 
@@ -464,43 +509,69 @@ $color-button-start-border: #63387C;
       }
 
       .container_btn__audio {
-        display: flex;
-        flex-wrap:  wrap;
-        justify-content: center;
-        width: 90%;
-        column-gap: 10px;
-        row-gap: 10px;
-        margin: 0 auto;
+        @include flexCenter();
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 10px;
 
-        @media(max-width: 1020px) {
-          width: 90%;
+        @media (max-width: 768px) {
+          width: 60%;
         }
 
-        button {
+        .button {
+          @include flexCenter();
+          justify-content: start;
+          gap: 0.5rem;
           border: none;
           position: relative;
           width: 31%;
-          min-width: 180px;
+          min-width: 230px;
+          min-height: 4rem;
+
           font-size: 18px;
-          padding: 10px 2px;
+          padding: 5px;
           border-radius: 7px;
           font-weight: 900;
           color: $color-text;
+
           cursor: pointer;
           box-shadow: 0 0 3px $color-scroll;
           background: $color-bg;
           border-bottom: 3px solid $color-shadow;
           transition: .2s;
 
-          span {
-            position: absolute;
-            left: 4px;
-            top: 5px;
+          @media (max-width: 768px) {
+            width: 100%;
+          }
+
+          @media (max-width: 410px) {
+            min-width: 200px;
+          }
+
+          @media (max-width: 380px) {
+            min-width: 165px;
+          }
+
+          &__number {
             border-radius: 50%;
-            width: 3rem;
-            height: 3rem;
+            width: 2.3rem;
+            height: 2.3rem;
+            min-width: 2.3rem;
             @include flexCenter();
             border: 1px solid $color-scroll;
+
+            @media (max-width: 410px) {
+              display: none;
+            }
+          }
+
+          &__text {
+            @include flexCenter();
+            margin: 0 auto;
+
+            @media (max-width: 410px) {
+              font-size: 15px;
+            }
           }
 
           &.success {
@@ -523,8 +594,14 @@ $color-button-start-border: #63387C;
     @include flexCenter();
     flex-wrap: wrap;
     gap: 1rem;
-    padding: 2px 20px;
+    padding: 0 20px;
     height: 100%;
+
+    @media (max-width: 768px) {
+      padding: 0;
+
+      align-items: start;
+    }
 
     .list_statistic {
       overflow-y: scroll;
@@ -532,6 +609,12 @@ $color-button-start-border: #63387C;
       height: 90%;
       border-radius: 5px;
       box-shadow: 0 0 3px $color-scroll;
+
+      @media (max-width: 410px) {
+        height: 80%;
+      }
+
+
 
       &::-webkit-scrollbar {
         width: 8px;               /* ширина scrollbar */
@@ -570,6 +653,29 @@ $color-button-start-border: #63387C;
 
         background-color: $color-bg;
 
+        @media (max-width: 768px) {
+          padding: 5px 30px;
+        }
+
+        @media (max-width: 650px) {
+          gap: 1rem;
+          padding: 5px 10px;
+        }
+
+        &__text {
+          @include flexCenter();
+          justify-content: start;
+          flex-wrap: wrap;
+          gap: 2rem;
+
+          @media (max-width: 650px) {
+            gap: 1rem;
+          }
+
+          @media (max-width: 450px) {
+            font-size: 18px;
+          }
+        }
 
         .icon {
           width: 2rem;
@@ -588,6 +694,11 @@ $color-button-start-border: #63387C;
             margin: 0;
       
             cursor: pointer;
+
+            @media (max-width: 650px) {
+              width: 3rem;
+              height: 3rem;
+            }
           }
 
           &__true {

@@ -126,18 +126,19 @@ class Logging {
       learnedWords: 0,
       optional: {
         dateReg: adapterDate(date),
-        dateCurrent: adapterDate(date),
         sprint: {
           newWords: 0,
           сountRightAnswer: 0,
           countError: 0,
           maxSeriesRightAnswer: 0,
+          dateLast: adapterDate(date),
         },
         audio: {
           newWords: 0,
           сountRightAnswer: 0,
           countError: 0,
           maxSeriesRightAnswer: 0,
+          dateLast: adapterDate(date),
         },
         general: {
           newWords: {

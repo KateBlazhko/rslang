@@ -1,27 +1,6 @@
 $color-points: #966AAD;
 $color-word: #000000;
 
-// $color-border-svg: #AF2137;
-// // $color-main-svg: #EF4B6D;
-// $color-average: #e0677d;
-// // $color-average: #EF4055;
-// $color-average: #F69EB0;
-
-// $color-border-svg: #63387C;
-// // $color-main-svg: #B08DC1;
-// $color-average: #C5A3CD;
-// $color-average: #966AAD;
-// // $color-average: #8857A4;
-
-// $color-border-svg: #017347;
-// // $color-main-svg: #98D2AE;
-// // $color-average: #5DBF89;
-// $color-average: #1f9465;
-// $color-average: #79bc90;
-// // $color-average: #80C999;
-// // $color-average: #27B67C;
-// // $color-border-svg: #007E4E;
-
 .sprint {
   position: relative;
   flex-grow: 1;
@@ -29,13 +8,17 @@ $color-word: #000000;
   flex-wrap: wrap;
   
   width: 100%;
-  height: 100;
+  // height: 100%;
 
   padding: 2rem;
 
   background-image: url('./assets/img/sprint-bg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
+
+  @media (max-width: 500px) {
+    padding: 1rem;
+  }
 
   &__wrap {
     position: relative;
@@ -44,7 +27,12 @@ $color-word: #000000;
     
     max-width: 1920px;
     width: 100%;
+    // height: 100%;
     padding: 2rem;
+
+    @media (max-width: 500px) {
+      padding: 1rem;
+    }
   }
 
   &__preloader {
@@ -72,6 +60,10 @@ $color-word: #000000;
 
     @media (max-width: 768px) {
       width: 90%;
+    }
+
+    @media (max-width: 500px) {
+      width: 100%;
     }
   }
 
@@ -168,6 +160,10 @@ $color-word: #000000;
     @include flexCenter();
     gap: 2rem;
     width: 100%;
+
+    @media (max-width: 500px) {
+      width: 90%;
+    }
   }
 
   &__button {
