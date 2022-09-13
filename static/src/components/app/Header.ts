@@ -53,7 +53,7 @@ class Header extends Control {
     this.forwardHistory();
   }
 
-  createHeader() {
+  async createHeader() {
    
     const home = new ButtonHref(this.nav.node, '#home', ButtonHrefContent.home);
     const about = new ButtonHref(this.nav.node, '#about', ButtonHrefContent.about);
@@ -62,11 +62,18 @@ class Header extends Control {
     const audio = new ButtonHref(this.nav.node, '#audio', ButtonHrefContent.audio);
     const additionalWords = new ButtonHref(this.nav.node, '#additionalWords', ButtonHrefContent.additionalWords); 
 
+    const stateLog = await this.logging.checkStorageLogin()
+    if (stateLog.state) {
+      additionalWords.node.classList.remove('disable')
+    } else {
+      additionalWords.node.classList.add('disable')
+    }
+
     this.getAllElementsHeader = {
       home, about, book, sprint, audio, additionalWords
     };
 
-    this.arrHref = [home, about, book, sprint, audio];
+    this.arrHref = [home, about, book, sprint, audio, additionalWords];
   }
 
   setDisable(isDisable: boolean) {
@@ -81,6 +88,16 @@ class Header extends Control {
         button.node.classList.remove('disable');
       });
     }
+  }
+
+  setDisableAddWords(isDisable: boolean) {
+    const [, , , , , additionalWords] = this.arrHref;
+    if (isDisable) {
+      additionalWords.node.classList.remove('disable');
+    } else {
+      additionalWords.node.classList.add('disable');
+    }
+  
   }
 
   addEventListen() {

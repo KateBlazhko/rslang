@@ -8,7 +8,8 @@ export interface IGameStat {
   newWords: number,
   сountRightAnswer: number,
   countError: number,
-  maxSeriesRightAnswer: number
+  maxSeriesRightAnswer: number,
+  dateLast: string,
 }
 
 export type GeneralItem = Record<string, number>
@@ -19,7 +20,6 @@ export interface IGeneral {
 
 export interface IStatOptional {
   dateReg: string,
-  dateCurrent: string,
   sprint: IGameStat,
   audio: IGameStat,
   general: IGeneral
@@ -69,19 +69,20 @@ class Stats {
     }
   }
 
-  public static async recordGameStats(stateLog: IStateLog, gameStat: IGameStat, game: 'sprint' | 'audio') {
+  public static async recordGameStats(stateLog: IStateLog, gameStatNew: IGameStat, game: 'sprint' | 'audio') {
     const userStat = await Stats.getStats(stateLog.userId, stateLog.token);
+    const gameStat = userStat.optional[game]
     const dataCurrentAdapt = adapterDate(new Date());
 
-    const isSameDate = userStat.optional.dateCurrent === dataCurrentAdapt;
-    const learnedWords = await Words.getLearnedWordsByDate(stateLog, dataCurrentAdapt);
+    const isSameDate = gameStat.dateLast === dataCurrentAdapt;
+    // const learnedWords = await Words.getLearnedWordsByDate(stateLog, dataCurrentAdapt);
 
-    const countLearnedWords = learnedWords.length;
+    // const countLearnedWords = learnedWords.length;
 
     if (isSameDate) {
-      Stats.addToStat(stateLog, userStat, gameStat, game);
+      Stats.addToStat(stateLog, userStat, gameStatNew, game);
     } else {
-      Stats.recordStat(stateLog, userStat, gameStat, game, dataCurrentAdapt);
+      Stats.recordStat(stateLog, userStat, gameStatNew, game, dataCurrentAdapt);
     }
   }
 
@@ -94,7 +95,7 @@ class Stats {
 
     const {
       learnedWords, optional: {
-        dateReg, dateCurrent, sprint, audio, general,
+        dateReg, sprint, audio, general,
       },
     } = userStat;
 
@@ -113,7 +114,6 @@ class Stats {
       learnedWords,
       optional: {
         dateReg,
-        dateCurrent,
         sprint,
         audio,
         general: newGeneral,
@@ -151,6 +151,7 @@ class Stats {
           сountRightAnswer: сountRightAnswerLast + сountRightAnswer,
           countError: countErrorLast + countError,
           maxSeriesRightAnswer: Math.max(maxSeriesRightAnswerLast, maxSeriesRightAnswer),
+          dateLast: adapterDate(new Date())
         },
       },
     });
@@ -171,12 +172,13 @@ class Stats {
       learnedWords: userStat.learnedWords,
       optional: {
         ...userStat.optional,
-        dateCurrent,
         [game]: {
           newWords,
           сountRightAnswer,
           countError,
           maxSeriesRightAnswer,
+          dateLast: dateCurrent,
+
         },
       },
     });
@@ -186,27 +188,22 @@ class Stats {
     stateLog: IStateLog,
     userStat: IStat,
     dateCurrent: string,
+    game: string
   ) {
     const { optional: { dateReg, general } } = userStat;
 
     const recordStat = await Stats.updateStat(stateLog.userId, stateLog.token, {
-      learnedWords: 0,
+      learnedWords: userStat.learnedWords,
       optional: {
-        dateReg,
-        dateCurrent,
-        sprint: {
+        ...userStat.optional,
+        [game]: {
           newWords: 0,
           сountRightAnswer: 0,
           countError: 0,
           maxSeriesRightAnswer: 0,
+          dateLast: dateCurrent,
+
         },
-        audio: {
-          newWords: 0,
-          сountRightAnswer: 0,
-          countError: 0,
-          maxSeriesRightAnswer: 0,
-        },
-        general,
       },
     });
   }

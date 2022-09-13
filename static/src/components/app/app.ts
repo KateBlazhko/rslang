@@ -20,6 +20,8 @@ class App {
     this.main.onGoPage.add(this.footer.hide.bind(this.footer));
 
     this.main.onDisable.add(this.header.setDisable.bind(this.header));
+    this.login.onLogin.add(this.header.setDisableAddWords.bind(this.header));
+
   }
 
   render() {

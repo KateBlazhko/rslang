@@ -13,7 +13,6 @@ $color-table: #f5a51c;
   gap: 2rem;
 
   width: 50%;
-  min-width: 48rem;
   padding: 2rem;
   border-radius: 5rem;
   border-bottom: 5px solid $color-scroll;
@@ -33,13 +32,35 @@ $color-table: #f5a51c;
 
     text-align: center;
     font-size: 2.5rem;
-    color: $color-text
+    color: $color-text;
+
+    @media (max-width: 768px) {
+      width: 70%;
+    }
   }  
 
   &__text {
+    width: 60%;
     text-align: center;
     font-size: 2rem;
     color: $color-text
+  }
+
+  &__no-answers {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    color: $color-text
+  }
+
+  &__sound-wrap {
+    .sound {
+
+      @media (max-width: 500px) {
+        width: 3rem;
+        height: 3rem;
+      }
+    }
   }
 
   &__table {
@@ -52,7 +73,9 @@ $color-table: #f5a51c;
 
     width: 100%;
     padding: 0.1rem;
-    max-height: 70vh;
+    min-height: 20vh;
+
+    max-height: 67vh;
     box-shadow: 0 0 3px $color-scroll;
 
     &::-webkit-scrollbar {
@@ -79,6 +102,13 @@ $color-table: #f5a51c;
     box-shadow: 0 0 3px $color-scroll;
 
     background-color: $color-bg;
+
+    @media (max-width: 500px) {
+      padding: 0.5rem;
+
+      gap: 1rem;
+
+    }
 
     span {
       font-size: 2rem;

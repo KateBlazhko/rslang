@@ -29,8 +29,10 @@ class StatisticAudio extends Control {
       audio.play();
     });
 
-    const title = new Control<HTMLDivElement>(el.node, 'span', '', word.word);
-    const Translate = new Control(el.node, 'span', '', word.wordTranslate);
+    const text = new Control(el.node, 'div', 'item__text');
+
+    const title = new Control<HTMLDivElement>(text.node, 'span', '', word.word);
+    const Translate = new Control(text.node, 'span', '', word.wordTranslate);
 
     if (status) {
       const svg = new SVG(img.node, 'icon__true', `${icons}#true`);

@@ -12,6 +12,7 @@ import ResultPage from './resultPage';
 import { IWordStat, Stat } from './sprint';
 import Signal from '../common/signal';
 import { IGameStat } from '../api/Stats';
+import { adapterDate } from '../utils/functions';
 
 enum TextInner {
   points = '0',
@@ -87,6 +88,7 @@ class GamePage extends Control {
       сountRightAnswer: 0,
       countError: 0,
       maxSeriesRightAnswer: 0,
+      dateLast: adapterDate(new Date)
     };
 
     this.settingsSoundWrap = new Control(this.node, 'div', 'sound__wrap');

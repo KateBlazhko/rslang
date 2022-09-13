@@ -13,6 +13,11 @@
   background-size: cover;
   background-repeat: no-repeat;
 
+  @media (max-width: 500px) {
+    padding: 2rem;
+
+  }
+
   &__block-wrap {
     @include flexCenter();
 
@@ -32,6 +37,10 @@
 
     @media (max-width: 768px) {
       width: 80%;
+    }
+
+    @media (max-width: 500px) {
+      width: 95%;
     }
 
     span {

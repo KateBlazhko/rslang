@@ -77,12 +77,15 @@ $color-bg-button-border: #40396e;
     position: fixed;
     left: 0.5rem;
     min-width: 8rem;
-      @include flexCenter();
+    @include flexCenter();
     justify-content: start;
 
     flex-direction: column;
     gap: 1rem;
 
+    @media (max-width: 500px) {
+      min-width: 0;
+    }
   }
 
   .page__button-side {
@@ -107,6 +110,13 @@ $color-bg-button-border: #40396e;
     color: $color-text;
 
     transition: .4s;
+
+    @media (max-width: 500px) {
+      width: 5rem;
+      height: 5rem;
+
+      font-size: 15px;
+    }
 
     &:nth-child(1) {
       background-image: url('./assets/icons/arrow.png');
@@ -137,6 +147,16 @@ $color-bg-button-border: #40396e;
     height: 100%;
     padding: 3rem;
     padding-left: 9rem;
+
+    @media (max-width: 500px) {
+      padding-left: 6.5rem;
+    }
+
+    @media (max-width: 450px) {
+      padding: 2rem 1rem;
+      padding-left: 6.5rem;
+
+    }
 
     &.one-group {
       background-color: $bg-level-english-1;
@@ -244,10 +264,17 @@ $color-bg-button-border: #40396e;
 
         box-shadow: $element-shadow;
 
+        @media (max-width: 768px) {
+          height: auto;
+        }
+
+        @media (max-width: 450px) {
+          padding: 2rem 1rem;
+        }
+
         &.difficult {
           box-shadow: 0 0 10px $border-level-english-2;
           border-bottom: 5px solid $border-level-english-2;
-
         }
 
         &.study {
@@ -287,6 +314,10 @@ $color-bg-button-border: #40396e;
 
           .img__button {
             width: 6rem;
+
+            @media (max-width: 360px) {
+              width: 5rem;
+            }
           }
 
           .button {
@@ -302,6 +333,11 @@ $color-bg-button-border: #40396e;
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
+
+            @media (max-width: 360px) {
+              width: 5rem;
+              height: 5rem;
+            }
           }
           
           .button_difficult {
@@ -328,6 +364,10 @@ $color-bg-button-border: #40396e;
           .button_userWords {
             width: 6.2rem;
             background-image: url('./assets/icons/userWords-def.svg');
+
+            @media (max-width: 360px) {
+              width: 5.1rem;
+            }
 
             &.active {
               cursor: pointer;
@@ -371,6 +411,10 @@ $color-bg-button-border: #40396e;
 
               color: $color-text;
               font-size: 1.6rem;
+
+              @media (max-width: 450px) {
+                font-size: 1.4rem;
+              }
 
               legend {
                 padding: 0 5px;
@@ -439,6 +483,12 @@ $color-bg-button-border: #40396e;
 
       width: 90%;
 
+      @media (max-width: 500px) {
+        column-gap: 1rem;
+
+        width: 100%;
+      }
+
       a {
         @include flexCenter();
 
@@ -460,6 +510,11 @@ $color-bg-button-border: #40396e;
         cursor: pointer;
         
         transition: background-color .4s;
+
+        @media (max-width: 500px) {
+          width: 5rem;
+          height: 5rem;
+        }
 
         &.active {
           border-bottom: none;
@@ -483,6 +538,11 @@ $color-bg-button-border: #40396e;
         background-repeat: no-repeat;
         background-size: 80%;
         background-position: center;
+
+        @media (max-width: 500px) {
+          width: 5rem;
+          height: 5rem;
+        }
 
         &:first-child {
           background-image: url('./assets/icons/arrowLeft.png');

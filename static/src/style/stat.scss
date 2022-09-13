@@ -6,6 +6,10 @@
   width: 100%;
   padding: 3rem 3rem 5rem 2rem;
 
+  @media (max-width: 600px) {
+    padding: 1rem 1rem 3rem 1rem;
+  }
+
   &__inner {
     @include flexCenter();
 
@@ -27,7 +31,10 @@
 
     @media (max-width: 600px) {
       width: 70%;
+    }
 
+    @media (max-width: 450px) {
+      width: 100%;
     }
     
   }
@@ -101,8 +108,13 @@
   display: grid;
   grid-template-columns: 10rem 30rem;
   justify-content: center;
-  align-items: center;
+  align-items: end;
   gap: 3rem;
+
+    @media (max-width: 450px) {
+      grid-template-columns: 6.5rem 23.5rem;
+      gap: 1rem;
+    }
 
   &__button-wrap {
     @include flexCenter();
@@ -110,6 +122,10 @@
     gap: 7rem;
 
     width: 100%;
+
+    @media (max-width: 450px) {
+      gap: 5rem;
+    }
   }
 
   &__icon {
@@ -125,6 +141,11 @@
     background-color: $color-bg;
     
     cursor: pointer;
+
+    @media (max-width: 450px) {
+      width: 6rem;
+      height: 6rem;
+    }
 
     &.active .daily__img {
       width: 100%;
@@ -173,6 +194,12 @@
       left: 0%;
     }
 
+    @media (max-width: 450px) {
+      left: -6%;
+      top: -71%;
+      font-size: 1.6rem;
+    }
+
     span {
       text-align: center;
       font-weight: bold;
@@ -219,6 +246,10 @@
   width: 100%;
   padding: 1rem;
 
+  @media (max-width: 600px) {
+    padding: 0;
+  }
+
   &__chart-wrap {
     @include flexCenter();
     flex-wrap: wrap;
@@ -231,5 +262,10 @@
     box-shadow: $element-shadow;
 
     background-color: $color-bg;
+
+    @media (max-width: 600px) {
+      width: 100%;
+      padding: 0;
+    }
   }
 }
