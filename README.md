@@ -1,8 +1,21 @@
 # RS-Lang
 Training project of the RS School JavaScript/Front-end course. Application for learning foreign words.
 
-You may also need to install npm-dependencies:
-## npm i
+## Frontend
+- Typescript
+- SCSS
+- Webpack
+- Eslint
 
-In the project directory, you can run:
-## npm start
+## Backend
+- Сloudinary
+- Multer
+- Express
+- Mongoose
+- MongoDB
+
+## Library
+- Chart.js
+
+## Deploy
+App https://kateblazhko.github.io/rslang
